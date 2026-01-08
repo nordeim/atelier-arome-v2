@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-crimson);
+  --font-accent: var(--font-great-vibes);
+  --color-ink: #2A2D26;
+  --color-gold: #C9A769;
+  --color-parchment: #FAF8F5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: var(--color-parchment);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--color-ink);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+*:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 4px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  border-radius: 0.125rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-gold);
+}
+
+.btn--secondary {
+  border: 2px solid var(--color-ink);
+  color: var(--color-ink);
+  background-color: transparent;
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+}
+
+.btn--outline {
+  border: 2px solid var(--color-ink);
+  color: var(--color-ink);
+  background-color: transparent;
+}
+
+.btn--outline:hover {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+}
