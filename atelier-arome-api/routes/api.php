@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\TagController;
+use App\Http\Controllers\Api\V1\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,23 +37,24 @@ Route::get('/health', function () {
 
 // Products
 Route::prefix('products')->group(function () {
-    Route::get('/', fn() => response()->json(['message' => 'Product index - Coming soon']));
-    Route::get('/{slug}', fn() => response()->json(['message' => 'Product show - Coming soon']));
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/featured', [ProductController::class, 'featured']);
+    Route::get('/{slug}', [ProductController::class, 'show']);
 });
 
 // Categories
 Route::prefix('categories')->group(function () {
-    Route::get('/', fn() => response()->json(['message' => 'Category index - Coming soon']));
-    Route::get('/{slug}', fn() => response()->json(['message' => 'Category show - Coming soon']));
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::get('/{slug}', [CategoryController::class, 'show']);
 });
 
 // Tags
-Route::get('/tags', fn() => response()->json(['message' => 'Tag index - Coming soon']));
+Route::get('/tags', [TagController::class, 'index']);
 
 // Testimonials
-Route::get('/testimonials', fn() => response()->json(['message' => 'Testimonial index - Coming soon']));
+Route::get('/testimonials', [TestimonialController::class, 'index']);
 
-// Newsletter
+// Newsletter (placeholder - to be implemented)
 Route::prefix('newsletter')->group(function () {
     Route::post('/subscribe', fn() => response()->json(['message' => 'Newsletter subscribe - Coming soon']));
     Route::get('/confirm/{token}', fn() => response()->json(['message' => 'Newsletter confirm - Coming soon']));
