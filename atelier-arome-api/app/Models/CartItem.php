@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CartItem extends Model
 {
     use HasFactory, HasUuids;
 
-    protected \$fillable = [
+    protected $fillable = [
         'cart_id',
         'variant_id',
         'quantity',
@@ -29,22 +28,21 @@ class CartItem extends Model
 
     public function cart(): BelongsTo
     {
-        return \$this->belongsTo(Cart::class);
+        return $this->belongsTo(Cart::class);
     }
 
     public function variant(): BelongsTo
     {
-        return \$this->belongsTo(ProductVariant::class);
+        return $this->belongsTo(ProductVariant::class);
     }
 
     public function product()
     {
-        return \$this->variant->product;
+        return $this->variant?->product;
     }
 
-    public function getLineTotalAttribute(): string
+    public function getLineTotalAttribute(): float
     {
-        return \$this->quantity * \$this->unit_price;
+        return $this->quantity * $this->unit_price;
     }
 }
-HEREDOC
