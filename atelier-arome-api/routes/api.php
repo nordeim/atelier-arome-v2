@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\NewsletterController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\TestimonialController;
@@ -54,39 +57,39 @@ Route::get('/tags', [TagController::class, 'index']);
 // Testimonials
 Route::get('/testimonials', [TestimonialController::class, 'index']);
 
-// Newsletter (placeholder - to be implemented)
+// Newsletter
 Route::prefix('newsletter')->group(function () {
-    Route::post('/subscribe', fn() => response()->json(['message' => 'Newsletter subscribe - Coming soon']));
-    Route::get('/confirm/{token}', fn() => response()->json(['message' => 'Newsletter confirm - Coming soon']));
-    Route::get('/unsubscribe/{token}', fn() => response()->json(['message' => 'Newsletter unsubscribe - Coming soon']));
+    Route::post('/subscribe', [NewsletterController::class, 'subscribe']);
+    Route::get('/confirm/{token}', [NewsletterController::class, 'confirm']);
+    Route::get('/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe']);
 });
 
 /*
 |--------------------------------------------------------------------------
-| Cart Routes (Session-based for guests, Auth for users)
+| Cart Routes (Works for both guests and authenticated users)
 |--------------------------------------------------------------------------
 */
 
 Route::prefix('cart')->group(function () {
-    Route::get('/', fn() => response()->json(['message' => 'Cart show - Coming soon']));
-    Route::post('/items', fn() => response()->json(['message' => 'Cart add item - Coming soon']));
-    Route::put('/items/{id}', fn() => response()->json(['message' => 'Cart update item - Coming soon']));
-    Route::delete('/items/{id}', fn() => response()->json(['message' => 'Cart remove item - Coming soon']));
-    Route::post('/coupon', fn() => response()->json(['message' => 'Cart apply coupon - Coming soon']));
-    Route::delete('/coupon', fn() => response()->json(['message' => 'Cart remove coupon - Coming soon']));
+    Route::get('/', [CartController::class, 'show']);
+    Route::post('/items', [CartController::class, 'addItem']);
+    Route::put('/items/{id}', [CartController::class, 'updateItem']);
+    Route::delete('/items/{id}', [CartController::class, 'removeItem']);
+    Route::post('/coupon', [CartController::class, 'applyCoupon']);
+    Route::delete('/coupon', [CartController::class, 'removeCoupon']);
 });
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| Authentication Routes (Public)
 |--------------------------------------------------------------------------
 */
 
 Route::prefix('auth')->group(function () {
-    Route::post('/register', fn() => response()->json(['message' => 'Register - Coming soon']));
-    Route::post('/login', fn() => response()->json(['message' => 'Login - Coming soon']));
-    Route::post('/forgot-password', fn() => response()->json(['message' => 'Forgot password - Coming soon']));
-    Route::post('/reset-password', fn() => response()->json(['message' => 'Reset password - Coming soon']));
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 /*
@@ -98,12 +101,12 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     // User profile
     Route::prefix('user')->group(function () {
-        Route::get('/', fn() => response()->json(['message' => 'User profile - Coming soon']));
-        Route::put('/', fn() => response()->json(['message' => 'Update profile - Coming soon']));
-        Route::post('/logout', fn() => response()->json(['message' => 'Logout - Coming soon']));
+        Route::get('/', [AuthController::class, 'user']);
+        Route::put('/', [AuthController::class, 'updateProfile']);
+        Route::post('/logout', [AuthController::class, 'logout']);
     });
 
-    // Addresses
+    // Addresses (placeholder - to be implemented)
     Route::prefix('addresses')->group(function () {
         Route::get('/', fn() => response()->json(['message' => 'Address index - Coming soon']));
         Route::post('/', fn() => response()->json(['message' => 'Address create - Coming soon']));
@@ -111,27 +114,27 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', fn() => response()->json(['message' => 'Address delete - Coming soon']));
     });
 
-    // Orders
+    // Orders (placeholder - to be implemented)
     Route::prefix('orders')->group(function () {
         Route::get('/', fn() => response()->json(['message' => 'Order index - Coming soon']));
         Route::get('/{orderNumber}', fn() => response()->json(['message' => 'Order show - Coming soon']));
     });
 
-    // Wishlist
+    // Wishlist (placeholder - to be implemented)
     Route::prefix('wishlist')->group(function () {
         Route::get('/', fn() => response()->json(['message' => 'Wishlist show - Coming soon']));
         Route::post('/items', fn() => response()->json(['message' => 'Wishlist add - Coming soon']));
         Route::delete('/items/{productId}', fn() => response()->json(['message' => 'Wishlist remove - Coming soon']));
     });
 
-    // Reviews
+    // Reviews (placeholder - to be implemented)
     Route::prefix('reviews')->group(function () {
         Route::post('/', fn() => response()->json(['message' => 'Review create - Coming soon']));
         Route::put('/{id}', fn() => response()->json(['message' => 'Review update - Coming soon']));
         Route::delete('/{id}', fn() => response()->json(['message' => 'Review delete - Coming soon']));
     });
 
-    // Checkout
+    // Checkout (placeholder - to be implemented)
     Route::prefix('checkout')->group(function () {
         Route::post('/initiate', fn() => response()->json(['message' => 'Checkout initiate - Coming soon']));
         Route::post('/complete', fn() => response()->json(['message' => 'Checkout complete - Coming soon']));
