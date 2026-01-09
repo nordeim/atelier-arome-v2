@@ -88,6 +88,11 @@ export interface Product {
   updated_at: string;
 }
 
+export interface ProductDetail extends Product {
+  variants: ProductVariant[];
+  images: ProductImage[];
+}
+
 export interface ProductFilters {
   category?: string;
   humour?: string;

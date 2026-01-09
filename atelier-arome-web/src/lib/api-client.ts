@@ -1,3 +1,5 @@
+import { ApiResponse, ProductDetail } from '@/types/api';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 class ApiError extends Error {
@@ -42,4 +44,9 @@ export async function apiClient<T>(
     response.status,
     data
   );
+}
+
+export async function getProductBySlug(slug: string): Promise<ProductDetail> {
+  const response = await apiClient<ApiResponse<ProductDetail>>(`/products/${slug}`);
+  return response.data;
 }
