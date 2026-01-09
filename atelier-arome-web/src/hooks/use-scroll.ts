@@ -1,98 +1,55 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useSyncExternalStore } from 'react';
 
 interface ScrollState {
     scrollY: number;
     isScrolled: boolean;
-    activeSection: string | null;
-    scrollDirection: 'up' | 'down' | null;
 }
 
 interface UseScrollOptions {
     threshold?: number;
-    sectionIds?: string[];
-    offset?: number;
+}
+
+// Server snapshot for SSR
+function getServerSnapshot(): number {
+    return 0;
+}
+
+// Subscribe to scroll events
+function subscribeToScroll(callback: () => void): () => void {
+    window.addEventListener('scroll', callback, { passive: true });
+    return () => window.removeEventListener('scroll', callback);
+}
+
+// Get current scroll position
+function getScrollSnapshot(): number {
+    return typeof window !== 'undefined' ? window.scrollY : 0;
 }
 
 /**
  * Custom hook for scroll-based effects.
- * Matches main.js lines 1652-1717: handleScroll, updateHeaderShadow, updateActiveNavLink
+ * Matches main.js lines 1652-1717: handleScroll, updateHeaderShadow
+ * 
+ * Uses useSyncExternalStore for proper React 18+ subscription pattern.
  */
 export function useScroll(options: UseScrollOptions = {}): ScrollState {
-    const { threshold = 20, sectionIds = [], offset = 100 } = options;
+    const { threshold = 20 } = options;
 
-    const [scrollState, setScrollState] = useState<ScrollState>({
-        scrollY: 0,
-        isScrolled: false,
-        activeSection: null,
-        scrollDirection: null,
-    });
+    // Use useSyncExternalStore for scroll position
+    const scrollY = useSyncExternalStore(
+        subscribeToScroll,
+        getScrollSnapshot,
+        getServerSnapshot
+    );
 
-    const lastScrollY = useRef(0);
+    // Calculate derived state from scrollY (no refs needed)
+    const isScrolled = scrollY > threshold;
 
-    const handleScroll = useCallback(() => {
-        const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-
-        // Determine scroll direction
-        const direction = currentScrollY > lastScrollY.current ? 'down' : 'up';
-        lastScrollY.current = currentScrollY;
-
-        // Determine if scrolled past threshold (for header shadow)
-        const isScrolled = currentScrollY > threshold;
-
-        // Determine active section
-        let activeSection: string | null = null;
-
-        if (sectionIds.length > 0) {
-            for (const id of sectionIds) {
-                const section = document.getElementById(id);
-                if (section) {
-                    const rect = section.getBoundingClientRect();
-                    const sectionTop = rect.top + currentScrollY;
-                    const sectionBottom = rect.bottom + currentScrollY;
-
-                    if (currentScrollY + offset >= sectionTop && currentScrollY + offset < sectionBottom) {
-                        activeSection = id;
-                        break;
-                    }
-                }
-            }
-        }
-
-        setScrollState({
-            scrollY: currentScrollY,
-            isScrolled,
-            activeSection,
-            scrollDirection: direction,
-        });
-    }, [threshold, sectionIds, offset]);
-
-    useEffect(() => {
-        // Debounce scroll handler for performance
-        let ticking = false;
-
-        const scrollListener = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    handleScroll();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-
-        // Initial check
-        handleScroll();
-
-        window.addEventListener('scroll', scrollListener, { passive: true });
-
-        return () => {
-            window.removeEventListener('scroll', scrollListener);
-        };
-    }, [handleScroll]);
-
-    return scrollState;
+    return {
+        scrollY,
+        isScrolled,
+    };
 }
 
 /**

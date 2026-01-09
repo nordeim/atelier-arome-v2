@@ -96,8 +96,6 @@ export function VialDrawer() {
         }, 1000);
     };
 
-    const cartCount = items.reduce((total, item) => total + item.quantity, 0);
-
     return (
         <aside
             className={`vial-drawer ${cartDrawerOpen ? 'active' : ''}`}

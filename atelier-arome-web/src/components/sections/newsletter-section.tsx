@@ -1,18 +1,69 @@
 'use client'
 
 import { useState } from 'react'
+import { showToast } from '@/stores/toast-store'
+import { isValidEmail, announce } from '@/lib/a11y'
 
 export function NewsletterSection() {
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{ email?: string }>({})
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Validate email on blur
+  const handleEmailBlur = () => {
+    if (!email.trim()) {
+      setErrors(prev => ({ ...prev, email: 'Please enter your email address' }))
+    } else if (!isValidEmail(email)) {
+      setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }))
+    } else {
+      setErrors(prev => ({ ...prev, email: undefined }))
+    }
+  }
+
+  // Clear error on input
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value)
+    if (errors.email) {
+      setErrors(prev => ({ ...prev, email: undefined }))
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !consent) return
 
+    // Validate
+    if (!email.trim()) {
+      setErrors({ email: 'Please enter your email address' })
+      showToast('Please enter your email address', 'warning')
+      return
+    }
+
+    if (!isValidEmail(email)) {
+      setErrors({ email: 'Please enter a valid email address' })
+      showToast('Please enter a valid email address', 'warning')
+      return
+    }
+
+    if (!consent) {
+      showToast('Please agree to receive correspondence', 'warning')
+      return
+    }
+
+    // Submit
+    setIsSubmitting(true)
+
+    // Simulate API call (matching main.js CONFIG.API_DELAY)
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+    setIsSubmitting(false)
     setSubscribed(true)
     setEmail('')
+    setConsent(false)
+
+    showToast('Thank you for subscribing to our correspondence', 'success')
+    announce('Successfully subscribed to the quarterly folio')
   }
 
   if (subscribed) {
@@ -64,18 +115,27 @@ export function NewsletterSection() {
             early access to new essences, and private atelier events.
           </p>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="correspondence__form">
-            <div className="correspondence__field">
+          {/* Form with validation */}
+          <form onSubmit={handleSubmit} className="correspondence__form" id="correspondenceForm">
+            <div className={`correspondence__field ${errors.email ? 'correspondence__field--error' : ''}`}>
               <input
                 type="email"
+                id="correspondenceEmail"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
+                onBlur={handleEmailBlur}
                 placeholder="your.correspondence@example.com"
-                required
                 className="correspondence__input"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'email-error' : undefined}
+                disabled={isSubmitting}
               />
               <div className="correspondence__field-ornament"></div>
+              {errors.email && (
+                <span id="email-error" className="correspondence__field-error" role="alert">
+                  {errors.email}
+                </span>
+              )}
             </div>
 
             <div className="correspondence__consent">
@@ -85,7 +145,7 @@ export function NewsletterSection() {
                 checked={consent}
                 onChange={(e) => setConsent(e.target.checked)}
                 className="correspondence__checkbox"
-                required
+                disabled={isSubmitting}
               />
               <label htmlFor="correspondenceConsent" className="correspondence__consent-label">
                 I wish to receive the quarterly folio and occasional atelier updates.
@@ -93,8 +153,14 @@ export function NewsletterSection() {
               </label>
             </div>
 
-            <button type="submit" className="correspondence__submit">
-              <span className="correspondence__submit-text">Subscribe to Correspondence</span>
+            <button
+              type="submit"
+              className="correspondence__submit"
+              disabled={isSubmitting}
+            >
+              <span className="correspondence__submit-text">
+                {isSubmitting ? 'Subscribing...' : 'Subscribe to Correspondence'}
+              </span>
               <svg className="correspondence__submit-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M22 2L11 13" />
                 <path d="M22 2l-7 20-4-9-9-4 20-7z" />
