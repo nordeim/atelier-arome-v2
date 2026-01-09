@@ -81,11 +81,11 @@ atelier-arome/
 └── CLAUDE.md              # This file
 ```
 
-**Current Status:** Phase 7 Complete (Product Catalog Grid) ✅ → Phase 7.1 (Product Detail Page)
+**Current Status:** Phase 7.1 Complete (Product Detail Page) ✅ → Phase 8 (Cart System Integration)
 
 ---
 
-## Codebase Ground Truth (Validated January 9, 2026)
+## Codebase Ground Truth (Validated January 10, 2026)
 
 > **IMPORTANT:** This section is validated against the actual codebase.
 
@@ -104,26 +104,26 @@ atelier-arome/
 | Component | Status | Details |
 |-----------|--------|---------||
 | **App Router** | ✅ **COMPLETE** | All route groups configured |
-| **Components** | ✅ **19+ components** | hero, layout, cart, sections, ui, catalog |
-| **Custom Hooks** | ✅ **5 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products |
+| **Components** | ✅ **25+ components** | hero, layout, cart, sections, ui, catalog, detail |
+| **Custom Hooks** | ✅ **6 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products, use-product-detail |
 | **Stores** | ✅ **2 stores** | cart-store, toast-store |
 | **Tailwind Config** | ✅ **COMPLETE** | Custom Illuminated Manuscript theme |
 
-### Current Phase: 7 Complete ✅
+### Phase 7.1 Complete ✅
 
-**Phase 7 Features Completed:**
-- ✅ **Product Catalog Grid** — `/compendium` page with live API integration
-- ✅ **ProductCard Component** — Illuminated manuscript styling
-- ✅ **ProductGrid Component** — Responsive grid with skeleton loading
-- ✅ **FilterSidebar Component** — Category, Humour, Rarity filters
-- ✅ **URL-Based Filtering** — Shareable filter states via query params
-- ✅ **TanStack Query Integration** — `useProducts` hook with caching
-- ✅ **API Client** — Axios-based `api-client.ts`
+**Phase 7.1 Features Completed:**
+- ✅ **Product Detail Page** — `/compendium/[slug]` with dynamic server rendering
+- ✅ **Variant Selector** — Interactive size/price selection with inventory awareness
+- ✅ **Image Gallery** — Main stage with "Gold Leaf" ornaments and thumbnail strip
+- ✅ **Alchemical Properties** — Visualization of Humour, Season, and Rarity with icons
+- ✅ **Add to Vial** — Integration with Zustand `cart-store` and `toast-store`
+- ✅ **SEO Optimization** — Dynamic metadata generation per product
+- ✅ **Loading States** — Custom shimmering skeleton for PDP layout
 
-**Immediate Next Steps (Phase 7.1):**
-1. **Product Detail Page:** Implement `/compendium/[slug]`
-2. **Cart Integration:** Verify "Add to Vial" works with Cart Store
-3. **Real Images:** Verify product images load from API
+**Immediate Next Steps (Phase 8):**
+1. **Cart Integration:** Full end-to-end verification of cart persistence
+2. **Vial Drawer:** Refine the drawer UI with item removal and quantity updates
+3. **Cart API:** Implement guest cart syncing to backend if required
 
 ---
 
@@ -136,19 +136,25 @@ The frontend uses an **atomic component architecture** for maintainability and s
 ```
 src/components/
 ├── catalog/                   # Product Catalog (Phase 7)
+│   ├── detail/                # PDP Atoms (Phase 7.1)
+│   │   ├── variant-selector.tsx
+│   │   ├── quantity-adjuster.tsx
+│   │   ├── image-gallery.tsx
+│   │   └── alchemical-properties.tsx
 │   ├── filter-sidebar.tsx      # Category/Humour/Rarity filters
 │   ├── product-card.tsx        # Individual product card
-│   └── product-grid.tsx        # Responsive product grid
+│   ├── product-grid.tsx        # Responsive product grid
+│   └── product-detail.tsx      # PDP Orchestrator
 ├── hero/                      # Atomic hero components
-│   ├── hero-frame.tsx          # Layout + border ornaments (80 lines)
-│   ├── alchemical-vessel.tsx    # Vessel + liquid animation (120 lines)
-│   └── botanical-layer.tsx      # Parallax botanical elements (60 lines)
+│   ├── hero-frame.tsx          # Layout + border ornaments
+│   ├── alchemical-vessel.tsx    # Vessel + liquid animation
+│   └── botanical-layer.tsx      # Parallax botanical elements
 ├── layout/                    # Orchestrator components
-│   ├── header.tsx             # Navigation + scroll effects (150 lines)
+│   ├── header.tsx             # Navigation + scroll effects
 │   └── footer.tsx             # Colophon footer
-├── cart/                      # Cart components (Phase 2)
+├── cart/                      # Cart components (Phase 8)
 │   └── vial-drawer.tsx        # Cart drawer with checkout
-├── sections/                  # Page sections (Phase 2)
+├── sections/                  # Page sections
 │   ├── compendium-section.tsx # Product grid
 │   ├── alchemy-section.tsx    # Process steps
 │   ├── testimonials-section.tsx
@@ -157,24 +163,25 @@ src/components/
     ├── sheet.tsx              # Radix Dialog wrapper
     ├── button.tsx             # Styled button
     ├── skeleton.tsx           # Loading placeholder
-    ├── toast.tsx              # Toast notifications (Phase 2)
-    └── animate-in-view.tsx    # Scroll animations (Phase 2)
+    ├── toast.tsx              # Toast notifications
+    └── animate-in-view.tsx    # Scroll animations
 
 src/hooks/                     # Custom React hooks
 ├── index.ts                   # Barrel export
 ├── use-scroll.ts              # useSyncExternalStore for scroll
 ├── use-intersection.ts        # IntersectionObserver wrapper
 ├── use-reduced-motion.ts      # Reduced motion detection
-└── use-products.ts            # TanStack Query hook for products
+├── use-products.ts            # TanStack Query hook for products
+└── use-product-detail.ts      # Hook for fetching single product
 
-src/stores/                    # Zustand stores (Phase 2)
+src/stores/                    # Zustand stores
 ├── cart-store.ts              # Cart state with localStorage
 └── toast-store.ts             # Toast notification queue
 
 src/lib/                       # Utilities
 ├── utils.ts                   # cn() class merger
-├── a11y.ts                    # Screen reader announcements, validation
-└── api-client.ts              # Axios API client for backend
+├── a11y.ts                    # Screen reader announcements
+└── api-client.ts              # Axios/Fetch API client for backend
 ```
 
 **Atomic Components (Single Responsibility):**
@@ -183,6 +190,7 @@ src/lib/                       # Utilities
 - `botanical-layer.tsx` - Parallax botanical elements
 
 **Orchestrator Components (Composition):**
+- `product-detail.tsx` - Composes PDP atoms (gallery, selector, adjuster)
 - `hero-section.tsx` - Composes atomic components, typography, actions
 - `header.tsx` - Navigation, mobile menu, cart integration
 
@@ -1253,7 +1261,7 @@ export default {
 
 ## Phase Status
 
-**Current Phase:** Phase 7 Complete ✅ → Phase 7.1 (Product Detail Page)
+**Current Phase:** Phase 7.1 Complete ✅ → Phase 8 (Cart System Integration)
 
 **Phase 1 (Foundation) - 100% Complete ✅:**
 - [x] Create `atelier-arome-api/` Laravel 12 project ✅
@@ -1296,11 +1304,18 @@ export default {
 - [x] Filter Sidebar with URL sync ✅
 - [x] `/compendium` page integrated with live API ✅
 
-**Phase 7.1 (Product Detail Page) - In Progress 🚧:**
-- [ ] Implement `/compendium/[slug]` route
-- [ ] Product detail component with variant selector
-- [ ] Add to Cart integration verification
-- [ ] Image gallery with zoom
+**Phase 7.1 (Product Detail Page) - 100% Complete ✅:**
+- [x] Implement `/compendium/[slug]` route
+- [x] Product detail component with variant selector
+- [x] Add to Cart integration verification
+- [x] Image gallery with Gold Leaf ornaments
+- [x] Alchemical properties visualization
+- [x] Dynamic SEO Metadata generation
+
+**Phase 8 (Cart System Integration) - In Progress 🚧:**
+- [ ] Cart Drawer refinement
+- [ ] Item removal logic
+- [ ] Backend cart persistence
 
 **See `MASTER_EXECUTION_PLAN.md` for complete phase breakdown.**
 
@@ -1399,12 +1414,11 @@ When creating new components:
 
 ---
 
-**Last Updated:** January 9, 2026
-**Project Status:** Phase 7 Complete ✅ → Phase 7.1 (Product Detail Page)
+**Last Updated:** January 10, 2026
+**Project Status:** Phase 7.1 Complete ✅ → Phase 8 (Cart System Integration)
 **Architecture Type:** Headless Commerce (Laravel 12 API + Next.js 15)
 **Backend Server:** http://localhost:8000 ✅
 **Frontend Server:** http://localhost:3000 ✅
 **Database:** PostgreSQL 16 (Docker: atelier_db) ✅
 **Cache/Queue:** Redis 7.4 (Docker: atelier_redis) ✅
 **Email Testing:** Mailhog (Docker: atelier_mailhog) ✅
-
