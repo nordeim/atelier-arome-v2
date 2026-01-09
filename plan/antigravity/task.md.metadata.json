@@ -1,6 +1,6 @@
 {
   "artifactType":  "ARTIFACT_TYPE_TASK",
-  "summary":  "Checklist for migrating 10 React components from Tailwind utilities to BEM classes. Organized by priority phases with verification checkpoints after each component.",
-  "updatedAt":  "2026-01-09T01:03:32.647126775Z",
-  "version":  "4"
+  "summary":  "Task checklist for JavaScript feature port from main.js to Next.js. All 6 phases marked complete: custom hooks, toast system, header effects, vial drawer, scroll animations, and form validation. Verification passed.",
+  "updatedAt":  "2026-01-09T03:25:13.636472038Z",
+  "version":  "8"
 }

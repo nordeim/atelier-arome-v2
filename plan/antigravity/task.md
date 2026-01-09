@@ -1,86 +1,43 @@
-# BEM Migration Task List
+# JavaScript Feature Port Task
 
-## Phase 1: Core Layout (High Impact)
-- [ ] **1.1 Hero Frame** (`hero/hero-frame.tsx`)
-  - [ ] Replace SVG corners with `.hero__border-corner--*` divs
-  - [ ] Add `.hero__watermark` structure
-  - [ ] Use `.hero__container` wrapper
-  - [ ] Verify border corners render correctly
+## Completed Phases
 
-- [ ] **1.2 Hero Section** (`hero/hero-section.tsx`)
-  - [ ] Update root `<section>` to `.hero`
-  - [ ] Refactor title to multi-line `.hero__title-line` structure
-  - [ ] Add `.hero__subtitle` with flourishes
-  - [ ] Convert excerpt to `.hero__excerpt-*` classes
-  - [ ] Update buttons to `.btn .btn--primary`, `.btn .btn--secondary`
-  - [ ] Convert stats to `.hero__credentials`
-  - [ ] Add `.hero__scroll-indicator`
-  - [ ] Verify visual parity with mockup
+- [x] **Phase 1: Custom Hooks**
+  - [x] `use-scroll.ts` - Scroll position with `useSyncExternalStore`
+  - [x] `use-intersection.ts` - Intersection Observer for animations
+  - [x] `use-reduced-motion.ts` - Reduced motion detection
+  - [x] `index.ts` - Barrel export
 
-- [ ] **1.3 Alchemical Vessel** (`hero/alchemical-vessel.tsx`)
-  - [ ] Convert to `.hero__vessel` structure
-  - [ ] Add `.hero__vessel-neck`, `.hero__vessel-body`, `.hero__vessel-base`
-  - [ ] Add `.hero__vessel-liquid` with meniscus/reflection
-  - [ ] Add `.hero__vessel-stand`
-  - [ ] Verify liquid animation
+- [x] **Phase 2: Toast Notification System**
+  - [x] `toast-store.ts` - Zustand store
+  - [x] `toast.tsx` - Toast container component
+  - [x] Add ToastContainer to layout
 
-- [ ] **1.4 Botanical Layer** (`hero/botanical-layer.tsx`)
-  - [ ] Convert floating botanicals to `.hero__botanical--*` classes
-  - [ ] Add `.botanical__stem`, `.botanical__blossom`, etc.
-  - [ ] Verify float animation
+- [x] **Phase 3: Header Scroll Effects**
+  - [x] Integrate `useScroll` hook in header
+  - [x] Add `.scrolled` class toggle
+  - [x] Implement smooth scroll for nav links
+  - [x] Connect cart button to vial drawer
 
-- [ ] **1.5 Header** (`layout/header.tsx`)
-  - [ ] Convert to `.header` structure
-  - [ ] Add `.header__seal` with rotating SVG
-  - [ ] Convert nav to `.header__nav-list`, `.header__nav-link`
-  - [ ] Add `.header__nav-number`, `.header__nav-label`
-  - [ ] Convert tools to `.header__tool`
-  - [ ] Add `.header__menu-toggle` with quill animation
-  - [ ] Verify scroll effect (`.header.scrolled`)
+- [x] **Phase 4: Vial Drawer (Cart)**
+  - [x] Create `vial-drawer.tsx`
+  - [x] Cart items, quantity controls, checkout
+  - [x] Keyboard/click-outside handling
+  - [x] Add VialDrawer to layout
 
-## Phase 2: Sections (Medium Impact)
-- [ ] **2.1 Compendium Section** (`sections/compendium-section.tsx`)
-  - [ ] Add `.section-border` ornament
-  - [ ] Use `.compendium__container`
-  - [ ] Add `.section-label`, `.section-title` structure
-  - [ ] Convert filters to `.compendium__filter` with ARIA
-  - [ ] Convert sort to `.compendium__sort-select`
-  - [ ] Update product grid to `.compendium__grid`
-  - [ ] Convert cards to `.essence-card` with all sub-elements
-  - [ ] Verify filter button states
+- [x] **Phase 5: Scroll Animations**
+  - [x] Create `animate-in-view.tsx`
+  - [x] Support fade-up, fade-in, slide animations
+  - [x] Respect reduced motion preference
 
-- [ ] **2.2 Alchemy Section** (`sections/alchemy-section.tsx`)
-  - [ ] Convert to `.alchemy` structure
-  - [ ] Add `.alchemy__watermark`
-  - [ ] Convert steps to `.alchemy-step` with number/content/symbol
-  - [ ] Add `.alchemy-step__details` for duration/method
-  - [ ] Verify step hover effects
+- [x] **Phase 6: Form Validation & Accessibility**
+  - [x] Create `a11y.ts` utilities
+  - [x] Update newsletter form with validation
+  - [x] Add error states and loading state
+  - [x] Integrate toast notifications
 
-- [ ] **2.3 Testimonials Section** (`sections/testimonials-section.tsx`)
-  - [ ] Convert to `.manuscript` structure
-  - [ ] Add `.manuscript__paper` with stains
-  - [ ] Convert entries to `.manuscript-entry` with corners
-  - [ ] Add `.manuscript-entry__initial` illuminated letter
-  - [ ] Convert quotes to `.manuscript-entry__quote`
-  - [ ] Add `.manuscript-entry__seal` verified badge
-  - [ ] Convert pagination to `.manuscript__navigation`
-  - [ ] Verify paper texture effect
+## Verification
 
-## Phase 3: Supporting (Lower Impact)
-- [ ] **3.1 Newsletter Section** (`sections/newsletter-section.tsx`)
-  - [ ] Use `.btn` classes for submit
-  - [ ] Style form inputs with BEM patterns
-  - [ ] Add decorative ornaments
-
-- [ ] **3.2 Footer** (`layout/footer.tsx`)
-  - [ ] Create footer BEM structure
-  - [ ] Add colophon styling
-  - [ ] Verify link hover effects
-
-## Verification Checkpoints
-- [ ] Run `npm run build` after Phase 1
-- [ ] Visual comparison with static mockup
-- [ ] Run `npm run build` after Phase 2
-- [ ] Full visual audit
-- [ ] Run `npm run build` after Phase 3
-- [ ] Final responsive testing
+- [x] Build passes (`npm run build` ✓)
+- [x] Alignment review with static mockup complete
+- [x] BEM classes match `styles.css`

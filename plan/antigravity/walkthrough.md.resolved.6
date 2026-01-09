@@ -1,0 +1,91 @@
+# BEM Migration & Gap Analysis Walkthrough
+
+## Summary
+Successfully migrated all 10 React components from Tailwind utility classes to BEM classes matching the static HTML mockup's [styles.css](file:///home/project/atelier-arome/styles.css). Also performed a comprehensive gap analysis comparing dynamic page functionality against [main.js](file:///home/project/atelier-arome/main.js).
+
+---
+
+## Phase 1: BEM Class Migration ✅ COMPLETE
+
+All components now use BEM classes from [styles.css](file:///home/project/atelier-arome/styles.css):
+
+| Component | BEM Block | Status |
+|-----------|-----------|--------|
+| [hero-frame.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/hero-frame.tsx) | `.hero__border`, `.hero__watermark` | ✅ |
+| [hero-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/hero-section.tsx) | `.hero`, `.hero__title-line`, `.btn` | ✅ |
+| [alchemical-vessel.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/alchemical-vessel.tsx) | `.hero__vessel`, `.vessel__*` | ✅ |
+| [botanical-layer.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/botanical-layer.tsx) | `.hero__botanical`, `.botanical__*` | ✅ |
+| [header.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/header.tsx) | `.header`, `.header__seal`, `.header__nav-*` | ✅ |
+| [compendium-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/compendium-section.tsx) | `.compendium`, `.essence-card` | ✅ |
+| [alchemy-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/alchemy-section.tsx) | `.alchemy`, `.alchemy-step` | ✅ |
+| [testimonials-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/testimonials-section.tsx) | `.manuscript`, `.manuscript-entry` | ✅ |
+| [newsletter-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/newsletter-section.tsx) | `.correspondence` | ✅ |
+| [footer.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/footer.tsx) | `.colophon` | ✅ |
+
+---
+
+## Phase 2: JavaScript Gap Analysis
+
+### Features Comparison: [main.js](file:///home/project/atelier-arome/main.js) (Static) vs Next.js (Dynamic)
+
+| Feature | main.js Lines | Next.js Status | Priority |
+|---------|---------------|----------------|----------|
+| **Mobile Navigation** | 665-730 | ❌ Not ported | High |
+| **Cart System (Vial Drawer)** | 739-978 | ⚠️ Uses Zustand store but no drawer UI | High |
+| **Compendium Filters** | 986-1283 | ✅ Basic (React state) | Medium |
+| **Testimonial Pagination** | 1291-1439 | ✅ Basic (React state) | Low |
+| **Correspondence Form** | 1447-1592 | ⚠️ Basic, no validation | Medium |
+| **Scroll Animations** | 1600-1667 | ❌ Not ported | Medium |
+| **Header Scroll Effect** | 1669-1676 | ❌ Not ported | High |
+| **Back-to-Top Button** | 1678-1751 | ❌ Not ported | Low |
+| **Active Nav Link Highlight** | 1685-1717 | ❌ Not ported | Medium |
+| **Parallax Effects** | 1719-1735 | ❌ Not ported | Low |
+| **Toast Notifications** | 1783-1811 | ❌ Not ported | Medium |
+| **Intersection Observer Animations** | 1622-1650 | ❌ Not ported | Medium |
+
+---
+
+## Critical Missing Features
+
+### 1. Header Scroll Effect (`.header.scrolled`)
+The CSS has styles for `.header.scrolled` but no JavaScript adds this class on scroll.
+
+### 2. Mobile Navigation Toggle
+The mobile menu toggle button exists but the drawer interaction is not implemented.
+
+### 3. Cart Drawer
+Zustand store exists for cart state but the vial drawer UI is missing.
+
+### 4. Toast Notifications
+No toast/notification system for user feedback.
+
+### 5. Scroll Animations
+Elements like `.essence-card`, `.alchemy-step`, `.manuscript-entry` should animate in-view.
+
+---
+
+## Recommendations
+
+### Immediate (High Priority)
+1. Add header scroll effect hook
+2. Implement mobile navigation drawer
+3. Add vial drawer UI for cart
+
+### Medium Priority
+1. Implement toast notification system
+2. Add intersection observer for scroll animations
+3. Add form validation to correspondence
+
+### Low Priority
+1. Add back-to-top button
+2. Implement parallax effects
+3. Add active nav link highlighting
+
+---
+
+## Verification Results
+
+- **Build Status**: ✅ Passing (`npm run build` successful)
+- **Visual Parity**: ✅ HTML structure matches static mockup
+- **CSS Classes**: ✅ All BEM classes present in styles.css
+- **JavaScript**: ⚠️ ~70% of main.js functionality needs porting

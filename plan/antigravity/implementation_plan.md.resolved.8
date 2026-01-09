@@ -1,7 +1,7 @@
 # Remedial Implementation Plan: JavaScript Feature Port
 
 ## Overview
-Port remaining JavaScript features from `main.js` (1,940 lines) to Next.js using React patterns: custom hooks, Zustand stores, and modular components.
+Port remaining JavaScript features from [main.js](file:///home/project/atelier-arome/main.js) (1,940 lines) to Next.js using React patterns: custom hooks, Zustand stores, and modular components.
 
 ---
 
@@ -40,7 +40,7 @@ export function useReducedMotion() {
 ## Phase 2: Toast Notification System
 
 ### [NEW] `src/stores/toast-store.ts`
-Zustand store for toast notifications matching `main.js` lines 1783-1811.
+Zustand store for toast notifications matching [main.js](file:///home/project/atelier-arome/main.js) lines 1783-1811.
 
 ```typescript
 interface Toast {
@@ -63,8 +63,8 @@ Toast component matching `.toast` CSS classes in styles.css.
 
 ## Phase 3: Header Scroll Effects
 
-### [MODIFY] `src/components/layout/header.tsx`
-Add scroll effect logic from `main.js` lines 1669-1676.
+### [MODIFY] [src/components/layout/header.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/header.tsx)
+Add scroll effect logic from [main.js](file:///home/project/atelier-arome/main.js) lines 1669-1676.
 
 **Changes:**
 - Add `useScroll` hook
@@ -78,7 +78,7 @@ Add scroll effect logic from `main.js` lines 1669-1676.
 ### [NEW] `src/components/cart/vial-drawer.tsx`
 Slide-out cart drawer matching `.vial-drawer` CSS classes.
 
-**Features from `main.js` lines 739-978:**
+**Features from [main.js](file:///home/project/atelier-arome/main.js) lines 739-978:**
 - Cart item list with quantity controls
 - Empty state with "⚱ Your collection vial awaits"
 - Total calculation
@@ -86,7 +86,7 @@ Slide-out cart drawer matching `.vial-drawer` CSS classes.
 - Keyboard (Escape) to close
 - Focus trapping
 
-### [MODIFY] `src/components/layout/header.tsx`
+### [MODIFY] [src/components/layout/header.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/header.tsx)
 Connect cart button to open vial drawer.
 
 ---
@@ -114,16 +114,16 @@ Wrap `.essence-card`, `.alchemy-step`, `.manuscript-entry` with `AnimateInView`.
 
 ## Phase 6: Form Validation & Accessibility
 
-### [MODIFY] `src/components/sections/newsletter-section.tsx`
-Add validation logic from `main.js` lines 1447-1592:
+### [MODIFY] [src/components/sections/newsletter-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/newsletter-section.tsx)
+Add validation logic from [main.js](file:///home/project/atelier-arome/main.js) lines 1447-1592:
 - Email format validation
 - Error state styling (`.correspondence__field--error`)
 - Loading state on submit
 - Success toast notification
 
 ### [NEW] `src/lib/a11y.ts`
-Accessibility utilities matching `main.js` A11y object (lines 526-656):
-- `announce(message, priority)` - screen reader announcements
+Accessibility utilities matching [main.js](file:///home/project/atelier-arome/main.js) A11y object (lines 526-656):
+- [announce(message, priority)](file:///home/project/atelier-arome/main.js#578-601) - screen reader announcements
 - Focus trap helper
 
 ---
@@ -185,17 +185,13 @@ npm run dev    # Visual verification
 
 ---
 
-## CSS Dependencies
+## CSS Dependencies (Already in styles.css)
 
-### ✅ Existing in `styles.css`
-- `.header.scrolled` (line 332)
-- `.toast`, `.toast--success`, `.toast--warning`, `.toast--error` (lines 3411-4135)
-- `.vial-drawer`, `.vial-drawer.active`, `.vial-drawer__*` (lines 3313-3971)
-- `.correspondence__field--error` (form validation)
+All required CSS classes exist in [styles.css](file:///home/project/atelier-arome/styles.css):
+- `.header.scrolled` (lines ~500)
+- `.toast`, `.toast--success`, `.toast--warning` (lines ~3800)
+- `.vial-drawer`, `.vial-drawer.active` (lines ~3400)
+- `.in-view` animation classes
+- `.correspondence__field--error`
 
-### ⚠️ May Need to Add
-- Scroll animation classes (`.fade-in-up`, etc.) - The static mockup uses JS-toggled opacity/transform. We can either:
-  1. Add CSS classes for reveal animations, OR
-  2. Use Tailwind's built-in animation utilities
-
-**Recommendation:** Use Tailwind `animate-` utilities for scroll reveal, avoiding CSS modifications.
+No CSS changes required.
