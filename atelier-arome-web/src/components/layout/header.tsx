@@ -87,15 +87,15 @@ export function Header() {
 
           <button
             className="header__tool"
-            aria-label="View collected vials"
-            data-tooltip="Vial Collection"
+            aria-label="View collection vial"
+            data-tooltip="Collection Vial"
             data-count={cartItems.length > 0 ? cartItems.length : undefined}
             onClick={handleCartClick}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M9 2h6v4H9z" />
-              <path d="M9 6v5a3 3 0 003 3v0a3 3 0 003-3V6" />
-              <path d="M6 22h12a2 2 0 002-2v-6a6 6 0 00-6-6h0a6 6 0 00-6 6v6a2 2 0 002 2z" />
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <path d="M3 6h18" />
+              <path d="M16 10a4 4 0 01-8 0" />
             </svg>
           </button>
 

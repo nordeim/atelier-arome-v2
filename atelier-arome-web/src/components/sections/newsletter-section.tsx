@@ -5,11 +5,29 @@ import { showToast } from '@/stores/toast-store'
 import { isValidEmail, announce } from '@/lib/a11y'
 
 export function NewsletterSection() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errors, setErrors] = useState<{ email?: string }>({})
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({})
+
+  // Validate name on blur
+  const handleNameBlur = () => {
+    if (!name.trim()) {
+      setErrors(prev => ({ ...prev, name: 'Please enter your name' }))
+    } else {
+      setErrors(prev => ({ ...prev, name: undefined }))
+    }
+  }
+
+  // Clear name error on input
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+    if (errors.name) {
+      setErrors(prev => ({ ...prev, name: undefined }))
+    }
+  }
 
   // Validate email on blur
   const handleEmailBlur = () => {
@@ -22,7 +40,7 @@ export function NewsletterSection() {
     }
   }
 
-  // Clear error on input
+  // Clear email error on input
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
     if (errors.email) {
@@ -33,15 +51,22 @@ export function NewsletterSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate
+    // Validate name (required)
+    if (!name.trim()) {
+      setErrors(prev => ({ ...prev, name: 'Please enter your name' }))
+      showToast('Please enter your name', 'warning')
+      return
+    }
+
+    // Validate email
     if (!email.trim()) {
-      setErrors({ email: 'Please enter your email address' })
+      setErrors(prev => ({ ...prev, email: 'Please enter your email address' }))
       showToast('Please enter your email address', 'warning')
       return
     }
 
     if (!isValidEmail(email)) {
-      setErrors({ email: 'Please enter a valid email address' })
+      setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }))
       showToast('Please enter a valid email address', 'warning')
       return
     }
@@ -59,6 +84,7 @@ export function NewsletterSection() {
 
     setIsSubmitting(false)
     setSubscribed(true)
+    setName('')
     setEmail('')
     setConsent(false)
 
@@ -105,29 +131,58 @@ export function NewsletterSection() {
 
         {/* Content Area */}
         <div className="correspondence__content">
+          <span className="section-label section-label--light">Correspondence</span>
           <h2 className="correspondence__title">
-            <span className="correspondence__title-line">Join Our</span>
-            <span className="correspondence__title-line correspondence__title-line--emph">Correspondence</span>
+            <span className="correspondence__title-line">Receive Our</span>
+            <span className="correspondence__title-line correspondence__title-line--emph">Quarterly Folio</span>
           </h2>
           <div className="correspondence__rule" aria-hidden="true"></div>
           <p className="correspondence__description">
-            Subscribe to our quarterly folio for exclusive essays on botanical alchemy,
-            early access to new essences, and private atelier events.
+            Each season, we dispatch a handwritten folio detailing new discoveries,
+            alchemical notes, and insights from the atelier. Join our correspondence
+            to receive these missives directly.
           </p>
 
           {/* Form with validation */}
           <form onSubmit={handleSubmit} className="correspondence__form" id="correspondenceForm">
+            {/* Name Field (Required) */}
+            <div className={`correspondence__field ${errors.name ? 'correspondence__field--error' : ''}`}>
+              <label htmlFor="correspondenceName" className="visually-hidden">Your name</label>
+              <input
+                type="text"
+                id="correspondenceName"
+                value={name}
+                onChange={handleNameChange}
+                onBlur={handleNameBlur}
+                placeholder="Your name"
+                className="correspondence__input"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'name-error' : undefined}
+                aria-required="true"
+                disabled={isSubmitting}
+              />
+              <div className="correspondence__field-ornament"></div>
+              {errors.name && (
+                <span id="name-error" className="correspondence__field-error" role="alert">
+                  {errors.name}
+                </span>
+              )}
+            </div>
+
+            {/* Email Field */}
             <div className={`correspondence__field ${errors.email ? 'correspondence__field--error' : ''}`}>
+              <label htmlFor="correspondenceEmail" className="visually-hidden">Your email address</label>
               <input
                 type="email"
                 id="correspondenceEmail"
                 value={email}
                 onChange={handleEmailChange}
                 onBlur={handleEmailBlur}
-                placeholder="your.correspondence@example.com"
+                placeholder="Your email address"
                 className="correspondence__input"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? 'email-error' : undefined}
+                aria-required="true"
                 disabled={isSubmitting}
               />
               <div className="correspondence__field-ornament"></div>
