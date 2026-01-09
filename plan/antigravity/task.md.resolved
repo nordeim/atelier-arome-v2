@@ -1,43 +1,19 @@
-# JavaScript Feature Port Task
+# Documentation Update — Phase 2 Completion
 
-## Completed Phases
+## Tasks
 
-- [x] **Phase 1: Custom Hooks**
-  - [x] [use-scroll.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-scroll.ts) - Scroll position with `useSyncExternalStore`
-  - [x] [use-intersection.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-intersection.ts) - Intersection Observer for animations
-  - [x] [use-reduced-motion.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-reduced-motion.ts) - Reduced motion detection
-  - [x] [index.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/index.ts) - Barrel export
+- [x] **README.md Updates**
+  - [x] Update status badge to Phase_2_Complete
+  - [x] Add hooks, stores, cart dirs to project structure
+  - [x] Add Phase 2 annotations to components
 
-- [x] **Phase 2: Toast Notification System**
-  - [x] [toast-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/toast-store.ts) - Zustand store
-  - [x] [toast.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/ui/toast.tsx) - Toast container component
-  - [x] Add ToastContainer to layout
+- [x] **AGENT.md Updates**
+  - [x] Update status to Phase 2 ✅
+  - [x] Update component architecture with hooks/stores/cart
+  - [x] Add custom hooks section
 
-- [x] **Phase 3: Header Scroll Effects**
-  - [x] Integrate [useScroll](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-scroll.ts#30-54) hook in header
-  - [x] Add `.scrolled` class toggle
-  - [x] Implement smooth scroll for nav links
-  - [x] Connect cart button to vial drawer
-
-- [x] **Phase 4: Vial Drawer (Cart)**
-  - [x] Create [vial-drawer.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/cart/vial-drawer.tsx)
-  - [x] Cart items, quantity controls, checkout
-  - [x] Keyboard/click-outside handling
-  - [x] Add VialDrawer to layout
-
-- [x] **Phase 5: Scroll Animations**
-  - [x] Create [animate-in-view.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/ui/animate-in-view.tsx)
-  - [x] Support fade-up, fade-in, slide animations
-  - [x] Respect reduced motion preference
-
-- [x] **Phase 6: Form Validation & Accessibility**
-  - [x] Create [a11y.ts](file:///home/project/atelier-arome/atelier-arome-web/src/lib/a11y.ts) utilities
-  - [x] Update newsletter form with validation
-  - [x] Add error states and loading state
-  - [x] Integrate toast notifications
-
-## Verification
-
-- [x] Build passes (`npm run build` ✓)
-- [x] Alignment review with static mockup complete
-- [x] BEM classes match [styles.css](file:///home/project/atelier-arome/styles.css)
+- [x] **CLAUDE.md Updates**
+  - [x] Update Ground Truth validation date
+  - [x] Update component counts (11 → 17+)
+  - [x] Add Phase 2 completed features section
+  - [x] Update next steps → Phase 3

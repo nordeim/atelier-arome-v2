@@ -1,201 +1,79 @@
-# Remedial Implementation Plan: JavaScript Feature Port
+# Documentation Update Plan — Phase 2 Completion
 
-## Overview
-Port remaining JavaScript features from `main.js` (1,940 lines) to Next.js using React patterns: custom hooks, Zustand stores, and modular components.
+## Goal
 
----
-
-## Phase 1: Custom Hooks Foundation
-
-### [NEW] `src/hooks/use-scroll.ts`
-Custom hook for scroll-based effects (header shadow, back-to-top, active nav).
-
-```typescript
-export function useScroll() {
-  // State for scroll position, header scrolled, active section
-  // Returns { scrollY, isScrolled, activeSection }
-}
-```
-
-### [NEW] `src/hooks/use-intersection.ts`
-Intersection Observer hook for scroll animations.
-
-```typescript
-export function useIntersection(options?: IntersectionObserverInit) {
-  // Returns { ref, isInView }
-}
-```
-
-### [NEW] `src/hooks/use-reduced-motion.ts`
-Respects user's reduced motion preference.
-
-```typescript
-export function useReducedMotion() {
-  // Returns boolean for reduced motion preference
-}
-```
+Update `README.md`, `AGENT.md`, and `CLAUDE.md` to reflect:
+1. Phase 2: Frontend Core completion status
+2. JavaScript feature port from `main.js` to Next.js
+3. Alignment between dynamic landing page and static mockup
 
 ---
 
-## Phase 2: Toast Notification System
+## Proposed Changes
 
-### [NEW] `src/stores/toast-store.ts`
-Zustand store for toast notifications matching `main.js` lines 1783-1811.
+### [MODIFY] [README.md](file:///home/project/atelier-arome/README.md)
 
-```typescript
-interface Toast {
-  id: string;
-  message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-}
+| Section | Current | Update |
+|---------|---------|--------|
+| **Status Badge (Line 13)** | `Phase_1_Complete` | `Phase_2_Complete` |
+| **Project Structure** | Missing new components | Add hooks, stores, cart, ui dirs |
+| **Component Architecture** | Basic list | Add custom hooks + stores |
 
-export const useToastStore = create<ToastState>((set) => ({
-  toasts: [],
-  showToast: (message, type) => { /* add toast, auto-remove after 5s */ },
-  removeToast: (id) => { /* remove by id */ },
-}));
-```
-
-### [NEW] `src/components/ui/toast.tsx`
-Toast component matching `.toast` CSS classes in styles.css.
+**Additions:**
+- Add "Phase 2 Completed" section with feature list
+- Update frontend project structure with new files
+- Add new hooks documentation (`use-scroll`, `use-intersection`, `use-reduced-motion`)
+- Add toast/vial-drawer component listing
 
 ---
 
-## Phase 3: Header Scroll Effects
+### [MODIFY] [AGENT.md](file:///home/project/atelier-arome/AGENT.md)
 
-### [MODIFY] `src/components/layout/header.tsx`
-Add scroll effect logic from `main.js` lines 1669-1676.
+| Section | Current | Update |
+|---------|---------|--------|
+| **Line 84** | "Phase 1 ✅" | "Phase 2 ✅" |
+| **Component Architecture** | Missing new dirs | Add hooks, stores, cart |
+| **Frontend Workflow** | N/A | Add custom React hooks pattern |
 
-**Changes:**
-- Add `useScroll` hook
-- Toggle `.header.scrolled` class based on `scrollY > 20`
-- Implement smooth scroll for nav links (lines 1757-1775)
-
----
-
-## Phase 4: Cart Drawer (Vial)
-
-### [NEW] `src/components/cart/vial-drawer.tsx`
-Slide-out cart drawer matching `.vial-drawer` CSS classes.
-
-**Features from `main.js` lines 739-978:**
-- Cart item list with quantity controls
-- Empty state with "⚱ Your collection vial awaits"
-- Total calculation
-- Dispatch/checkout button
-- Keyboard (Escape) to close
-- Focus trapping
-
-### [MODIFY] `src/components/layout/header.tsx`
-Connect cart button to open vial drawer.
+**Additions:**
+- Add Phase 2 status in Repository Structure
+- Update component architecture with:
+  - `hooks/` — Custom React hooks
+  - `stores/` — Zustand stores (toast-store, cart-store)
+  - `cart/` — Cart components (vial-drawer)
+  - `lib/a11y.ts` — Accessibility utilities
+- Add section on React 18+ useSyncExternalStore pattern
 
 ---
 
-## Phase 5: Scroll Animations
+### [MODIFY] [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md)
 
-### [NEW] `src/components/ui/animate-in-view.tsx`
-Wrapper component using `use-intersection` hook.
+| Section | Current | Update |
+|---------|---------|--------|
+| **Line 84** | "Phase 1 ✅" | "Phase 2 ✅" |
+| **Lines 88-124** | "Codebase Ground Truth" dated | Update validation date, add new components |
+| **Frontend table** | "⚠️ PARTIAL" | Update with new component count |
 
-```tsx
-export function AnimateInView({ children, className }) {
-  const { ref, isInView } = useIntersection();
-  return (
-    <div ref={ref} className={cn(className, isInView && 'in-view')}>
-      {children}
-    </div>
-  );
-}
-```
-
-### [MODIFY] Section components
-Wrap `.essence-card`, `.alchemy-step`, `.manuscript-entry` with `AnimateInView`.
-
----
-
-## Phase 6: Form Validation & Accessibility
-
-### [MODIFY] `src/components/sections/newsletter-section.tsx`
-Add validation logic from `main.js` lines 1447-1592:
-- Email format validation
-- Error state styling (`.correspondence__field--error`)
-- Loading state on submit
-- Success toast notification
-
-### [NEW] `src/lib/a11y.ts`
-Accessibility utilities matching `main.js` A11y object (lines 526-656):
-- `announce(message, priority)` - screen reader announcements
-- Focus trap helper
-
----
-
-## File Structure (New Files)
-
-```
-src/
-├── hooks/
-│   ├── use-scroll.ts          # Scroll position & effects
-│   ├── use-intersection.ts    # Intersection observer
-│   └── use-reduced-motion.ts  # Motion preference
-├── stores/
-│   ├── cart-store.ts          # (exists) - verify complete
-│   └── toast-store.ts         # NEW - toast notifications
-├── components/
-│   ├── cart/
-│   │   └── vial-drawer.tsx    # NEW - cart drawer
-│   └── ui/
-│       ├── toast.tsx          # NEW - toast component
-│       └── animate-in-view.tsx # NEW - scroll animation wrapper
-├── lib/
-│   ├── utils.ts               # (exists)
-│   └── a11y.ts                # NEW - accessibility utilities
-```
-
----
-
-## Implementation Priority
-
-| Phase | Components | Priority | Est. Tool Calls |
-|-------|------------|----------|-----------------|
-| 1 | Custom Hooks (3 files) | High | 6 |
-| 2 | Toast System (2 files) | High | 5 |
-| 3 | Header Effects | High | 4 |
-| 4 | Vial Drawer | High | 6 |
-| 5 | Scroll Animations | Medium | 4 |
-| 6 | Form Validation | Medium | 4 |
-
-**Total Estimated Tool Calls: ~29**
+**Additions:**
+- Update "Codebase Ground Truth" table:
+  - Components: 11 → 17+ (add hooks, stores, cart, ui)
+  - Hooks: NEW — 3 custom hooks listed
+  - Stores: 1 → 2 (cart-store + toast-store)
+- Add "Phase 2 Features Completed" section
+- Update "Immediate Next Steps" → Phase 3
 
 ---
 
 ## Verification Plan
 
-### Automated Tests
-```bash
-npm run build  # Verify no TypeScript errors
-npm run dev    # Visual verification
-```
-
-### Manual Verification
-- [ ] Header adds `.scrolled` class on scroll down
-- [ ] Toast appears when adding item to cart
-- [ ] Vial drawer opens/closes correctly
-- [ ] Elements animate in on scroll
-- [ ] Form shows validation errors
-- [ ] Reduced motion preference respected
+- [ ] Run `npm run build` in frontend (already passes)
+- [ ] Verify file counts match after updates
+- [ ] Check all file links in markdown are valid
 
 ---
 
-## CSS Dependencies
+## Execution Order
 
-### ✅ Existing in `styles.css`
-- `.header.scrolled` (line 332)
-- `.toast`, `.toast--success`, `.toast--warning`, `.toast--error` (lines 3411-4135)
-- `.vial-drawer`, `.vial-drawer.active`, `.vial-drawer__*` (lines 3313-3971)
-- `.correspondence__field--error` (form validation)
-
-### ⚠️ May Need to Add
-- Scroll animation classes (`.fade-in-up`, etc.) - The static mockup uses JS-toggled opacity/transform. We can either:
-  1. Add CSS classes for reveal animations, OR
-  2. Use Tailwind's built-in animation utilities
-
-**Recommendation:** Use Tailwind `animate-` utilities for scroll reveal, avoiding CSS modifications.
+1. Update `README.md` — status badge + project structure + phase 2 section
+2. Update `AGENT.md` — status + component architecture + hooks
+3. Update `CLAUDE.md` — ground truth table + phase 2 completion

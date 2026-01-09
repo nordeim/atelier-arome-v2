@@ -81,46 +81,50 @@ atelier-arome/
 └── AGENT.md               # This file
 ```
 
-**Current Status:** Both projects have been created during Phase 1 ✅
+**Current Status:** Phase 2 Frontend Core Complete ✅ (January 9, 2026)
 
 ---
 
 ## Codebase Ground Truth (Validated January 9, 2026)
 
-> **IMPORTANT:** This section is validated against the actual codebase. Previous documentation contained inaccuracies.
+> **IMPORTANT:** This section is validated against the actual codebase.
 
 ### Backend (Laravel 12 API)
 
 | Component | Status | Details |
 |-----------|--------|---------||
-| **Models** | ⚠️ **PARTIAL (16/22)** | 16 fully implemented, 6 skeleton |
-| **Controllers** | ❌ **MISSING** | Only base `Controller.php` exists |
+| **Models** | ✅ **COMPLETE** | 22+ models in `app/Models/` |
+| **Controllers** | ⚠️ **PARTIAL** | Base controller exists, API controllers needed |
 | **API Resources** | ❌ **MISSING** | Directory doesn't exist |
-| **Routes** | ❌ **INCOMPLETE** | No `api.php` (only `web.php`, `console.php`) |
+| **Routes** | ⚠️ **PARTIAL** | Basic routing, versioned API routes needed |
 | **Database** | ✅ **COMPLETE** | 26 tables, migrations run, seeders executed |
-
-**Fully Implemented Models (16):**
-- Product, Order, User, Cart, Address, Coupon, Payment, OrderItem
-- CartItem, ProductVariant, ProductImage, Category, Tag, Testimonial, Inventory, Setting
-
-**Skeleton Models (6):**
-- Review, Wishlist, WishlistItem, CouponUsage, NewsletterSubscriber, InventoryMovement
 
 ### Frontend (Next.js 15)
 
 | Component | Status | Details |
 |-----------|--------|---------||
 | **App Router** | ✅ **COMPLETE** | All route groups configured |
-| **Components** | ⚠️ **PARTIAL** | 11 components across 4 directories |
-| **Tailwind Config** | ✅ **COMPLETE** | Custom theme with Illuminated Manuscript tokens |
-| **State Management** | ✅ **CONFIGURED** | Zustand cart-store implemented |
+| **Components** | ✅ **17+ components** | hero, layout, cart, sections, ui |
+| **Custom Hooks** | ✅ **3 hooks** | use-scroll, use-intersection, use-reduced-motion |
+| **Stores** | ✅ **2 stores** | cart-store, toast-store |
+| **Tailwind Config** | ✅ **COMPLETE** | Custom Illuminated Manuscript theme |
 
-### Immediate Next Steps (Phase 2)
+### Phase 2 Features Completed
+
+- ✅ **Custom React Hooks** — `useSyncExternalStore` for scroll/reduced motion
+- ✅ **Toast System** — Zustand store + ToastContainer component
+- ✅ **Header Scroll Effects** — `.scrolled` class, smooth scroll nav
+- ✅ **Vial Drawer (Cart)** — Cart UI with checkout simulation
+- ✅ **Scroll Animations** — `AnimateInView` component
+- ✅ **Form Validation** — Newsletter form + accessibility (`a11y.ts`)
+- ✅ **BEM Class Alignment** — Dynamic landing page matches static mockup
+
+### Immediate Next Steps (Phase 3)
 
 1. **Create API Resources:** `php artisan make:resource ProductResource`, etc.
 2. **Create Controllers:** `ProductController`, `CartController`, `AuthController`
 3. **Add API Routes:** Create `routes/api.php` with versioned endpoints
-4. **Complete Skeleton Models:** Add fillable, casts, relationships to 6 skeleton models
+4. **Connect Frontend to API:** TanStack Query integration
 
 ---
 
@@ -137,11 +141,33 @@ src/components/
 │   ├── alchemical-vessel.tsx    # Vessel + liquid animation (120 lines)
 │   └── botanical-layer.tsx      # Parallax botanical elements (60 lines)
 ├── layout/                    # Orchestrator components
-│   └── header.tsx             # Navigation + seal animation (150 lines)
-└── ui/                        # Shadcn-UI primitives
+│   ├── header.tsx             # Navigation + scroll effects (150 lines)
+│   └── footer.tsx             # Colophon footer
+├── cart/                      # Cart components (Phase 2)
+│   └── vial-drawer.tsx        # Cart drawer with checkout
+├── sections/                  # Page sections (Phase 2)
+│   ├── compendium-section.tsx # Product grid
+│   ├── alchemy-section.tsx    # Process steps
+│   ├── testimonials-section.tsx
+│   └── newsletter-section.tsx # Form validation + a11y
+└── ui/                        # Shadcn-UI primitives + custom
     ├── sheet.tsx              # Radix Dialog wrapper
-    ├── button.tsx
-    └── ...
+    ├── toast.tsx              # Toast notifications (Phase 2)
+    └── animate-in-view.tsx    # Scroll animations (Phase 2)
+
+src/hooks/                     # Custom React 18+ hooks (Phase 2)
+├── index.ts                   # Barrel export
+├── use-scroll.ts              # useSyncExternalStore for scroll
+├── use-intersection.ts        # IntersectionObserver wrapper
+└── use-reduced-motion.ts      # Reduced motion detection
+
+src/stores/                    # Zustand stores (Phase 2)
+├── cart-store.ts              # Cart state with localStorage
+└── toast-store.ts             # Toast notification queue
+
+src/lib/                       # Utilities (Phase 2)
+├── utils.ts                   # cn() class merger
+└── a11y.ts                    # Screen reader announcements, validation
 ```
 
 **Atomic Components (Single Responsibility):**

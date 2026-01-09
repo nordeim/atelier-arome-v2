@@ -10,7 +10,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-Proprietary-E50914?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Phase_1_Complete-success?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
+[![Status](https://img.shields.io/badge/Status-Phase_2_Complete-success?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
 
 </div>
 
@@ -225,27 +225,43 @@ atelier-arome-web/
 │   │   ├── (checkout)/                 # Route group: cart, checkout flow
 │   │   ├── (account)/                  # Route group: dashboard, orders, addresses
 │   │   ├── api/                        # API routes: auth, cart, newsletter
-│   │   ├── layout.tsx                  # Root layout (fonts, providers, metadata)
+│   │   ├── layout.tsx                  # Root layout (fonts, providers, ToastContainer, VialDrawer)
 │   │   ├── page.tsx                    # Homepage
 │   │   ├── loading.tsx                 # Global loading skeleton
 │   │   ├── error.tsx                   # Error boundary
 │   │   └── not-found.tsx              # 404 page
 │   ├── components/
-│   │   ├── ui/                         # Shadcn-UI primitives
-│   │   │   └── sheet.tsx               # Radix Dialog wrapper with parchment styling
+│   │   ├── ui/                         # Shadcn-UI primitives + custom UI
+│   │   │   ├── sheet.tsx               # Radix Dialog wrapper
+│   │   │   ├── toast.tsx               # Toast notification system (Phase 2)
+│   │   │   └── animate-in-view.tsx     # Scroll-triggered animations (Phase 2)
 │   │   ├── hero/                       # Atomic hero components
 │   │   │   ├── hero-frame.tsx          # Layout + border ornaments
 │   │   │   ├── alchemical-vessel.tsx    # Vessel + liquid animation
 │   │   │   ├── botanical-layer.tsx      # Parallax botanical elements
 │   │   │   └── hero-section.tsx       # Orchestrator component
 │   │   ├── layout/                     # Orchestrator components
-│   │   │   └── header.tsx             # Navigation + seal animation
+│   │   │   ├── header.tsx             # Navigation + scroll effects (Phase 2)
+│   │   │   └── footer.tsx             # Colophon footer
+│   │   ├── cart/                       # Cart components (Phase 2)
+│   │   │   └── vial-drawer.tsx        # Cart drawer with checkout
+│   │   ├── sections/                   # Page sections (Phase 2)
+│   │   │   ├── compendium-section.tsx # Product grid
+│   │   │   ├── alchemy-section.tsx    # Process steps
+│   │   │   ├── testimonials-section.tsx # Patron testimonials
+│   │   │   └── newsletter-section.tsx # Form validation (Phase 2)
 │   │   └── providers/                   # React providers (Query, Theme, Toast)
-│   ├── hooks/                           # Custom React hooks
-│   ├── lib/                             # Utilities (cn(), API client)
-│   │   └── utils.ts                   # Tailwind class merge utility
+│   ├── hooks/                           # Custom React hooks (Phase 2)
+│   │   ├── index.ts                   # Barrel export
+│   │   ├── use-scroll.ts              # Scroll position + smooth scroll
+│   │   ├── use-intersection.ts        # IntersectionObserver wrapper
+│   │   └── use-reduced-motion.ts      # Reduced motion detection
+│   ├── lib/                             # Utilities
+│   │   ├── utils.ts                   # Tailwind class merge utility
+│   │   └── a11y.ts                    # Accessibility utilities (Phase 2)
 │   ├── stores/                          # Zustand stores
-│   │   └── cart-store.ts              # Cart state with persistence
+│   │   ├── cart-store.ts              # Cart state with persistence
+│   │   └── toast-store.ts             # Toast notification state (Phase 2)
 │   └── types/                           # TypeScript type definitions
 ├── public/                              # Static assets
 ├── .env.local.example                   # Environment variables template

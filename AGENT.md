@@ -81,7 +81,7 @@ atelier-arome/
 └── AGENT.md               # This file
 ```
 
-**Current Status:** Both projects have been created during Phase 1 ✅
+**Current Status:** Phase 2 Frontend Core Complete ✅ (January 9, 2026)
 
 ---
 
@@ -98,11 +98,33 @@ src/components/
 │   ├── alchemical-vessel.tsx    # Vessel + liquid animation (120 lines)
 │   └── botanical-layer.tsx      # Parallax botanical elements (60 lines)
 ├── layout/                    # Orchestrator components
-│   └── header.tsx             # Navigation + seal animation (150 lines)
-└── ui/                        # Shadcn-UI primitives
+│   ├── header.tsx             # Navigation + scroll effects (150 lines)
+│   └── footer.tsx             # Colophon footer
+├── cart/                      # Cart components (Phase 2)
+│   └── vial-drawer.tsx        # Cart drawer with checkout
+├── sections/                  # Page sections (Phase 2)
+│   ├── compendium-section.tsx # Product grid
+│   ├── alchemy-section.tsx    # Process steps
+│   ├── testimonials-section.tsx
+│   └── newsletter-section.tsx # Form validation + accessibility
+└── ui/                        # Shadcn-UI primitives + custom
     ├── sheet.tsx              # Radix Dialog wrapper
-    ├── button.tsx
-    └── ...
+    ├── toast.tsx              # Toast notifications (Phase 2)
+    └── animate-in-view.tsx    # Scroll animations (Phase 2)
+
+src/hooks/                     # Custom React 18+ hooks (Phase 2)
+├── index.ts                   # Barrel export
+├── use-scroll.ts              # useSyncExternalStore for scroll
+├── use-intersection.ts        # IntersectionObserver wrapper
+└── use-reduced-motion.ts      # Reduced motion detection
+
+src/stores/                    # Zustand stores (Phase 2)
+├── cart-store.ts              # Cart state with localStorage
+└── toast-store.ts             # Toast notification queue
+
+src/lib/                       # Utilities (Phase 2)
+├── utils.ts                   # cn() class merger
+└── a11y.ts                    # Accessibility helpers
 ```
 
 **Atomic Components (Single Responsibility):**
