@@ -81,7 +81,7 @@ atelier-arome/
 └── AGENT.md               # This file
 ```
 
-**Current Status:** Phase 2 Frontend Core Complete ✅ (January 9, 2026)
+**Current Status:** Phase 7 Product Catalog Integrated (Grid & Filters) ✅ (January 9, 2026)
 
 ---
 
@@ -93,6 +93,10 @@ The frontend uses an **atomic component architecture** for maintainability and s
 
 ```
 src/components/
+├── catalog/                   # Product Catalog (Phase 7)
+│   ├── product-card.tsx       # Illuminated product card
+│   ├── product-grid.tsx       # Responsive grid with skeletons
+│   └── filter-sidebar.tsx     # Filter sidebar with URL sync
 ├── hero/                      # Atomic hero components
 │   ├── hero-frame.tsx          # Layout + border ornaments (80 lines)
 │   ├── alchemical-vessel.tsx    # Vessel + liquid animation (120 lines)
@@ -1230,16 +1234,23 @@ export default {
 - [x] Zero ESLint warnings ✅
 - [x] Dev server running on http://localhost:3000 ✅
 
-**Phase 2 (Backend Core) - Ready to Begin ⏳:**
-- [ ] Refine all 22 Eloquent models with complete relationships
-- [ ] Create API resource transformers
-- [ ] Create base controller with common CRUD methods
-- [ ] Implement authentication routes (Laravel Sanctum)
-- [ ] Create Product CRUD API endpoints
-- [ ] Create Category and Tag listing endpoints
-- [ ] Implement exception handler with consistent API error format
-- [ ] Configure rate limiting middleware (60 requests/minute)
-- [ ] Write comprehensive tests (unit + feature)
+**Phase 2 (Backend Core) - Complete ✅:**
+- [x] Refine all 22 Eloquent models with complete relationships ✅
+- [x] Create API resource transformers ✅
+- [x] Create base controller with common CRUD methods ✅
+- [x] Implement authentication routes (Laravel Sanctum) ✅
+- [x] Create Product CRUD API endpoints (Read/List) ✅
+- [x] Create Category and Tag listing endpoints ✅
+- [x] Implement exception handler with consistent API error format ✅
+- [x] Configure rate limiting middleware (60 requests/minute) ✅
+- [x] Write comprehensive tests (unit + feature) ✅
+
+**Phase 7 (Product Catalog FE) - In Progress 🚀:**
+- [x] API Client & Type Definitions (`src/lib/api-client.ts`, `src/types/api.ts`) ✅
+- [x] TanStack Query Hooks (`useProducts`) ✅
+- [x] Product Grid & Card Components (`src/components/catalog/`) ✅
+- [x] Filter Sidebar with URL Sync ✅
+- [ ] Product Detail Page (`/compendium/[slug]`)
 
 **See `MASTER_EXECUTION_PLAN.md` for complete phase breakdown.**
 
