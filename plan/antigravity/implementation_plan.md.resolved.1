@@ -1,0 +1,76 @@
+# CLAUDE.md Documentation Update — Implementation Plan
+
+## Goal Description
+
+Update [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md) to accurately reflect the current codebase state after deep validation of all model files.
+
+---
+
+## Analysis Summary (Validated)
+
+### Backend Models — Deep Validation Results
+
+**All 22 model files exist, but implementation status varies:**
+
+| Status | Count | Models |
+|--------|-------|--------|
+| ✅ **Fully Implemented** | 16 | Product, Order, User*, Cart, Address, Coupon, Payment, OrderItem, CartItem, ProductVariant, ProductImage, Category, Tag, Testimonial, Inventory, Setting |
+| ⚠️ **Skeleton Only** | 6 | Review, Wishlist, WishlistItem, CouponUsage, NewsletterSubscriber, InventoryMovement |
+
+> [!NOTE]
+> *User.php has a syntax issue (duplicate `$hidden`/[casts()](file:///home/project/atelier-arome/atelier-arome-api/app/Models/OrderItem.php#24-32) blocks after class closing brace on line 91)
+
+**What "Fully Implemented" means:**
+- HasUuids, SoftDeletes traits where appropriate
+- `$fillable` arrays defined
+- [casts()](file:///home/project/atelier-arome/atelier-arome-api/app/Models/OrderItem.php#24-32) method with proper type casting
+- Relationships defined (belongsTo, hasMany, etc.)
+- Query scopes where applicable
+- Helper methods/accessors
+
+**What "Skeleton Only" means:**
+- Only contains empty class with `// ` comment
+- No fillable, casts, or relationships
+
+### Other Backend Components
+
+| Component | Status |
+|-----------|--------|
+| Controllers | ⚠️ Only base [Controller.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php) |
+| API Resources | ❌ Directory doesn't exist |
+| Routes | ⚠️ No `api.php` (only [web.php](file:///home/project/atelier-arome/atelier-arome-api/routes/web.php), [console.php](file:///home/project/atelier-arome/atelier-arome-api/routes/console.php)) |
+| Database | ✅ 26 tables, migrations run, seeders executed |
+
+---
+
+## Proposed Changes
+
+### [MODIFY] [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md)
+
+#### 1. Add "Codebase Ground Truth" Section (after line ~84)
+
+Insert new section documenting validated status:
+- Backend: 16/22 models implemented, 6 skeleton
+- Controllers/Resources: Missing
+- Frontend: Components partial, config complete
+
+#### 2. Update Database Schema Section (line ~639)
+
+- Change table count from 24 to **26**
+- Update model status to reflect 16 complete + 6 skeleton
+
+#### 3. Add Notes on Skeleton Models
+
+Document which models need completion in Phase 2.
+
+---
+
+## Verification Plan
+
+### Manual Verification
+Cross-reference updated CLAUDE.md claims with:
+```bash
+# Verify implemented models have content
+wc -l /home/project/atelier-arome/atelier-arome-api/app/Models/*.php
+# Skeleton files will show ~11 lines, implemented show 40+
+```

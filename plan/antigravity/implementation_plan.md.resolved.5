@@ -1,0 +1,52 @@
+# Phase 2.9: Remaining Controllers
+
+## Goal
+
+Implement the 5 remaining protected controllers to complete the API.
+
+---
+
+## Controllers to Create
+
+### 1. AddressController
+- [index()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/TagController.php#13-33) — List user addresses
+- `store()` — Create new address
+- [update()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CartController.php#80-109) — Update address
+- `destroy()` — Delete address
+
+### 2. OrderController
+- [index()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/TagController.php#13-33) — List user orders with pagination
+- [show()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CategoryController.php#31-58) — Get single order by order number
+
+### 3. WishlistController
+- [show()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CategoryController.php#31-58) — Get user wishlist with items
+- [addItem()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CartController.php#32-79) — Add product to wishlist
+- [removeItem()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CartController.php#110-129) — Remove product from wishlist
+
+### 4. ReviewController
+- `store()` — Create review (verified purchase check)
+- [update()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CartController.php#80-109) — Update own review
+- `destroy()` — Delete own review
+
+### 5. CheckoutController
+- `initiate()` — Validate cart, create pending order
+- `complete()` — Process payment, confirm order
+
+---
+
+## Implementation Order
+
+1. AddressController (simple CRUD)
+2. WishlistController (simple add/remove)
+3. OrderController (read-only for users)
+4. ReviewController (with purchase verification)
+5. CheckoutController (complex, needs order creation)
+
+---
+
+## Verification
+
+```bash
+php artisan route:list --path=api/v1
+# All routes should show controller bindings ✅
+```

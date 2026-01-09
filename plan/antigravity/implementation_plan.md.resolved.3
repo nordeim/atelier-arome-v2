@@ -1,0 +1,68 @@
+# Phase 2.7: API Controllers — Implementation Plan
+
+## Goal
+
+Implement actual controller logic for API routes, replacing placeholders with functional endpoints.
+
+## Priority Order
+
+1. **ProductController** — Most critical (public, no auth needed)
+2. **CategoryController** — Support for product browsing
+3. **TagController** — Simple read-only
+4. **TestimonialController** — Simple read-only
+5. **CartController** — Session/auth hybrid (more complex)
+6. **AuthController** — Required for protected routes
+
+---
+
+## Proposed Changes
+
+### [NEW] [ProductController.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/ProductController.php)
+
+**Methods:**
+- `index()` — List products with filtering, pagination
+- `show($slug)` — Get single product by slug
+
+**Features:**
+- Eager load: category, defaultVariant, primaryImage, tags
+- Filtering: by category, humour, rarity, featured
+- Pagination: 15 per page
+- Return ProductResource
+
+---
+
+### [NEW] [CategoryController.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CategoryController.php)
+
+**Methods:**
+- `index()` — List all active categories
+- `show($slug)` — Get category with products
+
+**Features:**
+- Product count
+- Return CategoryResource
+
+---
+
+### [NEW] [TagController.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/TagController.php)
+
+**Methods:**
+- `index()` — List all tags
+
+---
+
+### [NEW] [TestimonialController.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/TestimonialController.php)
+
+**Methods:**
+- `index()` — List illuminated testimonials
+
+---
+
+## Verification Plan
+
+```bash
+# Test product listing
+curl http://localhost:8000/api/v1/products
+
+# Test single product
+curl http://localhost:8000/api/v1/products/lavender-essential-oil
+```

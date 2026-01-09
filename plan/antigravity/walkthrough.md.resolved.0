@@ -1,0 +1,59 @@
+# Walkthrough: CLAUDE.md Documentation Update
+
+**Date:** January 9, 2026  
+**Objective:** Update CLAUDE.md to accurately reflect current codebase state
+
+---
+
+## Summary
+
+Updated [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md) with validated codebase status, correcting previous documentation inaccuracies.
+
+## Key Finding
+
+**Previous documentation was inaccurate.** Deep validation revealed:
+
+| Claim | Actual Status |
+|-------|---------------|
+| "13 models missing" | **16/22 implemented, 6 skeleton** |
+| "24 database tables" | **26 tables** |
+
+## Changes Made
+
+### 1. New "Codebase Ground Truth" Section
+
+Added validated status section after repository structure:
+
+```diff
++ ## Codebase Ground Truth (Validated January 9, 2026)
++ 
++ | Component | Status |
++ |-----------|--------|
++ | Models | ⚠️ PARTIAL (16/22) |
++ | Controllers | ❌ MISSING |
++ | API Resources | ❌ MISSING |
++ | Database | ✅ COMPLETE (26 tables) |
+```
+
+[View change](file:///home/project/atelier-arome/CLAUDE.md#L88-124)
+
+### 2. Database Count Correction
+
+```diff
+- **Total Tables:** 24 (22 business + migrations + sessions)
++ **Total Tables:** 26 (validated via PostgreSQL query)
+```
+
+[View change](file:///home/project/atelier-arome/CLAUDE.md#L678)
+
+## Validation Method
+
+- Inspected all 22 files in `app/Models/`
+- Examined file contents to distinguish implemented vs skeleton models
+- Cross-referenced with database tables via `docker exec`
+
+## Model Classification
+
+**Fully Implemented (16):** Product, Order, User, Cart, Address, Coupon, Payment, OrderItem, CartItem, ProductVariant, ProductImage, Category, Tag, Testimonial, Inventory, Setting
+
+**Skeleton Only (6):** Review, Wishlist, WishlistItem, CouponUsage, NewsletterSubscriber, InventoryMovement

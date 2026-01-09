@@ -1,0 +1,76 @@
+# Phase 2 Backend Core — Execution Walkthrough
+
+**Date:** January 9, 2026  
+**Status:** ✅ COMPLETE
+
+---
+
+## Summary
+
+Executed the complete Phase 2 Backend Core Plan, implementing all 6 sub-phases.
+
+## Implementation Results
+
+### Phase 2.1: Skeleton Models ✅
+
+Completed 6 skeleton models with fillable, casts, relationships, scopes:
+
+| Model | Lines | Key Features |
+|-------|-------|--------------|
+| Review.php | 76 | Rating stars accessor, approval workflow |
+| Wishlist.php | 43 | User relationship, item count |
+| WishlistItem.php | 34 | Wishlist/product relationships |
+| CouponUsage.php | 45 | Coupon/user/order tracking |
+| NewsletterSubscriber.php | 80 | Auto-generated tokens, confirm/unsubscribe helpers |
+| InventoryMovement.php | 68 | Type scopes (purchase, sale, adjustment, return) |
+
+### Phase 2.2: API Resources ✅
+
+Created 14 API Resource transformers in `app/Http/Resources/`:
+
+User, Product, Category, Tag, ProductVariant, ProductImage, Cart, CartItem, Order, OrderItem, Address, Coupon, Review, Testimonial
+
+All include SGD currency formatting and ISO 8601 timestamps.
+
+### Phase 2.3: Base Controller ✅
+
+Enhanced with 8 response helpers: [success()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#11-34), [error()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#35-54), [notFound()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#55-62), [unauthorized()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#63-70), [forbidden()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#71-78), [validationError()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#79-86), [created()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#87-94), [noContent()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php#95-102)
+
+### Phase 2.4: Exception Handler ✅
+
+Configured JSON responses for: ValidationException (422), ModelNotFoundException (404), AuthenticationException (401), AccessDeniedHttpException (403)
+
+### Phase 2.5: Middleware ✅
+
+- Created [EnsureJsonResponse](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Middleware/EnsureJsonResponse.php#9-24) middleware
+- Rate limiting: 60 requests/minute
+
+### Phase 2.6: API Routes ✅
+
+Created [routes/api.php](file:///home/project/atelier-arome/atelier-arome-api/routes/api.php) with **37 endpoints** at `/api/v1/*`:
+
+```
+GET  /api/v1/health
+GET  /api/v1/products, /api/v1/products/{slug}
+GET  /api/v1/categories, /api/v1/categories/{slug}
+POST /api/v1/cart/items, DELETE /api/v1/cart/items/{id}
+POST /api/v1/auth/login, /api/v1/auth/register
+GET  /api/v1/orders, /api/v1/wishlist
+... (37 total)
+```
+
+## Verification
+
+```bash
+php artisan route:list --path=api
+# Output: Showing [37] routes ✅
+```
+
+## Files Created/Modified
+
+- 6 models completed in `app/Models/`
+- 14 API resources in `app/Http/Resources/`
+- Controller.php enhanced
+- bootstrap/app.php with exception handling
+- app/Http/Middleware/EnsureJsonResponse.php
+- routes/api.php (new)

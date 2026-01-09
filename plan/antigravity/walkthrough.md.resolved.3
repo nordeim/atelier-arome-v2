@@ -1,0 +1,60 @@
+# Phase 2 Backend Core — Execution Walkthrough
+
+**Date:** January 9, 2026  
+**Status:** ✅ COMPLETE
+
+---
+
+## Summary
+
+Executed the complete Phase 2 Backend Core Plan, implementing all phases plus API controllers.
+
+## Phases Completed
+
+### Phase 2.1: Skeleton Models ✅
+Completed 6 models: Review, Wishlist, WishlistItem, CouponUsage, NewsletterSubscriber, InventoryMovement
+
+### Phase 2.2: API Resources ✅
+Created 14 resources in `app/Http/Resources/`
+
+### Phase 2.3: Base Controller ✅
+Enhanced with 8 response helpers
+
+### Phase 2.4: Exception Handler ✅
+JSON responses for validation, auth, and not-found errors
+
+### Phase 2.5: Middleware ✅
+EnsureJsonResponse + rate limiting (60/min)
+
+### Phase 2.6: API Routes ✅
+37 endpoints at `/api/v1/*`
+
+### Phase 2.7: API Controllers ✅ (NEW)
+
+Created 4 controllers in `app/Http/Controllers/Api/V1/`:
+
+| Controller | Methods | Features |
+|------------|---------|----------|
+| ProductController | index, show, featured | Filtering, pagination, search |
+| CategoryController | index, show | Product counts, nested products |
+| TagController | index | Type filtering |
+| TestimonialController | index | Illuminated filter |
+
+### Bug Fixes
+
+- Fixed [User.php](file:///home/project/atelier-arome/atelier-arome-api/app/Models/User.php) — Removed duplicate code block after class closure
+- Fixed [CartItem.php](file:///home/project/atelier-arome/atelier-arome-api/app/Models/CartItem.php) — Removed corrupted syntax artifacts
+- Added missing `HasMany` import to [Category.php](file:///home/project/atelier-arome/atelier-arome-api/app/Models/Category.php)
+
+## Verification
+
+```bash
+php artisan route:list --path=api/v1
+# Output: All routes registered with controllers ✅
+```
+
+## Files Created/Modified
+
+- **4 Controllers**: ProductController, CategoryController, TagController, TestimonialController
+- **3 Models Fixed**: User.php, CartItem.php, Category.php
+- [routes/api.php](file:///home/project/atelier-arome/atelier-arome-api/routes/api.php) updated with controller bindings

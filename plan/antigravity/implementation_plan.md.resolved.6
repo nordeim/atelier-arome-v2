@@ -1,0 +1,253 @@
+# Landing Page Visual Issues — Root Cause Analysis
+
+**Date:** January 9, 2026  
+**Status:** Analysis Complete
+
+---
+
+## Executive Summary
+
+The dynamic landing page ([landing_page.html](file:///home/project/atelier-arome/landing_page.html)) appears "messed up" compared to the static reference mockup ([index.html](file:///home/project/atelier-arome/index.html) + [styles.css](file:///home/project/atelier-arome/styles.css) + [main.js](file:///home/project/atelier-arome/main.js)) due to **fundamental architectural differences** between the two implementations.
+
+> [!CAUTION]
+> The core issue is that **4212 lines of comprehensive CSS** from the static mockup were never ported to the Next.js implementation, which only has **109 lines of globals.css**.
+
+---
+
+## Side-by-Side Comparison
+
+| Aspect | Static Mockup | Next.js Implementation |
+|--------|--------------|------------------------|
+| **CSS Lines** | 4212 (comprehensive) | 109 (minimal) |
+| **Class System** | BEM methodology (`hero__title`, `compendium__card`) | Tailwind utilities only |
+| **JavaScript** | 1940 lines (cart, nav, a11y, animations) | React components (minimal interactivity) |
+| **Structure** | Semantic HTML with ARIA | Similar but simplified |
+| **Fonts** | Google Fonts loaded in `<head>` | Next.js font variables (`--font-*`) |
+| **Animations** | CSS keyframes + JS IntersectionObserver | Tailwind `animate-*` utilities |
+
+---
+
+## Root Causes of Visual Issues
+
+### 1. **Missing BEM CSS Architecture** ⚠️ CRITICAL
+
+The static mockup uses a comprehensive BEM (Block Element Modifier) class system:
+
+#### Static Mockup Classes (from [styles.css](file:///home/project/atelier-arome/styles.css)):
+```css
+.hero__border
+.hero__border-corner
+.hero__initial
+.hero__initial-letter
+.hero__title-word
+.hero__subtitle-flourish
+.hero__vessel
+.hero__vessel-liquid
+.compendium__card
+.essence-card__illumination
+.manuscript-entry__border
+.alchemy-step__symbol
+/* ... 200+ more classes */
+```
+
+#### Next.js Implementation:
+- Uses **only Tailwind utility classes** like `px-8 py-3 bg-gold text-ink`
+- Has **zero** BEM component classes
+- Missing all decorative element styling
+
+### 2. **Missing Core CSS Styles** ⚠️ CRITICAL
+
+**Static [styles.css](file:///home/project/atelier-arome/styles.css)** includes:
+- ✅ Parchment texture overlay (SVG pattern)
+- ✅ Gold leaf radial gradients
+- ✅ Hand-drawn border corners for hero
+- ✅ Illuminated initial letter styling
+- ✅ Flourish decorations
+- ✅ Vessel liquid animations
+- ✅ Botanical specimen styling
+- ✅ Manuscript stain effects
+- ✅ Mobile navigation with manuscript pages theme
+
+**Next.js [globals.css](file:///home/project/atelier-arome/atelier-arome-web/src/app/globals.css)** includes:
+- ❌ Basic reset
+- ❌ CSS variables for colors
+- ❌ `.btn` component class
+- ❌ Nothing else
+
+### 3. **Font Loading Issues**
+
+#### Static Mockup:
+```html
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400...&display=swap" rel="stylesheet">
+```
+
+#### Next.js Implementation:
+- Uses `--font-cormorant`, `--font-crimson`, `--font-great-vibes` CSS variables
+- Variables must be defined in [layout.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx) via `next/font`
+- If fonts aren't loading, fallback to Georgia serif
+
+### 4. **Missing JavaScript Interactivity**
+
+The static mockup ([main.js](file:///home/project/atelier-arome/main.js) - 1940 lines) includes:
+- ✅ Header scroll effects (sticky + shadow on scroll)
+- ✅ Mobile navigation toggle system
+- ✅ Cart/Vial drawer with focus trap
+- ✅ Filter buttons for compendium
+- ✅ Sort dropdown functionality
+- ✅ Testimonial pagination/carousel
+- ✅ Smooth scroll navigation
+- ✅ Intersection Observer for reveal animations
+- ✅ Toast notifications
+- ✅ LocalStorage cart persistence
+
+**Next.js** has:
+- ❌ Client components missing (most are Server Components)
+- ❌ No global state management visible
+- ❌ Zustand store exists but unused in visible components
+
+### 5. **Structural HTML Differences**
+
+#### Static Hero Section Structure:
+```html
+<section class="hero" id="hero">
+  <div class="hero__border" aria-hidden="true">
+    <div class="hero__border-corner hero__border-corner--tl"></div>
+    <!-- 4 corners -->
+  </div>
+  <div class="hero__watermark" aria-hidden="true"><!-- SVG --></div>
+  <div class="hero__container">
+    <div class="hero__initial">
+      <span class="hero__initial-letter">A</span>
+      <div class="hero__initial-flourish"></div>
+    </div>
+    <div class="hero__content">
+      <h1 class="hero__title">
+        <span class="hero__title-line hero__title-line--1">
+          <span class="hero__title-word">The</span>
+          <span class="hero__title-word">Art</span>
+        </span>
+        <!-- Multi-line structured title -->
+      </h1>
+    </div>
+    <div class="hero__visual">
+      <div class="hero__vessel-container">
+        <div class="hero__vessel">...</div>
+        <div class="hero__vessel-stand"></div>
+        <div class="hero__botanicals">...</div>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+#### Next.js Hero Section Structure:
+```html
+<section class="relative w-full min-h-screen bg-parchment overflow-hidden">
+  <!-- SVG corners with Tailwind rotation -->
+  <div class="relative z-10 container mx-auto px-4 py-8">
+    <!-- Botanical floating elements -->
+    <div class="grid md:grid-cols-2 gap-12 items-center min-h-[80vh]">
+      <div class="space-y-8">
+        <span class="text-8xl md:text-9xl font-display font-bold text-gold">A</span>
+        <h1 class="text-5xl md:text-6xl font-display font-semibold text-ink">The Art of Scent</h1>
+        <!-- Simplified structure -->
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+**Key differences:**
+- No `.hero__initial-flourish` decorative element
+- No `.hero__subtitle-flourish` left/right curved lines
+- Title as single element vs multi-line `<span>` structure
+- Missing vessel stand and botanicals styling
+
+### 6. **Missing Animations**
+
+#### Static CSS (defined in [styles.css](file:///home/project/atelier-arome/styles.css)):
+```css
+@keyframes rotateSeal { ... }
+@keyframes pulse { ... }
+/* 10+ keyframes */
+```
+
+#### Next.js Tailwind:
+- Has `animate-liquid-sway`, `animate-bubble-rise`, `animate-float` defined
+- Missing: `rotateSeal` for header seal (should rotate slowly over 30s)
+- Missing: scroll-triggered reveal animations
+
+### 7. **Missing Decorative Components**
+
+| Component | Static | Next.js |
+|-----------|--------|---------|
+| Atelier Hours Banner | ✅ | ❌ |
+| Parchment Texture Overlay | ✅ | ⚠️ (different) |
+| Gold Leaf Floating Elements | ✅ | ❌ |
+| Skip Navigation Link | ✅ | ❌ |
+| Hero Hand-drawn Border | ✅ | ⚠️ (SVG corners only) |
+| Hero Watermark Pattern | ✅ | ✅ (different pattern) |
+| Illuminated Initial with Flourish | ✅ | ⚠️ (letter only) |
+| Vessel Detailed Structure | ✅ (5 parts) | ⚠️ (2 parts) |
+| Botanical Specimens | ✅ | ⚠️ (different) |
+| Scroll Indicator Quill | ✅ | ⚠️ (arrow only) |
+
+### 8. **Color/Styling Inconsistencies**
+
+The Tailwind config has correct colors, but:
+- `border-gold/30` vs `.hero__vessel { border: 3px solid var(--color-gold); }`
+- Missing gradients on section backgrounds
+- Missing box-shadows on cards
+
+---
+
+## Prioritized Remediation Plan
+
+### Priority 1: Create Comprehensive CSS (HIGH IMPACT)
+
+Create `/src/app/atelier.css` with the full styling from [styles.css](file:///home/project/atelier-arome/styles.css):
+
+1. Port all `.hero__*` classes
+2. Port all `.compendium__*` and `.essence-card__*` classes
+3. Port all `.alchemy*` classes
+4. Port all `.manuscript*` classes
+5. Port all `.header__*` and `.mobile-nav__*` classes
+6. Port all keyframe animations
+
+### Priority 2: Fix HTML Structure
+
+Update React components to match the reference HTML structure:
+- [hero-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/hero-section.tsx) — Add flourishes, proper title structure
+- [header.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/header.tsx) — Add atelier banner, proper seal with rotation
+- `compendium-section.tsx` — Use `.essence-card` structure
+- [alchemical-vessel.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/alchemical-vessel.tsx) — Add all vessel parts
+
+### Priority 3: Add JavaScript Interactivity
+
+1. Create `use-scroll-effects.ts` hook for header shadow
+2. Create cart drawer using Shadcn Sheet
+3. Add filter/sort logic to compendium
+4. Add testimonial carousel functionality
+
+### Priority 4: Fonts Verification
+
+Ensure [layout.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx) properly defines:
+```typescript
+import { Cormorant_Garamond, Crimson_Pro, Great_Vibes } from 'next/font/google';
+
+const cormorant = Cormorant_Garamond({ ... });
+const crimson = Crimson_Pro({ ... });
+const greatVibes = Great_Vibes({ ... });
+```
+
+---
+
+## Recommendation
+
+The fastest path to visual parity is to:
+
+1. **Extract [styles.css](file:///home/project/atelier-arome/styles.css)** from the static mockup and import it into Next.js
+2. **Update component HTML** to use the BEM class names
+3. **Gradually migrate** to Tailwind utilities once parity is achieved
+
+This "CSS-first" approach maintains the proven design while allowing incremental modernization.

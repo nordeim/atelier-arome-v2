@@ -1,0 +1,94 @@
+# CLAUDE.md Documentation Update — Implementation Plan
+
+## Goal Description
+
+Update [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md) to accurately reflect the current codebase state, correcting critical discrepancies between documentation and reality. The primary issue is that multiple documents incorrectly claim models are missing when **all 22 backend models exist**.
+
+---
+
+## Analysis Summary
+
+### Codebase Validation Results
+
+**Backend (Laravel 12 API):**
+
+| Component | Status | Evidence |
+|-----------|--------|----------|
+| **Models** | ✅ **COMPLETE (22/22)** | All models exist in `app/Models/` |
+| **Controllers** | ⚠️ **MISSING** | Only base [Controller.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php) exists |
+| **API Resources** | ⚠️ **MISSING** | No `app/Http/Resources/` directory |
+| **Routes** | ⚠️ **INCOMPLETE** | No `api.php`, only [web.php](file:///home/project/atelier-arome/atelier-arome-api/routes/web.php) and [console.php](file:///home/project/atelier-arome/atelier-arome-api/routes/console.php) |
+| **Database** | ✅ **COMPLETE** | 26 tables verified, migrations run, seeders executed |
+
+**Frontend (Next.js 15):**
+
+| Component | Status | Evidence |
+|-----------|--------|----------|
+| **App Router** | ✅ **COMPLETE** | [(shop)](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx#40-60), [(marketing)](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx#40-60), [(checkout)](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx#40-60), [(account)](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx#40-60) groups exist |
+| **Components** | ✅ **PARTIAL** | 11 components across 4 directories |
+| **Tailwind Config** | ✅ **COMPLETE** | Custom theme with colors, fonts, animations defined |
+| **State Management** | ✅ **CONFIGURED** | `cart-store.ts` with Zustand |
+
+### Documents Reviewed
+
+1. **[AGENT.md](file:///home/project/atelier-arome/AGENT.md)** — Claims models missing; **INACCURATE**
+2. **[README.md](file:///home/project/atelier-arome/README.md)** — Project documentation; needs minor updates
+3. **[GEMINI.md](file:///home/project/atelier-arome/GEMINI.md)** — Correctly states models complete, controllers missing; **MOST ACCURATE**
+4. **[Deep_Project_Understanding_Document.md](file:///home/project/atelier-arome/Deep_Project_Understanding_Document.md)** — Claims 13 models missing; **INACCURATE**
+
+---
+
+## Proposed Changes
+
+### [MODIFY] [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md)
+
+**Key Corrections:**
+
+1. **Add "Codebase Ground Truth" Section** (mirroring GEMINI.md structure)
+   - Correct backend status: Models COMPLETE, Controllers/Resources MISSING
+   - Correct frontend status: Components PARTIAL, Config COMPLETE
+
+2. **Update "Database Schema Overview"**
+   - Change from 24 to 26 tables (validated via psql)
+   - Update model count to accurate 22/22
+
+3. **Add "Next Steps" Section**
+   - Immediate: Create API Resources, implement Controllers
+   - Phase 2: Sanctum Auth, API routes
+
+4. **Align with GEMINI.md findings**
+   - Use consistent status indicators (✅, ⚠️)
+   - Add verified-on date
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+No automated tests required for documentation changes.
+
+### Manual Verification
+
+1. **Cross-Reference Validation**
+   ```bash
+   # Verify all 22 models exist
+   ls -la /home/project/atelier-arome/atelier-arome-api/app/Models/
+   # Expected: 22 .php files
+   
+   # Verify Controllers status
+   ls -la /home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/
+   # Expected: Only Controller.php (base class)
+   
+   # Verify no API Resources
+   ls -la /home/project/atelier-arome/atelier-arome-api/app/Http/Resources/
+   # Expected: Directory does not exist
+   
+   # Verify routes
+   ls -la /home/project/atelier-arome/atelier-arome-api/routes/
+   # Expected: console.php, web.php (no api.php)
+   ```
+
+2. **Documentation Consistency Check**
+   - Compare updated CLAUDE.md with GEMINI.md for consistency
+   - Verify status claims match actual file system

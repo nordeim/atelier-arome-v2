@@ -1,0 +1,45 @@
+# Task: Update CLAUDE.md with Accurate Codebase Status
+
+## Objective
+Review and update [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md) to accurately reflect the current codebase state, correcting documentation discrepancies.
+
+---
+
+## Task Checklist
+
+### Phase 1: Analysis & Validation ✅
+- [x] Read and analyze [AGENT.md](file:///home/project/atelier-arome/AGENT.md), [README.md](file:///home/project/atelier-arome/README.md), [GEMINI.md](file:///home/project/atelier-arome/GEMINI.md), [Deep_Project_Understanding_Document.md](file:///home/project/atelier-arome/Deep_Project_Understanding_Document.md)
+- [x] Validate backend models against actual `app/Models/` directory
+- [x] Validate controllers against actual `app/Http/Controllers/` directory
+- [x] Validate frontend components against actual `src/components/` directory
+- [x] Validate routes against actual `routes/` directory
+- [x] Validate Tailwind config against actual [tailwind.config.ts](file:///home/project/atelier-arome/atelier-arome-web/tailwind.config.ts)
+
+### Phase 2: Findings Summary
+- [x] All **22 backend models EXIST** (contradicting docs claiming 13 missing)
+- [x] Only base [Controller.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php) exists (no API controllers)
+- [x] No `app/Http/Resources/` directory (API JSON transformers missing)
+- [x] No `api.php` routes file (only [web.php](file:///home/project/atelier-arome/atelier-arome-api/routes/web.php) and [console.php](file:///home/project/atelier-arome/atelier-arome-api/routes/console.php))
+- [x] Frontend has 11 components across `hero/`, `layout/`, `sections/`, `ui/`
+- [x] Tailwind config is complete with custom theme tokens
+
+### Phase 3: Implementation
+- [/] Create implementation plan with corrected status
+- [ ] Update CLAUDE.md "Codebase Ground Truth" section
+- [ ] Align CLAUDE.md with GEMINI.md findings
+- [ ] Correct model status claims
+- [ ] Add accurate "Next Steps" section
+
+### Phase 4: Verification
+- [ ] Verify updated CLAUDE.md accuracy
+- [ ] Ensure consistency with GEMINI.md
+
+---
+
+## Key Discrepancies Found
+
+| Document | Claim | Reality |
+|----------|-------|---------|
+| Deep_Project_Understanding_Document.md | "13 models missing" | **All 22 models exist** |
+| AGENT.md / CLAUDE.md | Lists missing models | **All models present** |
+| GEMINI.md | "Models COMPLETE, Controllers MISSING" | **✅ Accurate** |

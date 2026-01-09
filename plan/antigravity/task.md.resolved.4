@@ -1,0 +1,86 @@
+# BEM Migration Task List
+
+## Phase 1: Core Layout (High Impact)
+- [ ] **1.1 Hero Frame** ([hero/hero-frame.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/hero-frame.tsx))
+  - [ ] Replace SVG corners with `.hero__border-corner--*` divs
+  - [ ] Add `.hero__watermark` structure
+  - [ ] Use `.hero__container` wrapper
+  - [ ] Verify border corners render correctly
+
+- [ ] **1.2 Hero Section** ([hero/hero-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/hero-section.tsx))
+  - [ ] Update root `<section>` to `.hero`
+  - [ ] Refactor title to multi-line `.hero__title-line` structure
+  - [ ] Add `.hero__subtitle` with flourishes
+  - [ ] Convert excerpt to `.hero__excerpt-*` classes
+  - [ ] Update buttons to `.btn .btn--primary`, `.btn .btn--secondary`
+  - [ ] Convert stats to `.hero__credentials`
+  - [ ] Add `.hero__scroll-indicator`
+  - [ ] Verify visual parity with mockup
+
+- [ ] **1.3 Alchemical Vessel** ([hero/alchemical-vessel.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/alchemical-vessel.tsx))
+  - [ ] Convert to `.hero__vessel` structure
+  - [ ] Add `.hero__vessel-neck`, `.hero__vessel-body`, `.hero__vessel-base`
+  - [ ] Add `.hero__vessel-liquid` with meniscus/reflection
+  - [ ] Add `.hero__vessel-stand`
+  - [ ] Verify liquid animation
+
+- [ ] **1.4 Botanical Layer** ([hero/botanical-layer.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/hero/botanical-layer.tsx))
+  - [ ] Convert floating botanicals to `.hero__botanical--*` classes
+  - [ ] Add `.botanical__stem`, `.botanical__blossom`, etc.
+  - [ ] Verify float animation
+
+- [ ] **1.5 Header** ([layout/header.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/header.tsx))
+  - [ ] Convert to `.header` structure
+  - [ ] Add `.header__seal` with rotating SVG
+  - [ ] Convert nav to `.header__nav-list`, `.header__nav-link`
+  - [ ] Add `.header__nav-number`, `.header__nav-label`
+  - [ ] Convert tools to `.header__tool`
+  - [ ] Add `.header__menu-toggle` with quill animation
+  - [ ] Verify scroll effect (`.header.scrolled`)
+
+## Phase 2: Sections (Medium Impact)
+- [ ] **2.1 Compendium Section** ([sections/compendium-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/compendium-section.tsx))
+  - [ ] Add `.section-border` ornament
+  - [ ] Use `.compendium__container`
+  - [ ] Add `.section-label`, `.section-title` structure
+  - [ ] Convert filters to `.compendium__filter` with ARIA
+  - [ ] Convert sort to `.compendium__sort-select`
+  - [ ] Update product grid to `.compendium__grid`
+  - [ ] Convert cards to `.essence-card` with all sub-elements
+  - [ ] Verify filter button states
+
+- [ ] **2.2 Alchemy Section** ([sections/alchemy-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/alchemy-section.tsx))
+  - [ ] Convert to `.alchemy` structure
+  - [ ] Add `.alchemy__watermark`
+  - [ ] Convert steps to `.alchemy-step` with number/content/symbol
+  - [ ] Add `.alchemy-step__details` for duration/method
+  - [ ] Verify step hover effects
+
+- [ ] **2.3 Testimonials Section** ([sections/testimonials-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/testimonials-section.tsx))
+  - [ ] Convert to `.manuscript` structure
+  - [ ] Add `.manuscript__paper` with stains
+  - [ ] Convert entries to `.manuscript-entry` with corners
+  - [ ] Add `.manuscript-entry__initial` illuminated letter
+  - [ ] Convert quotes to `.manuscript-entry__quote`
+  - [ ] Add `.manuscript-entry__seal` verified badge
+  - [ ] Convert pagination to `.manuscript__navigation`
+  - [ ] Verify paper texture effect
+
+## Phase 3: Supporting (Lower Impact)
+- [ ] **3.1 Newsletter Section** ([sections/newsletter-section.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/sections/newsletter-section.tsx))
+  - [ ] Use `.btn` classes for submit
+  - [ ] Style form inputs with BEM patterns
+  - [ ] Add decorative ornaments
+
+- [ ] **3.2 Footer** ([layout/footer.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/layout/footer.tsx))
+  - [ ] Create footer BEM structure
+  - [ ] Add colophon styling
+  - [ ] Verify link hover effects
+
+## Verification Checkpoints
+- [ ] Run `npm run build` after Phase 1
+- [ ] Visual comparison with static mockup
+- [ ] Run `npm run build` after Phase 2
+- [ ] Full visual audit
+- [ ] Run `npm run build` after Phase 3
+- [ ] Final responsive testing

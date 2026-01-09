@@ -1,0 +1,67 @@
+# Phase 2.8: Authentication & Remaining Controllers
+
+## Goal
+
+Install Sanctum, implement AuthController, CartController, and NewsletterController.
+
+## Current State
+
+- Sanctum: **NOT INSTALLED**
+- User model: HasApiTokens trait already present ✅
+
+---
+
+## Implementation Steps
+
+### Step 1: Install Laravel Sanctum
+
+```bash
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
+```
+
+### Step 2: Configure Sanctum
+
+- Update `config/sanctum.php` if needed
+- Sanctum middleware already in bootstrap/app.php
+
+---
+
+## Proposed Controllers
+
+### [NEW] AuthController.php
+
+**Methods:**
+- `register()` — Create new user, return token
+- `login()` — Authenticate, return token
+- `logout()` — Revoke current token
+- [user()](file:///home/project/atelier-arome/atelier-arome-api/app/Models/Order.php#61-65) — Get current user profile
+
+### [NEW] CartController.php
+
+**Methods:**
+- [show()](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Api/V1/CategoryController.php#31-58) — Get current cart
+- `addItem()` — Add product variant to cart
+- `updateItem()` — Update quantity
+- `removeItem()` — Remove from cart
+- `applyCoupon()` — Apply coupon code
+- `removeCoupon()` — Remove coupon
+
+### [NEW] NewsletterController.php
+
+**Methods:**
+- [subscribe()](file:///home/project/atelier-arome/atelier-arome-api/app/Models/NewsletterSubscriber.php#72-82) — Create subscription with token
+- [confirm()](file:///home/project/atelier-arome/atelier-arome-api/app/Models/NewsletterSubscriber.php#61-71) — Confirm via token
+- [unsubscribe()](file:///home/project/atelier-arome/atelier-arome-api/app/Models/NewsletterSubscriber.php#72-82) — Unsubscribe via token
+
+---
+
+## Verification
+
+```bash
+# Test registration
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@example.com","password":"password123"}'
+```

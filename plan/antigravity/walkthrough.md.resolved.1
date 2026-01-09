@@ -1,0 +1,44 @@
+# Walkthrough: Documentation Updates
+
+**Date:** January 9, 2026
+
+---
+
+## Summary
+
+Updated two key documentation files to accurately reflect codebase state.
+
+## Files Modified
+
+### 1. [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md)
+
+- Added "Codebase Ground Truth" section (lines 88-124)
+- Corrected database count: 24 → **26 tables**
+- Documented model status: 16 implemented, 6 skeleton
+
+### 2. [PHASE_2_BACKEND_CORE_PLAN.md](file:///home/project/atelier-arome/PHASE_2_BACKEND_CORE_PLAN.md)
+
+**Key Corrections:**
+
+| Before | After |
+|--------|-------|
+| "9 of 22 models created" | "16 of 22 fully implemented, 6 skeleton" |
+| "13 models missing" | "6 need completion" |
+| "Create all 13 models" | "Complete 6 skeleton models" |
+
+**Added:**
+- "ALREADY IMPLEMENTED (Verify Only)" section listing 7 completed models
+- Validation note explaining previous inaccuracies
+- Updated Phase 2.1 scope and checklists
+
+## Validation Method
+
+```bash
+# Counted lines per model file
+wc -l app/Models/*.php
+# Skeleton: ~11 lines | Implemented: 40+ lines
+```
+
+## Impact
+
+Phase 2.1 work reduced from "create 13 models" to "complete 6 skeleton models" — significant time savings.

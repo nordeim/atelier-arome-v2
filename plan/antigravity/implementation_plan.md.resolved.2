@@ -1,0 +1,87 @@
+# PHASE_2_BACKEND_CORE_PLAN.md Update — Implementation Plan
+
+## Goal Description
+
+Update [PHASE_2_BACKEND_CORE_PLAN.md](file:///home/project/atelier-arome/PHASE_2_BACKEND_CORE_PLAN.md) to accurately reflect the current codebase state after validation.
+
+---
+
+## Critical Discrepancies Found
+
+### Model Status Claims
+
+| Document Claim (Line 18) | Actual Status (Validated) |
+|--------------------------|---------------------------|
+| "9 of 22 models created" | **16 fully implemented + 6 skeleton = 22 total files** |
+| "13 models missing" (Line 27) | **0 files missing** — 6 are skeleton, need completion |
+
+### Models the Plan Says to "Create" That Already Exist and Are Implemented
+
+The following models are listed as "Missing" but **are already fully implemented** with fillable, casts, relationships, and scopes:
+
+| Model | Plan Status | Actual Status | Lines of Code |
+|-------|-------------|---------------|---------------|
+| Address | ❌ To Create | ✅ **IMPLEMENTED** | 69 lines |
+| Cart | ❌ To Create | ✅ **IMPLEMENTED** | 89 lines |
+| CartItem | ❌ To Create | ✅ **IMPLEMENTED** | 48 lines |
+| Order | ❌ To Create | ✅ **IMPLEMENTED** | 129 lines |
+| OrderItem | ❌ To Create | ✅ **IMPLEMENTED** | 48 lines |
+| Payment | ❌ To Create | ✅ **IMPLEMENTED** | 50 lines |
+| Coupon | ❌ To Create | ✅ **IMPLEMENTED** | 83 lines |
+
+### Models That ARE Actually Skeleton (Plan is Correct These Need Work)
+
+| Model | Actual Status | Lines |
+|-------|---------------|-------|
+| CouponUsage | ⚠️ **SKELETON** | 11 |
+| Review | ⚠️ **SKELETON** | 11 |
+| Wishlist | ⚠️ **SKELETON** | 11 |
+| WishlistItem | ⚠️ **SKELETON** | 11 |
+| NewsletterSubscriber | ⚠️ **SKELETON** | 11 |
+| InventoryMovement | ⚠️ **SKELETON** | 11 |
+
+### Correct Claims in the Plan
+
+- ✅ No `api.php` routes file exists
+- ✅ No `app/Http/Resources/` directory exists
+- ✅ No `app/Services/` directory exists
+- ✅ Only base [Controller.php](file:///home/project/atelier-arome/atelier-arome-api/app/Http/Controllers/Controller.php) exists
+- ✅ 26 database tables confirmed
+
+---
+
+## Proposed Changes
+
+### [MODIFY] [PHASE_2_BACKEND_CORE_PLAN.md](file:///home/project/atelier-arome/PHASE_2_BACKEND_CORE_PLAN.md)
+
+#### 1. Update "Current Backend State Analysis" Section (Lines 11-36)
+
+```diff
+- | **Models** | ⚠️ Partial | 9 of 22 models created (...) |
++ | **Models** | ⚠️ Partial | 16 of 22 fully implemented, 6 skeleton |
+```
+
+Change the "13 missing" to "6 skeleton" with accurate list.
+
+#### 2. Update Phase 2.1 Scope (Lines 51-60)
+
+- Change from "Create all 13 missing models" to "Complete 6 skeleton models"
+- Mark 7 implemented models (Address, Cart, Order, etc.) as ✅ Complete
+- Update checklists to reflect actual work needed
+
+#### 3. Update Model Checklists
+
+- Address, Cart, CartItem, Order, OrderItem, Payment, Coupon: Change from "create" to "verify/enhance"
+- Review, Wishlist, WishlistItem, CouponUsage, NewsletterSubscriber, InventoryMovement: Keep as "implement"
+
+---
+
+## Verification Plan
+
+### Manual Verification
+
+```bash
+# Verify line counts to distinguish skeleton vs implemented
+wc -l /home/project/atelier-arome/atelier-arome-api/app/Models/*.php | sort -n
+# Skeleton: ~11 lines, Implemented: 40+ lines
+```

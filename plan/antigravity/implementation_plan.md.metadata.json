@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Comprehensive plan to migrate Next.js React components from Tailwind utility classes to BEM classes from the static mockup's styles.css. Details 10 component files to update across 4 directories: layout (header, footer), hero (4 components), and sections (4 components). Includes specific class mappings, priority order, and estimated effort.",
+  "updatedAt":  "2026-01-09T01:03:03.024845379Z",
+  "version":  "7"
+}
