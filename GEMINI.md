@@ -1,6 +1,6 @@
 # GEMINI.md — Agent Operating Reference
 
-**Last Updated:** January 9, 2026
+**Last Updated:** January 10, 2026
 **Agent Role:** Frontend Architect & Avant-Garde UI Designer
 **Operating Mode:** Meticulous, Anti-Generic, "Construct and Conquer"
 
@@ -15,20 +15,18 @@
 ### Core Tech Stack
 | Layer | Tech | Status |
 |-------|------|--------|
-| **Frontend** | Next.js 15 (App Router) + Tailwind 4.0 | ✅ Foundation Ready |
-| **Backend** | Laravel 12 API | ✅ Core Complete |
+| **Frontend** | Next.js 15 (App Router) + Tailwind 4.0 | ✅ Phase 7.1 Complete |
+| **Backend** | Laravel 12 API | ✅ Core Complete (100%) |
 | **Database** | PostgreSQL 16 (UUIDs, Soft Deletes) | ✅ Schema & Seeded |
 | **State** | Zustand (Client) + TanStack Query (Server) | ✅ Configured |
 | **Infra** | Docker (PostgreSQL, Redis, Mailhog) | ✅ Operational |
 
 ---
 
-## 2. Codebase "Ground Truth" (Verified Jan 9, 2026)
-
-*The backend is further along than previous documentation suggested.*
+## 2. Codebase "Ground Truth" (Verified Jan 10, 2026)
 
 ### ✅ Backend (Laravel 12)
-- **Models:** **COMPLETE.** All 22+ models (Order, Product, User, etc.) exist in `app/Models/`.
+- **Models:** **COMPLETE.** All 22 models (Order, Product, User, etc.) exist in `app/Models/`.
 - **Controllers:** **COMPLETE.** Full CRUD controllers exist in `app/Http/Controllers/Api/V1/` (including `ProductController`, `CartController`, `AuthController`).
 - **API Resources:** **COMPLETE.** `ProductResource`, `CategoryResource`, etc., exist in `app/Http/Resources/`.
 - **Routes:** **COMPLETE.** `routes/api.php` defines full V1 API endpoints (Products, Cart, Auth, Checkout).
@@ -36,9 +34,10 @@
 
 ### ✅ Frontend (Next.js 15)
 - **Structure:** **COMPLETE.** App Router (`(shop)`, `(marketing)`) is set up.
-- **Components:** **PARTIAL.** Atomic components (`hero/`) exist. `ui/` (Shadcn) has `sheet.tsx`.
-- **Config:** **COMPLETE.** `next.config.ts`, `tailwind.config.ts` are correct.
-- **Integration:** **PENDING.** Frontend is not yet consuming the live API endpoints.
+- **Product Catalog:** **COMPLETE.** `filter-sidebar`, `product-card`, `product-grid` components are live.
+- **Product Detail:** **COMPLETE.** `/compendium/[slug]` route implemented with server-side SEO and atomic components (`variant-selector`, `image-gallery`).
+- **Cart:** **PENDING.** `vial-drawer` exists but needs refinement and full backend syncing.
+- **Components:** **HIGH.** `ui/` contains custom Shadcn primitives. Atomic atoms (`hero/`, `catalog/detail/`) are robust.
 
 ---
 
@@ -66,7 +65,7 @@ colors: {
 
 **Key Interaction Patterns:**
 - **Hover:** "Liquid" sway or gold glow bloom (not simple opacity change).
-- **Loading:** Alchemical vessel bubbling (not standard spinners).
+- **Loading:** Shimmering parchment skeletons (not standard spinners).
 - **Transitions:** Slow, deliberate (500ms+), resembling page turning or ink spreading.
 - **Animations:** `seal-rotate`, `liquid-wave`, `float-botanical` (defined in config).
 
@@ -76,7 +75,7 @@ colors: {
 
 ### Core Mandates
 1.  **Construct and Conquer:** Never "patch" a broken file. Create a new, clean component file, verify it, then replace the broken one.
-2.  **Atomic First:** Build the smallest part (e.g., `GoldBorderCorner.tsx`) before the whole (e.g., `HeroSection.tsx`).
+2.  **Atomic First:** Build the smallest part (e.g., `VariantSelector.tsx`) before the whole (e.g., `ProductDetail.tsx`).
 3.  **Library Discipline:** Use Shadcn primitives. Do not invent a new Modal. Style the Shadcn Dialog to look like an illuminated manuscript.
 4.  **Deep Validation:** Before marking a task "Done", run the build (`pnpm build`) and check the database.
 
@@ -92,18 +91,18 @@ colors: {
 
 ## 5. Next Session Strategy
 
-**Current Phase:** Phase 7 Complete ✅ (Product Catalog Grid) -> Phase 7.1 (Product Detail Page)
+**Current Phase:** Phase 7.1 Complete ✅ (Product Detail Page) -> Phase 8 (Cart System Integration)
 
 **Recent Achievements:**
-- **Product Catalog:** Integrated `Compendium` page with live API.
-- **Components:** Created `ProductCard`, `ProductGrid`, `FilterSidebar` with "Illuminated" styling.
-- **Infrastructure:** Implemented `api-client.ts` and TanStack Query hooks (`useProducts`).
-- **State:** URL-based filtering fully implemented (Category, Humour, Rarity, Search).
+- **Product Detail Page:** Full PDP implementation with `VariantSelector`, `QuantityAdjuster`, and `ImageGallery`.
+- **Server Rendering:** Dynamic SEO metadata and server-side data fetching for products.
+- **Design:** Implemented "Gold Leaf" styling for image containers and buttons.
+- **State:** `useProductDetail` hook with caching and optimistic updates.
 
-**Immediate Actions Required:**
-1.  **Product Detail Page:** Implement `/compendium/[slug]` to show full product details.
-2.  **Cart Integration:** Ensure "Add to Vial" on Product Card works with the Cart Store (already wired, needs verification).
-3.  **Real Data:** Verify images load correctly from the API (currently placeholders).
+**Immediate Actions Required (Phase 8):**
+1.  **Cart Drawer Refinement:** Polish `vial-drawer.tsx` to match the PDP quality (currently basic).
+2.  **Item Removal:** Implement removal and quantity editing logic in the drawer.
+3.  **Backend Sync:** Ensure cart state persists via the `CartController` API for authenticated users.
 
 **Command to Resume:**
-"The Product Catalog Grid is live and connected to the API. I am ready to build the Product Detail Page (`/compendium/[slug]`)."
+"Phase 7.1 is complete. I am ready to begin Phase 8: Cart System Integration."
