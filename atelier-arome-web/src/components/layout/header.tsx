@@ -7,111 +7,126 @@ export function Header() {
   const cartItems = useCartStore((state) => state.items)
 
   return (
-    <header className="sticky top-0 z-50 bg-parchment/95 backdrop-blur-sm border-b-2 border-gold/20">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="relative w-16 h-16 animate-seal-rotate">
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#C9A769" strokeWidth="4" />
-                <text x="50" y="55" textAnchor="middle" className="text-2xl font-display fill-ink">
-                  A
-                </text>
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-2xl font-display font-semibold text-ink">
-                Atelier Arôme
-              </h1>
-              <p className="text-sm text-ink-muted font-accent">
-                Artisanal Aromatherapy
-              </p>
+    <header className="header" id="header">
+      <div className="header__container">
+        {/* Atelier Seal */}
+        <a href="#hero" className="header__seal" aria-label="Atelier Arôme - Home">
+          <div className="header__seal-inner">
+            <svg className="header__seal-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="2" />
+              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3,2" />
+              <text x="50" y="58" textAnchor="middle" className="header__seal-letter">A</text>
+            </svg>
+            <div className="header__seal-text">
+              <span className="header__seal-name">Arôme</span>
             </div>
           </div>
+          <span className="header__seal-tagline">Est. 2024</span>
+        </a>
 
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#compendium" className="text-ink hover:text-gold transition-colors font-display">
-              <span className="text-gold-light">— I —</span> Compendium
-            </a>
-            <a href="#alchemy" className="text-ink hover:text-gold transition-colors font-display">
-              <span className="text-gold-light">— II —</span> Alchemy
-            </a>
-            <a href="#atelier" className="text-ink hover:text-gold transition-colors font-display">
-              <span className="text-gold-light">— III —</span> The Atelier
-            </a>
-            <a href="#manuscript" className="text-ink hover:text-gold transition-colors font-display">
-              <span className="text-gold-light">— IV —</span> Manuscript
-            </a>
-          </nav>
+        {/* Navigation - Atelier Sections */}
+        <nav className="header__nav" aria-label="Atelier navigation">
+          <ul className="header__nav-list">
+            <li className="header__nav-item">
+              <a href="#compounds" className="header__nav-link">
+                <span className="header__nav-number">— I —</span>
+                <span className="header__nav-label">Compendium</span>
+              </a>
+            </li>
+            <li className="header__nav-item">
+              <a href="#process" className="header__nav-link">
+                <span className="header__nav-number">— II —</span>
+                <span className="header__nav-label">Alchemy</span>
+              </a>
+            </li>
+            <li className="header__nav-item">
+              <a href="#testimonials" className="header__nav-link">
+                <span className="header__nav-number">— III —</span>
+                <span className="header__nav-label">The Atelier</span>
+              </a>
+            </li>
+            <li className="header__nav-item">
+              <a href="#manuscript" className="header__nav-link">
+                <span className="header__nav-number">— IV —</span>
+                <span className="header__nav-label">Manuscript</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
 
-          <div className="flex items-center gap-4">
-            <button className="p-2 text-ink hover:text-gold transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
+        {/* Atelier Tools */}
+        <div className="header__tools">
+          <button className="header__tool" aria-label="Search the compendium" data-tooltip="Magnifying Glass">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+          </button>
 
-            <button className="relative p-2 text-ink hover:text-gold transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M16 11V7a4 14 0 00-8 0v4M5 9l14 14m0 0H5l14-14"
-                />
-              </svg>
-              {cartItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gold text-ink text-xs font-bold rounded-full flex items-center justify-center">
-                  {cartItems.length}
-                </span>
-              )}
-            </button>
+          <button
+            className="header__tool"
+            aria-label="View collected vials"
+            data-tooltip="Vial Collection"
+            data-count={cartItems.length > 0 ? cartItems.length : undefined}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M9 2h6v4H9z" />
+              <path d="M9 6v5a3 3 0 003 3v0a3 3 0 003-3V6" />
+              <path d="M6 22h12a2 2 0 002-2v-6a6 6 0 00-6-6h0a6 6 0 00-6 6v6a2 2 0 002 2z" />
+            </svg>
+          </button>
 
-            <Sheet>
-              <SheetTrigger className="md:hidden p-2 text-ink hover:text-gold transition-colors">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </SheetTrigger>
-              <SheetContent className="bg-parchment border-l-2 border-gold shadow-xl w-[300px]">
-                <nav className="flex flex-col gap-4 mt-8">
-                  <a href="#compendium" className="text-ink hover:text-gold font-display text-lg py-2">
-                    <span className="text-gold-light">— I —</span> Folio I: Compendium
-                  </a>
-                  <a href="#alchemy" className="text-ink hover:text-gold font-display text-lg py-2">
-                    <span className="text-gold-light">— II —</span> Folio II: Alchemy
-                  </a>
-                  <a href="#atelier" className="text-ink hover:text-gold font-display text-lg py-2">
-                    <span className="text-gold-light">— III —</span> Folio III: The Atelier
-                  </a>
-                  <a href="#manuscript" className="text-ink hover:text-gold font-display text-lg py-2">
-                    <span className="text-gold-light">— IV —</span> Folio IV: Manuscript
-                  </a>
-                </nav>
-
-                <div className="colophon mt-8 border-t border-gold/20 pt-8">
-                  <p className="text-gold font-display text-sm mb-2">
-                    Atelier Arôme
-                  </p>
-                  <address className="text-ink-muted font-body text-sm leading-relaxed">
-                    <p>42 Orchard Road, Singapore 238823</p>
-                    <p>Provence-Alpes-Côte d&apos;Azur, France</p>
-                    <p className="font-accent text-gold mt-2">Anno MMXXIV</p>
-                  </address>
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="header__menu-toggle" id="menuToggle" aria-label="Open atelier menu" aria-expanded="false" data-tooltip="Menu">
+                <span className="header__menu-quill"></span>
+              </button>
+            </SheetTrigger>
+            <SheetContent className="mobile-nav" side="right">
+              <div className="mobile-nav__container">
+                <div className="mobile-nav__header">
+                  <div className="mobile-nav__seal" aria-hidden="true"></div>
+                  <span className="mobile-nav__title">Atelier Folio</span>
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+
+                <ul className="mobile-nav__list">
+                  <li className="mobile-nav__item">
+                    <a href="#compounds" className="mobile-nav__link">
+                      <span className="mobile-nav__ornament">❖</span>
+                      <span className="mobile-nav__label">Compendium</span>
+                      <span className="mobile-nav__page">Folio I</span>
+                    </a>
+                  </li>
+                  <li className="mobile-nav__item">
+                    <a href="#process" className="mobile-nav__link">
+                      <span className="mobile-nav__ornament">❖</span>
+                      <span className="mobile-nav__label">Alchemy</span>
+                      <span className="mobile-nav__page">Folio II</span>
+                    </a>
+                  </li>
+                  <li className="mobile-nav__item">
+                    <a href="#testimonials" className="mobile-nav__link">
+                      <span className="mobile-nav__ornament">❖</span>
+                      <span className="mobile-nav__label">The Atelier</span>
+                      <span className="mobile-nav__page">Folio III</span>
+                    </a>
+                  </li>
+                  <li className="mobile-nav__item">
+                    <a href="#manuscript" className="mobile-nav__link">
+                      <span className="mobile-nav__ornament">❖</span>
+                      <span className="mobile-nav__label">Manuscript</span>
+                      <span className="mobile-nav__page">Folio IV</span>
+                    </a>
+                  </li>
+                </ul>
+
+                <div className="mobile-nav__colophon">
+                  <span className="mobile-nav__colophon-text">Atelier Arôme</span>
+                  <span className="mobile-nav__colophon-year">Anno MMXXIV</span>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

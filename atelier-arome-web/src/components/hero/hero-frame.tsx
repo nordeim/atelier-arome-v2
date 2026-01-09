@@ -1,34 +1,26 @@
 export function HeroFrame({ children }: { children: React.ReactNode }) {
   return (
-    <section className="relative w-full min-h-screen bg-parchment overflow-hidden">
-      <svg className="absolute top-0 left-0 w-32 h-32 text-gold opacity-80" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,0 50,50 L50,0 Z" fill="currentColor" />
-        <path d="M0,0 Q0,50 50,50 L0,50 Z" fill="currentColor" />
-      </svg>
-      <svg className="absolute top-0 right-0 w-32 h-32 text-gold opacity-80 rotate-90" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,0 50,50 L50,0 Z" fill="currentColor" />
-        <path d="M0,0 Q0,50 50,50 L0,50 Z" fill="currentColor" />
-      </svg>
-      <svg className="absolute bottom-0 left-0 w-32 h-32 text-gold opacity-80 -rotate-90" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,0 50,50 L50,0 Z" fill="currentColor" />
-        <path d="M0,0 Q0,50 50,50 L0,50 Z" fill="currentColor" />
-      </svg>
-      <svg className="absolute bottom-0 right-0 w-32 h-32 text-gold opacity-80 rotate-180" viewBox="0 0 100 100">
-        <path d="M0,0 Q50,0 50,50 L50,0 Z" fill="currentColor" />
-        <path d="M0,0 Q0,50 50,50 L0,50 Z" fill="currentColor" />
-      </svg>
-      <svg className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] text-ink opacity-5" viewBox="0 0 200 200" aria-hidden="true">
-        <defs>
-          <pattern id="watermark" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M20,0 L40,20 L20,40 L0,20 Z" fill="none" stroke="currentColor" strokeWidth="0.5" />
-            <circle cx="20" cy="20" r="8" fill="none" stroke="currentColor" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="200" height="200" fill="url(#watermark)" />
-      </svg>
-      <div className="relative z-10 container mx-auto px-4 py-8">
+    <>
+      {/* Hand-drawn Border - BEM structure from styles.css */}
+      <div className="hero__border" aria-hidden="true">
+        <div className="hero__border-corner hero__border-corner--tl"></div>
+        <div className="hero__border-corner hero__border-corner--tr"></div>
+        <div className="hero__border-corner hero__border-corner--bl"></div>
+        <div className="hero__border-corner hero__border-corner--br"></div>
+      </div>
+
+      {/* Watermark Illustration */}
+      <div className="hero__watermark" aria-hidden="true">
+        <svg className="hero__watermark-svg" viewBox="0 0 400 400">
+          <path d="M200 100 Q300 150 300 250 Q250 350 200 350 Q150 350 100 250 Q100 150 200 100 Z" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.1" />
+          <path d="M200 120 Q280 160 280 240 Q240 320 200 320 Q160 320 120 240 Q120 160 200 120 Z" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.08" />
+        </svg>
+      </div>
+
+      {/* Hero Container */}
+      <div className="hero__container">
         {children}
       </div>
-    </section>
+    </>
   );
 }

@@ -57,13 +57,6 @@ const HUMOURS = {
   water: { icon: '💧', label: 'Water' }
 }
 
-const RARITY_COLORS = {
-  common: 'text-gold',
-  uncommon: 'text-eucalyptus',
-  rare: 'text-rosehip',
-  legendary: 'text-gold'
-}
-
 export function CompendiumSection() {
   const [filter, setFilter] = useState<string>('all')
   const [sort, setSort] = useState<string>('folio')
@@ -92,99 +85,134 @@ export function CompendiumSection() {
   })
 
   return (
-    <section className="py-20 px-4 bg-parchment">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-display font-semibold text-ink mb-4">
-            The Compendium
+    <section className="compendium" id="compounds">
+      {/* Section Border */}
+      <div className="section-border" aria-hidden="true">
+        <span className="section-border__ornament">❦</span>
+      </div>
+
+      <div className="compendium__container">
+        {/* Compendium Header */}
+        <div className="compendium__header">
+          <span className="section-label">First Folio</span>
+          <h2 className="section-title">
+            <span className="section-title__line">The Botanical</span>
+            <span className="section-title__line section-title__line--emph">Compendium</span>
           </h2>
-          <p className="text-xl font-accent text-gold">
-            Our Collection of Botanical Essences
+          <div className="compendium__rule" aria-hidden="true"></div>
+          <p className="section-description">
+            A curated collection of botanical essences, each extracted with patience and precision
+            from nature&apos;s most aromatic specimens.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-4 justify-center mb-8">
-          {['all', 'calming', 'uplifting', 'grounding', 'clarifying'].map(f => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-6 py-2 font-display rounded-lg transition-colors ${
-                filter === f
-                  ? 'bg-gold text-ink'
-                  : 'border-2 border-gold text-ink hover:bg-gold/10'
-              }`}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex justify-center mb-8">
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="px-4 py-2 border-2 border-gold font-display rounded-lg bg-parchment text-ink"
-          >
-            <option value="folio">Folio Order</option>
-            <option value="price">Price (Low to High)</option>
-            <option value="rarity">Rarity</option>
-          </select>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedEssences.map(essence => (
-            <div
-              key={essence.id}
-              className="border-2 border-gold/30 rounded-lg p-6 bg-parchment/50 hover:border-gold transition-colors"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-sm font-display text-gold">
-                  Folio {essence.folioNumber}
-                </span>
-                <span
-                  className={`${RARITY_COLORS[essence.rarity]} text-sm font-display uppercase`}
+        {/* Filters */}
+        <div className="compendium__filters">
+          <div className="compendium__filter-group">
+            <span className="compendium__filter-label">Filter by Humour</span>
+            <div className="compendium__filter-buttons">
+              {['all', 'calming', 'uplifting', 'grounding', 'clarifying'].map(f => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className="compendium__filter"
+                  aria-pressed={filter === f}
                 >
-                  {essence.rarity}
-                </span>
+                  <span className="compendium__filter-ornament">✧</span>
+                  {f.charAt(0).toUpperCase() + f.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="compendium__sort">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="compendium__sort-select"
+            >
+              <option value="folio">Folio Order</option>
+              <option value="price">Price (Low to High)</option>
+              <option value="rarity">Rarity</option>
+            </select>
+            <span className="compendium__sort-ornament">▾</span>
+          </div>
+        </div>
+
+        {/* Essence Cards Grid */}
+        <div className="compendium__grid">
+          {sortedEssences.map(essence => (
+            <article className="essence-card" key={essence.id}>
+              {/* Illumination Glow */}
+              <div className="essence-card__illumination"></div>
+
+              {/* Illustration Placeholder */}
+              <div className="essence-card__illustration">
+                <svg className="essence-card__botanical-svg" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+                </svg>
               </div>
 
-              <h3 className="text-2xl font-display text-ink mb-2">
-                {essence.latinName}
-              </h3>
+              {/* Folio Number */}
+              <div className="essence-card__folio">
+                <span>Folio</span> {essence.folioNumber}
+              </div>
 
-              <p className="text-lg font-accent text-gold mb-4">
-                {essence.commonName}
-              </p>
+              {/* Rarity Badge */}
+              <div className={`essence-card__badge essence-card__badge--${essence.rarity}`}>
+                <span className="essence-card__badge-ornament">✦</span>
+                <span>{essence.rarity}</span>
+              </div>
 
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <span>{HUMOURS[essence.humour].icon}</span>
-                  <span className="text-sm text-ink-muted font-body">
-                    {HUMOURS[essence.humour].label}
-                  </span>
+              {/* Content */}
+              <div className="essence-card__content">
+                <div className="essence-card__latin">
+                  <span className="essence-card__latin-name">{essence.latinName}</span>
+                  <div className="essence-card__latin-rule"></div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span>🌸</span>
-                  <span className="text-sm text-ink-muted font-body capitalize">
-                    {essence.season}
-                  </span>
+
+                <h3 className="essence-card__title">{essence.commonName}</h3>
+
+                <div className="essence-card__humour">
+                  <span className="essence-card__humour-icon">{HUMOURS[essence.humour].icon}</span>
+                  <span className="essence-card__humour-label">{HUMOURS[essence.humour].label}</span>
+                </div>
+
+                <p className="essence-card__description">{essence.notes}</p>
+
+                <div className="essence-card__notes">
+                  <div className="essence-card__note">
+                    <span className="essence-card__note-label">Season</span>
+                    <span className="essence-card__note-value">{essence.season}</span>
+                  </div>
                 </div>
               </div>
 
-              <p className="text-sm text-ink mb-4 font-body">
-                {essence.notes}
-              </p>
-
-              <div className="flex justify-between items-center pt-4 border-t border-gold/20">
-                <span className="text-2xl font-display text-gold">
-                  ${essence.price}
-                </span>
-                <button className="px-6 py-2 bg-gold text-ink font-display rounded-lg hover:bg-gold-dark transition-colors">
-                  Add to Vial
+              {/* Footer with Price and Action */}
+              <div className="essence-card__footer">
+                <div className="essence-card__pricing">
+                  <span className="essence-card__price">${essence.price}</span>
+                  <span className="essence-card__measure">/ 15ml</span>
+                </div>
+                <button className="essence-card__action">
+                  <svg className="essence-card__action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  <span className="essence-card__action-text">Add to Vial</span>
                 </button>
               </div>
-            </div>
+            </article>
           ))}
+        </div>
+
+        {/* Footer Counter */}
+        <div className="compendium__footer">
+          <div className="compendium__counter">
+            <span className="compendium__counter-current">{sortedEssences.length}</span>
+            <span className="compendium__counter-separator">/</span>
+            <span className="compendium__counter-total">{MOCK_ESSENCES.length}</span>
+            <span className="compendium__counter-label">Essences</span>
+          </div>
         </div>
       </div>
     </section>

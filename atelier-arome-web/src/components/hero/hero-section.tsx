@@ -4,73 +4,106 @@ import { BotanicalLayer } from './botanical-layer';
 
 export function HeroSection() {
   return (
-    <HeroFrame>
-      <BotanicalLayer />
-      <div className="grid md:grid-cols-2 gap-12 items-center min-h-[80vh]">
-        <div className="space-y-8">
-          <div className="relative">
-            <svg className="absolute -top-8 -left-8 w-32 h-32 text-gold opacity-30" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="2" />
-              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" />
-              <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="0.5" />
-              <path d="M50,5 L50,15 M50,85 L50,95 M5,50 L15,50 M85,50 L95,50" stroke="currentColor" strokeWidth="1" />
-              <path d="M20,20 L27,27 M73,73 L80,80 M20,80 L27,73 M73,27 L80,20" stroke="currentColor" strokeWidth="1" />
-            </svg>
-            <span className="text-8xl md:text-9xl font-display font-bold text-gold drop-shadow-lg relative z-10">
-              A
+    <section className="hero" id="hero">
+      <HeroFrame>
+        {/* Illuminated Initial */}
+        <div className="hero__initial" aria-hidden="true">
+          <span className="hero__initial-letter">A</span>
+          <div className="hero__initial-flourish"></div>
+        </div>
+
+        <div className="hero__content">
+          {/* Calligraphic Title */}
+          <h1 className="hero__title">
+            <span className="hero__title-line hero__title-line--1">
+              <span className="hero__title-word">The</span>
+              <span className="hero__title-word">Art</span>
             </span>
-            <span className="absolute -top-4 -left-4 text-6xl md:text-7xl font-display text-gold opacity-40">
-              A
+            <span className="hero__title-line hero__title-line--2">
+              <span className="hero__title-word">of</span>
+              <span className="hero__title-word hero__title-word--emph">Scent</span>
             </span>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-display font-semibold text-ink">
-            The Art of Scent
+            <span className="hero__title-line hero__title-line--3">
+              <span className="hero__title-word">as</span>
+              <span className="hero__title-word">Alchemy</span>
+            </span>
           </h1>
-          <p className="text-2xl md:text-3xl font-accent text-gold">
-            Where Botany Becomes Poetry
-          </p>
-          <div className="border-2 border-gold/30 rounded-lg p-6 bg-parchment/50">
-            <p className="text-lg text-ink leading-relaxed font-body">
-              In the quietude of our atelier, where patience is measured not in hours but in weeks,
-              we coax forth the very soul of botanical essences. Each drop is a testament to
-              the alchemist&apos;s devotion...
+
+          {/* Subtitle with Flourish */}
+          <div className="hero__subtitle">
+            <div className="hero__subtitle-flourish hero__subtitle-flourish--left"></div>
+            <span className="hero__subtitle-text">Where Botany Becomes Poetry</span>
+            <div className="hero__subtitle-flourish hero__subtitle-flourish--right"></div>
+          </div>
+
+          {/* Manuscript Excerpt */}
+          <div className="hero__excerpt">
+            <p className="hero__excerpt-text">
+              Within our atelier, time slows to the rhythm of distillation. Each botanical is treated
+              as a verse in nature&apos;s manuscript, its essence carefully extracted and preserved.
+              Our practice honors the ancient alchemical tradition—transforming raw botanical matter
+              into olfactory gold through patience, precision, and profound respect for the natural world.
             </p>
+            <div className="hero__excerpt-rule"></div>
+            <cite className="hero__excerpt-citation">— Master Perfumer&apos;s Journal</cite>
           </div>
-          <div className="flex gap-4">
-            <button className="px-8 py-3 bg-gold text-ink font-display rounded-lg hover:bg-gold-dark transition-colors">
-              Enter Atelier
-            </button>
-            <button className="px-8 py-3 border-2 border-gold text-ink font-display rounded-lg hover:bg-gold/10 transition-colors">
-              Our Alchemy
-            </button>
+
+          {/* Atelier Actions */}
+          <div className="hero__actions">
+            <a href="#compounds" className="btn btn--primary" data-hover-text="Explore the Compendium">
+              <span className="btn__text">Enter the Atelier</span>
+              <svg className="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a href="#process" className="btn btn--secondary" data-hover-text="Witness the Alchemy">
+              <span className="btn__text">Our Alchemy</span>
+              <span className="btn__ornament">❧</span>
+            </a>
           </div>
-          <div className="flex gap-8 pt-8 border-t border-gold/20">
-            <div className="text-center">
-              <p className="text-3xl font-display text-gold">72h</p>
-              <p className="text-sm text-ink-muted font-body">Distillation</p>
+
+          {/* Atelier Credentials */}
+          <div className="hero__credentials">
+            <div className="hero__credential">
+              <span className="hero__credential-number">72</span>
+              <span className="hero__credential-label">Hour Distillation</span>
             </div>
-            <div className="text-center">
-              <p className="text-3xl font-display text-gold">∞</p>
-              <p className="text-sm text-ink-muted font-body">Patience</p>
+            <div className="hero__credential">
+              <span className="hero__credential-number">∞</span>
+              <span className="hero__credential-label">Patience</span>
             </div>
-            <div className="text-center">
-              <p className="text-3xl font-display text-gold">100%</p>
-              <p className="text-sm text-ink-muted font-body">Artisanal</p>
+            <div className="hero__credential">
+              <span className="hero__credential-number">100%</span>
+              <span className="hero__credential-label">Artisanal</span>
             </div>
           </div>
         </div>
-        <div className="relative">
+
+        {/* Hero Visual - Hand-blown Vessel */}
+        <div className="hero__visual">
           <AlchemicalVessel />
+          <BotanicalLayer />
+
+          {/* Alchemical Symbol */}
+          <div className="hero__symbol" aria-hidden="true">
+            <svg className="hero__symbol-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="1,2" />
+              <path d="M50 20 L80 50 L50 80 L20 50 Z" fill="none" stroke="currentColor" strokeWidth="2" />
+              <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+          </div>
         </div>
-      </div>
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="flex flex-col items-center gap-2">
-          <svg className="w-6 h-6 text-gold" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12,2 L12,18 M12,18 L6,12 M12,18 L18,12" stroke="currentColor" strokeWidth="2" fill="none" />
-          </svg>
-          <span className="text-sm text-ink-muted font-accent">Continue Reading</span>
+      </HeroFrame>
+
+      {/* Scroll Indicator - Quill */}
+      <div className="hero__scroll-indicator">
+        <div className="scroll-indicator__quill">
+          <div className="quill__nib"></div>
+          <div className="quill__shaft"></div>
+          <div className="quill__feather"></div>
         </div>
+        <span className="scroll-indicator__label">Continue Reading</span>
       </div>
-    </HeroFrame>
+    </section>
   );
 }
