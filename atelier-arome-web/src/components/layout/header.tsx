@@ -2,12 +2,28 @@
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useCartStore } from '@/stores/cart-store'
+import { useScroll, smoothScrollTo } from '@/hooks/use-scroll'
 
 export function Header() {
   const cartItems = useCartStore((state) => state.items)
+  const toggleCartDrawer = useCartStore((state) => state.toggleCartDrawer)
+  const { isScrolled } = useScroll({ threshold: 20 })
+
+  // Handle nav link clicks for smooth scrolling
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    smoothScrollTo(href, 100)
+    // Update URL without reload
+    window.history.pushState({}, '', href)
+  }
+
+  // Handle cart button click
+  const handleCartClick = () => {
+    toggleCartDrawer()
+  }
 
   return (
-    <header className="header" id="header">
+    <header className={`header ${isScrolled ? 'scrolled' : ''}`} id="header">
       <div className="header__container">
         {/* Atelier Seal */}
         <a href="#hero" className="header__seal" aria-label="Atelier Arôme - Home">
@@ -28,25 +44,25 @@ export function Header() {
         <nav className="header__nav" aria-label="Atelier navigation">
           <ul className="header__nav-list">
             <li className="header__nav-item">
-              <a href="#compounds" className="header__nav-link">
+              <a href="#compounds" className="header__nav-link" onClick={(e) => handleNavClick(e, '#compounds')}>
                 <span className="header__nav-number">— I —</span>
                 <span className="header__nav-label">Compendium</span>
               </a>
             </li>
             <li className="header__nav-item">
-              <a href="#process" className="header__nav-link">
+              <a href="#process" className="header__nav-link" onClick={(e) => handleNavClick(e, '#process')}>
                 <span className="header__nav-number">— II —</span>
                 <span className="header__nav-label">Alchemy</span>
               </a>
             </li>
             <li className="header__nav-item">
-              <a href="#testimonials" className="header__nav-link">
+              <a href="#testimonials" className="header__nav-link" onClick={(e) => handleNavClick(e, '#testimonials')}>
                 <span className="header__nav-number">— III —</span>
                 <span className="header__nav-label">The Atelier</span>
               </a>
             </li>
             <li className="header__nav-item">
-              <a href="#manuscript" className="header__nav-link">
+              <a href="#manuscript" className="header__nav-link" onClick={(e) => handleNavClick(e, '#manuscript')}>
                 <span className="header__nav-number">— IV —</span>
                 <span className="header__nav-label">Manuscript</span>
               </a>
@@ -68,6 +84,7 @@ export function Header() {
             aria-label="View collected vials"
             data-tooltip="Vial Collection"
             data-count={cartItems.length > 0 ? cartItems.length : undefined}
+            onClick={handleCartClick}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M9 2h6v4H9z" />

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Crimson_Pro, Great_Vibes, Playfair_Display } from 'next/font/google';
+import { ToastContainer } from '@/components/ui/toast';
+import { VialDrawer } from '@/components/cart/vial-drawer';
 import './globals.css';
 import './atelier.css';
 
@@ -89,6 +91,12 @@ export default function RootLayout({
 
         {/* Skip Navigation for Accessibility */}
         <a href="#main-content" className="skip-link">Skip to main content</a>
+
+        {/* Toast Notifications */}
+        <ToastContainer />
+
+        {/* Cart Drawer */}
+        <VialDrawer />
 
         {children}
       </body>
