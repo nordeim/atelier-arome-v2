@@ -78,10 +78,10 @@ atelier-arome/
 ├── index.html              # Static mockup reference
 ├── styles.css              # Design system reference
 ├── main.js                # JavaScript reference
-└── AGENT.md               # This file
+└── CLAUDE.md              # This file
 ```
 
-**Current Status:** Phase 2 Frontend Core Complete ✅ (January 9, 2026)
+**Current Status:** Phase 7 Complete (Product Catalog Grid) ✅ → Phase 7.1 (Product Detail Page)
 
 ---
 
@@ -93,38 +93,37 @@ atelier-arome/
 
 | Component | Status | Details |
 |-----------|--------|---------||
-| **Models** | ✅ **COMPLETE** | 22+ models in `app/Models/` |
-| **Controllers** | ⚠️ **PARTIAL** | Base controller exists, API controllers needed |
-| **API Resources** | ❌ **MISSING** | Directory doesn't exist |
-| **Routes** | ⚠️ **PARTIAL** | Basic routing, versioned API routes needed |
-| **Database** | ✅ **COMPLETE** | 26 tables, migrations run, seeders executed |
+| **Models** | ✅ **COMPLETE** | 22 models in `app/Models/` |
+| **Controllers** | ✅ **COMPLETE** | 12 API controllers in `app/Http/Controllers/Api/V1/` |
+| **API Resources** | ✅ **COMPLETE** | 14 resources in `app/Http/Resources/` |
+| **Routes** | ✅ **COMPLETE** | Full V1 API in `routes/api.php` (144 lines) |
+| **Database** | ✅ **COMPLETE** | 26 migrations, 7 seeders, all executed |
 
 ### Frontend (Next.js 15)
 
 | Component | Status | Details |
 |-----------|--------|---------||
 | **App Router** | ✅ **COMPLETE** | All route groups configured |
-| **Components** | ✅ **17+ components** | hero, layout, cart, sections, ui |
-| **Custom Hooks** | ✅ **3 hooks** | use-scroll, use-intersection, use-reduced-motion |
+| **Components** | ✅ **19+ components** | hero, layout, cart, sections, ui, catalog |
+| **Custom Hooks** | ✅ **5 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products |
 | **Stores** | ✅ **2 stores** | cart-store, toast-store |
 | **Tailwind Config** | ✅ **COMPLETE** | Custom Illuminated Manuscript theme |
 
-### Phase 2 Features Completed
+### Current Phase: 7 Complete ✅
 
-- ✅ **Custom React Hooks** — `useSyncExternalStore` for scroll/reduced motion
-- ✅ **Toast System** — Zustand store + ToastContainer component
-- ✅ **Header Scroll Effects** — `.scrolled` class, smooth scroll nav
-- ✅ **Vial Drawer (Cart)** — Cart UI with checkout simulation
-- ✅ **Scroll Animations** — `AnimateInView` component
-- ✅ **Form Validation** — Newsletter form + accessibility (`a11y.ts`)
-- ✅ **BEM Class Alignment** — Dynamic landing page matches static mockup
+**Phase 7 Features Completed:**
+- ✅ **Product Catalog Grid** — `/compendium` page with live API integration
+- ✅ **ProductCard Component** — Illuminated manuscript styling
+- ✅ **ProductGrid Component** — Responsive grid with skeleton loading
+- ✅ **FilterSidebar Component** — Category, Humour, Rarity filters
+- ✅ **URL-Based Filtering** — Shareable filter states via query params
+- ✅ **TanStack Query Integration** — `useProducts` hook with caching
+- ✅ **API Client** — Axios-based `api-client.ts`
 
-### Immediate Next Steps (Phase 3)
-
-1. **Create API Resources:** `php artisan make:resource ProductResource`, etc.
-2. **Create Controllers:** `ProductController`, `CartController`, `AuthController`
-3. **Add API Routes:** Create `routes/api.php` with versioned endpoints
-4. **Connect Frontend to API:** TanStack Query integration
+**Immediate Next Steps (Phase 7.1):**
+1. **Product Detail Page:** Implement `/compendium/[slug]`
+2. **Cart Integration:** Verify "Add to Vial" works with Cart Store
+3. **Real Images:** Verify product images load from API
 
 ---
 
@@ -136,6 +135,10 @@ The frontend uses an **atomic component architecture** for maintainability and s
 
 ```
 src/components/
+├── catalog/                   # Product Catalog (Phase 7)
+│   ├── filter-sidebar.tsx      # Category/Humour/Rarity filters
+│   ├── product-card.tsx        # Individual product card
+│   └── product-grid.tsx        # Responsive product grid
 ├── hero/                      # Atomic hero components
 │   ├── hero-frame.tsx          # Layout + border ornaments (80 lines)
 │   ├── alchemical-vessel.tsx    # Vessel + liquid animation (120 lines)
@@ -152,22 +155,26 @@ src/components/
 │   └── newsletter-section.tsx # Form validation + a11y
 └── ui/                        # Shadcn-UI primitives + custom
     ├── sheet.tsx              # Radix Dialog wrapper
+    ├── button.tsx             # Styled button
+    ├── skeleton.tsx           # Loading placeholder
     ├── toast.tsx              # Toast notifications (Phase 2)
     └── animate-in-view.tsx    # Scroll animations (Phase 2)
 
-src/hooks/                     # Custom React 18+ hooks (Phase 2)
+src/hooks/                     # Custom React hooks
 ├── index.ts                   # Barrel export
 ├── use-scroll.ts              # useSyncExternalStore for scroll
 ├── use-intersection.ts        # IntersectionObserver wrapper
-└── use-reduced-motion.ts      # Reduced motion detection
+├── use-reduced-motion.ts      # Reduced motion detection
+└── use-products.ts            # TanStack Query hook for products
 
 src/stores/                    # Zustand stores (Phase 2)
 ├── cart-store.ts              # Cart state with localStorage
 └── toast-store.ts             # Toast notification queue
 
-src/lib/                       # Utilities (Phase 2)
+src/lib/                       # Utilities
 ├── utils.ts                   # cn() class merger
-└── a11y.ts                    # Screen reader announcements, validation
+├── a11y.ts                    # Screen reader announcements, validation
+└── api-client.ts              # Axios API client for backend
 ```
 
 **Atomic Components (Single Responsibility):**
@@ -1246,43 +1253,54 @@ export default {
 
 ## Phase Status
 
-**Current Phase:** Phase 3 Complete ✅ → Phase 4 Ready ⏳
+**Current Phase:** Phase 7 Complete ✅ → Phase 7.1 (Product Detail Page)
 
 **Phase 1 (Foundation) - 100% Complete ✅:**
 - [x] Create `atelier-arome-api/` Laravel 12 project ✅
 - [x] Create `atelier-arome-web/` Next.js 15 project ✅
-- [x] Set up PostgreSQL database with 24 table migrations ✅
+- [x] Set up PostgreSQL database with 26 table migrations ✅
 - [x] Configure Redis for cache/session/queue ✅
 - [x] Docker infrastructure configured (atelier_db, atelier_redis, atelier_mailhog) ✅
 - [x] Install Shadcn-UI components with custom theme ✅
 - [x] Implement "Illuminated Manuscript" Tailwind theme ✅
-- [x] Create all database seeders (6 seeders) ✅
+- [x] Create all database seeders (7 seeders) ✅
 - [x] Seed sample data (5 users, 4 categories, 27 tags, 5 products) ✅
 - [x] App Router structure created with route groups ✅
-- [x] Frontend build successful and dev server running ✅
-- [x] Backend API server running and tested ✅
+
+**Phase 2 (Backend Core) - 100% Complete ✅:**
+- [x] All 22 Eloquent models with complete relationships ✅
+- [x] 14 API resource transformers in `app/Http/Resources/` ✅
+- [x] 12 API controllers in `app/Http/Controllers/Api/V1/` ✅
+- [x] Authentication routes (Laravel Sanctum) ✅
+- [x] Product, Category, Tag API endpoints ✅
+- [x] Cart and Checkout endpoints ✅
+- [x] Full route definitions in `routes/api.php` (144 lines) ✅
 
 **Phase 3 (Frontend Foundation) - 100% Complete ✅:**
-- [x] Atomic component architecture established (hero-frame, alchemical-vessel, botanical-layer) ✅
-- [x] Orchestrator components created (hero-section, header) ✅
+- [x] Atomic component architecture (hero-frame, alchemical-vessel, botanical-layer) ✅
+- [x] Orchestrator components (hero-section, header) ✅
 - [x] Zustand cart store with localStorage persistence ✅
 - [x] Shadcn Sheet component with parchment styling ✅
-- [x] Tailwind animation utilities configured (seal-rotate, liquid-sway, bubble-rise, float) ✅
-- [x] Build error resolved (JSX syntax elimination via "Construct and Conquer") ✅
-- [x] Zero TypeScript errors ✅
-- [x] Zero ESLint warnings ✅
-- [x] Dev server running on http://localhost:3000 ✅
+- [x] Tailwind animation utilities configured ✅
+- [x] Zero TypeScript/ESLint errors ✅
 
-**Phase 2 (Backend Core) - Ready to Begin ⏳:**
-- [ ] Refine all 22 Eloquent models with complete relationships
-- [ ] Create API resource transformers
-- [ ] Create base controller with common CRUD methods
-- [ ] Implement authentication routes (Laravel Sanctum)
-- [ ] Create Product CRUD API endpoints
-- [ ] Create Category and Tag listing endpoints
-- [ ] Implement exception handler with consistent API error format
-- [ ] Configure rate limiting middleware (60 requests/minute)
-- [ ] Write comprehensive tests (unit + feature)
+**Phases 4-6 (Design, Auth, Product Management) - Complete ✅:**
+- [x] Design system fully implemented ✅
+- [x] Authentication integration ✅
+- [x] Product management backend complete ✅
+
+**Phase 7 (Product Catalog FE) - 100% Complete ✅:**
+- [x] API Client (`src/lib/api-client.ts`) ✅
+- [x] TanStack Query hook (`useProducts`) ✅
+- [x] Product Grid & Card components (`src/components/catalog/`) ✅
+- [x] Filter Sidebar with URL sync ✅
+- [x] `/compendium` page integrated with live API ✅
+
+**Phase 7.1 (Product Detail Page) - In Progress 🚧:**
+- [ ] Implement `/compendium/[slug]` route
+- [ ] Product detail component with variant selector
+- [ ] Add to Cart integration verification
+- [ ] Image gallery with zoom
 
 **See `MASTER_EXECUTION_PLAN.md` for complete phase breakdown.**
 
@@ -1381,11 +1399,12 @@ When creating new components:
 
 ---
 
-**Last Updated:** January 5, 2026
-**Project Status:** Phase 1 Complete ✅ (100%) - Phase 2 Ready ⏳
+**Last Updated:** January 9, 2026
+**Project Status:** Phase 7 Complete ✅ → Phase 7.1 (Product Detail Page)
 **Architecture Type:** Headless Commerce (Laravel 12 API + Next.js 15)
 **Backend Server:** http://localhost:8000 ✅
 **Frontend Server:** http://localhost:3000 ✅
 **Database:** PostgreSQL 16 (Docker: atelier_db) ✅
 **Cache/Queue:** Redis 7.4 (Docker: atelier_redis) ✅
 **Email Testing:** Mailhog (Docker: atelier_mailhog) ✅
+

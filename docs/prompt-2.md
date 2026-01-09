@@ -22,6 +22,10 @@ Awesome job on your meticulous analysis, planning and execution! Please keep up 
 
 ---
 
+Now, please meticulously review and analyze @AGENT.md , @README.md , @GEMINI.md and @CLAUDE.md to have a deep understanding of the project and its codebase current design and architecture. Next, validate your deep understanding and any findings and assumptions with the actual codebase files. Finally, create a detailed and comprehensive `Project_Architecture_Document.md` in the project root folder, as the single source-of-truth handbook to fully initialize new developer or another coding agent to be able to handle new PRs independently.
+
+---
+
 Now, please meticulously review and analyze @AGENT.md , @README.md , @GEMINI.md and @Deep_Project_Understanding_Document.md to have a deep understanding of the project and its codebase current design and architecture. Next, validate your deep understanding and any findings and assumptions with the actual codebase file. Finally, replace the existing `CLAUDE.md` with the correct content (claude briefing document).
 
 ---

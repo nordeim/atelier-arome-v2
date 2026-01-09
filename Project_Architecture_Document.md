@@ -1,1710 +1,1245 @@
 # Project Architecture Document
-## Atelier Arôme — E-Commerce Platform
+## Atelier Arôme — The Definitive Codebase Handbook
+
+> **Version:** 2.0.0  
+> **Last Validated:** January 9, 2026  
+> **Status:** Phase 7 Complete (Product Catalog Grid) → Phase 7.1 (Product Detail Page)  
+> **Purpose:** Single source-of-truth for developers and AI coding agents
 
 ---
 
-# 📋 Executive Summary
+## Table of Contents
 
-**Project**: Full-featured production e-commerce platform for Atelier Arôme, a Singapore-based artisanal aromatherapy company.
-
-**Architecture**: Decoupled headless commerce with Laravel 12 API backend and Next.js 15 frontend.
-
-**Aesthetic Preservation**: The distinctive "Illuminated Manuscript" design language is preserved through a custom Tailwind theme extension and Shadcn-UI component variants.
-
-**Singapore Compliance**: Built-in GST calculation (9%), PayNow integration, SingPost shipping API, and SGD currency handling.
-
----
-
-# 🏗️ Technology Stack Specification
-
-## Backend Stack
-
-| Layer | Technology | Version | Purpose |
-|-------|------------|---------|---------|
-| **Runtime** | PHP | 8.3+ | Server-side execution |
-| **Framework** | Laravel | 12.x | API architecture, business logic |
-| **Database** | PostgreSQL | 16+ | Primary data store |
-| **Cache** | Redis | 7.x | Session, cache, queue driver |
-| **ORM** | Eloquent | - | Database abstraction |
-| **Auth** | Laravel Sanctum | 4.x | API token authentication |
-| **Queue** | Laravel Horizon | 5.x | Job processing dashboard |
-| **Search** | Meilisearch | 1.x | Full-text product search |
-| **File Storage** | Cloudinary / S3 | - | Media CDN |
-| **Email** | Resend | - | Transactional email |
-| **Payments** | Stripe SDK | - | Payment processing |
-| **Admin** | Filament | 3.x | Admin panel |
-
-## Frontend Stack
-
-| Layer | Technology | Version | Purpose |
-|-------|------------|---------|---------|
-| **Framework** | Next.js | 15.x | React meta-framework |
-| **Runtime** | React | 19.x | UI library |
-| **Language** | TypeScript | 5.x | Type safety |
-| **Styling** | Tailwind CSS | 4.0 | Utility-first CSS |
-| **Components** | Shadcn-UI | latest | Radix primitives |
-| **Animations** | Framer Motion | 11.x | Complex animations |
-| **State (Client)** | Zustand | 5.x | Client-side state |
-| **State (Server)** | TanStack Query | 5.x | Server state cache |
-| **Forms** | React Hook Form | 7.x | Form management |
-| **Validation** | Zod | 3.x | Schema validation |
-| **Icons** | Lucide React | - | Icon system |
-
-## Infrastructure
-
-| Component | Service | Purpose |
-|-----------|---------|---------|
-| **API Hosting** | Laravel Forge / Vapor | Laravel deployment |
-| **Frontend Hosting** | Vercel | Edge deployment |
-| **Database** | Neon / Supabase | Managed PostgreSQL |
-| **CDN** | Cloudflare | Edge caching |
-| **Monitoring** | Sentry | Error tracking |
-| **Analytics** | Plausible | Privacy-focused analytics |
+1. [Executive Summary](#1-executive-summary)
+2. [Architecture Overview](#2-architecture-overview)
+3. [Technology Stack](#3-technology-stack)
+4. [Repository Structure](#4-repository-structure)
+5. [Backend Architecture (Laravel 12)](#5-backend-architecture-laravel-12)
+6. [Frontend Architecture (Next.js 15)](#6-frontend-architecture-nextjs-15)
+7. [Database Schema](#7-database-schema)
+8. [API Reference](#8-api-reference)
+9. [Design System: Illuminated Manuscript](#9-design-system-illuminated-manuscript)
+10. [State Management](#10-state-management)
+11. [Development Workflow](#11-development-workflow)
+12. [Testing Strategy](#12-testing-strategy)
+13. [Infrastructure & Deployment](#13-infrastructure--deployment)
+14. [Security Considerations](#14-security-considerations)
+15. [Common Pitfalls & Solutions](#15-common-pitfalls--solutions)
+16. [Phase Status & Roadmap](#16-phase-status--roadmap)
+17. [Quick Reference](#17-quick-reference)
 
 ---
 
-# 📁 Complete File Hierarchy
+## 1. Executive Summary
 
-## Backend (Laravel 12)
+### What is Atelier Arôme?
 
-```
-atelier-arome-api/
-├── .env.example
-├── .gitignore
-├── artisan
-├── composer.json
-├── composer.lock
-├── phpunit.xml
-├── README.md
-│
-├── app/
-│   ├── Console/
-│   │   ├── Commands/
-│   │   │   ├── SyncInventoryCommand.php      # Inventory sync scheduler
-│   │   │   ├── GenerateSitemapCommand.php    # SEO sitemap generation
-│   │   │   ├── CleanExpiredCartsCommand.php  # Cart cleanup
-│   │   │   └── SendAbandonedCartEmailsCommand.php
-│   │   └── Kernel.php
-│   │
-│   ├── Enums/
-│   │   ├── OrderStatus.php                   # Pending, Processing, Shipped, Delivered, Cancelled
-│   │   ├── PaymentStatus.php                 # Pending, Completed, Failed, Refunded
-│   │   ├── PaymentMethod.php                 # Card, PayNow, GrabPay
-│   │   ├── ProductHumour.php                 # Calming, Uplifting, Grounding, Clarifying
-│   │   ├── ProductRarity.php                 # Common, Rare, Limited
-│   │   ├── ProductSeason.php                 # Spring, Summer, Autumn, Winter
-│   │   └── UserRole.php                      # Customer, Admin, SuperAdmin
-│   │
-│   ├── Events/
-│   │   ├── OrderPlaced.php
-│   │   ├── OrderStatusChanged.php
-│   │   ├── PaymentReceived.php
-│   │   ├── InventoryLow.php
-│   │   └── NewsletterSubscribed.php
-│   │
-│   ├── Exceptions/
-│   │   ├── Handler.php
-│   │   ├── InsufficientInventoryException.php
-│   │   ├── PaymentFailedException.php
-│   │   └── InvalidCouponException.php
-│   │
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Controller.php
-│   │   │   │
-│   │   │   ├── Api/
-│   │   │   │   ├── V1/
-│   │   │   │   │   ├── AuthController.php           # Login, register, logout, me
-│   │   │   │   │   ├── ProductController.php        # CRUD products, variants
-│   │   │   │   │   ├── CategoryController.php       # Product categories
-│   │   │   │   │   ├── CartController.php           # Cart operations
-│   │   │   │   │   ├── CheckoutController.php       # Checkout flow
-│   │   │   │   │   ├── OrderController.php          # Order history, details
-│   │   │   │   │   ├── AddressController.php        # Saved addresses
-│   │   │   │   │   ├── WishlistController.php       # Bookmarked essences
-│   │   │   │   │   ├── ReviewController.php         # Product reviews
-│   │   │   │   │   ├── TestimonialController.php    # Patron testimonials
-│   │   │   │   │   ├── NewsletterController.php     # Subscription management
-│   │   │   │   │   ├── SearchController.php         # Product search
-│   │   │   │   │   ├── ShippingController.php       # Shipping rates, SingPost
-│   │   │   │   │   └── PaymentController.php        # Stripe webhooks
-│   │   │   │   │
-│   │   │   │   └── V1/Admin/
-│   │   │   │       ├── DashboardController.php      # Analytics, metrics
-│   │   │   │       ├── ProductManagementController.php
-│   │   │   │       ├── OrderManagementController.php
-│   │   │   │       ├── CustomerManagementController.php
-│   │   │   │       ├── InventoryController.php
-│   │   │   │       ├── CouponController.php
-│   │   │   │       ├── ReportController.php
-│   │   │   │       └── SettingsController.php
-│   │   │   │
-│   │   │   └── Webhook/
-│   │   │       ├── StripeWebhookController.php
-│   │   │       └── SingPostWebhookController.php
-│   │   │
-│   │   ├── Middleware/
-│   │   │   ├── EnsureEmailIsVerified.php
-│   │   │   ├── EnsureIsAdmin.php
-│   │   │   ├── TrackCartSession.php              # Guest cart tracking
-│   │   │   ├── CalculateGST.php                  # Singapore GST middleware
-│   │   │   └── RateLimiter.php
-│   │   │
-│   │   ├── Requests/
-│   │   │   ├── Auth/
-│   │   │   │   ├── LoginRequest.php
-│   │   │   │   ├── RegisterRequest.php
-│   │   │   │   └── ForgotPasswordRequest.php
-│   │   │   │
-│   │   │   ├── Cart/
-│   │   │   │   ├── AddToCartRequest.php
-│   │   │   │   ├── UpdateCartItemRequest.php
-│   │   │   │   └── ApplyCouponRequest.php
-│   │   │   │
-│   │   │   ├── Checkout/
-│   │   │   │   ├── InitiateCheckoutRequest.php
-│   │   │   │   ├── SetShippingAddressRequest.php
-│   │   │   │   ├── SetPaymentMethodRequest.php
-│   │   │   │   └── ConfirmOrderRequest.php
-│   │   │   │
-│   │   │   ├── Product/
-│   │   │   │   ├── StoreProductRequest.php
-│   │   │   │   ├── UpdateProductRequest.php
-│   │   │   │   └── ProductFilterRequest.php
-│   │   │   │
-│   │   │   ├── Address/
-│   │   │   │   └── StoreAddressRequest.php
-│   │   │   │
-│   │   │   └── Newsletter/
-│   │   │       └── SubscribeRequest.php
-│   │   │
-│   │   └── Resources/
-│   │       ├── ProductResource.php
-│   │       ├── ProductCollection.php
-│   │       ├── ProductVariantResource.php
-│   │       ├── CategoryResource.php
-│   │       ├── CartResource.php
-│   │       ├── CartItemResource.php
-│   │       ├── OrderResource.php
-│   │       ├── OrderItemResource.php
-│   │       ├── AddressResource.php
-│   │       ├── UserResource.php
-│   │       ├── TestimonialResource.php
-│   │       ├── ReviewResource.php
-│   │       └── ShippingRateResource.php
-│   │
-│   ├── Jobs/
-│   │   ├── ProcessPayment.php
-│   │   ├── SendOrderConfirmation.php
-│   │   ├── SendShippingNotification.php
-│   │   ├── SendAbandonedCartEmail.php
-│   │   ├── SyncInventoryWithShopify.php      # Optional integration
-│   │   ├── GenerateInvoicePdf.php
-│   │   └── UpdateSearchIndex.php
-│   │
-│   ├── Listeners/
-│   │   ├── SendOrderConfirmationEmail.php
-│   │   ├── UpdateInventoryOnOrder.php
-│   │   ├── NotifyAdminOfLowInventory.php
-│   │   ├── SendWelcomeEmail.php
-│   │   └── LogPaymentEvent.php
-│   │
-│   ├── Mail/
-│   │   ├── OrderConfirmation.php
-│   │   ├── OrderShipped.php
-│   │   ├── AbandonedCart.php
-│   │   ├── WelcomeEmail.php
-│   │   ├── PasswordReset.php
-│   │   ├── NewsletterConfirmation.php
-│   │   └── QuarterlyFolio.php                # Newsletter template
-│   │
-│   ├── Models/
-│   │   ├── User.php                          # Customer + Admin unified
-│   │   ├── Product.php                       # Essence products
-│   │   ├── ProductVariant.php                # Size variants (5ml, 15ml, 30ml)
-│   │   ├── ProductImage.php                  # Multiple product images
-│   │   ├── Category.php                      # Singles, Blends, Sets, Gift
-│   │   ├── Tag.php                           # Scent notes tagging
-│   │   ├── Cart.php                          # Shopping cart
-│   │   ├── CartItem.php                      # Cart line items
-│   │   ├── Order.php                         # Completed orders
-│   │   ├── OrderItem.php                     # Order line items
-│   │   ├── Address.php                       # Shipping/billing addresses
-│   │   ├── Payment.php                       # Payment records
-│   │   ├── Coupon.php                        # Discount codes
-│   │   ├── CouponUsage.php                   # Coupon redemption tracking
-│   │   ├── Review.php                        # Product reviews
-│   │   ├── Testimonial.php                   # Patron testimonials
-│   │   ├── Wishlist.php                      # User wishlists
-│   │   ├── WishlistItem.php                  # Wishlist line items
-│   │   ├── NewsletterSubscriber.php          # Email subscribers
-│   │   ├── Inventory.php                     # Stock tracking
-│   │   ├── InventoryMovement.php             # Stock history
-│   │   └── Setting.php                       # Site configuration
-│   │
-│   ├── Notifications/
-│   │   ├── OrderPlacedNotification.php
-│   │   ├── OrderShippedNotification.php
-│   │   ├── LowInventoryNotification.php
-│   │   └── NewCustomerNotification.php
-│   │
-│   ├── Observers/
-│   │   ├── ProductObserver.php               # Search index sync
-│   │   ├── OrderObserver.php                 # Order lifecycle
-│   │   └── InventoryObserver.php             # Stock alerts
-│   │
-│   ├── Policies/
-│   │   ├── OrderPolicy.php
-│   │   ├── AddressPolicy.php
-│   │   ├── ReviewPolicy.php
-│   │   └── ProductPolicy.php
-│   │
-│   ├── Providers/
-│   │   ├── AppServiceProvider.php
-│   │   ├── AuthServiceProvider.php
-│   │   ├── EventServiceProvider.php
-│   │   ├── RouteServiceProvider.php
-│   │   └── StripeServiceProvider.php
-│   │
-│   └── Services/
-│       ├── CartService.php                   # Cart business logic
-│       ├── CheckoutService.php               # Checkout orchestration
-│       ├── PaymentService.php                # Stripe integration
-│       ├── ShippingService.php               # SingPost integration
-│       ├── GSTService.php                    # Singapore tax calculation
-│       ├── InventoryService.php              # Stock management
-│       ├── CouponService.php                 # Discount validation
-│       ├── SearchService.php                 # Meilisearch wrapper
-│       ├── PdfService.php                    # Invoice generation
-│       └── MediaService.php                  # Cloudinary integration
-│
-├── bootstrap/
-│   ├── app.php
-│   ├── cache/
-│   └── providers.php
-│
-├── config/
-│   ├── app.php
-│   ├── auth.php
-│   ├── cache.php
-│   ├── cors.php                              # CORS for Next.js frontend
-│   ├── database.php
-│   ├── filesystems.php
-│   ├── horizon.php
-│   ├── logging.php
-│   ├── mail.php
-│   ├── queue.php
-│   ├── sanctum.php
-│   ├── services.php                          # Stripe, Cloudinary keys
-│   ├── session.php
-│   └── shop.php                              # Custom e-commerce config
-│       # - gst_rate: 0.09
-│       # - currency: SGD
-│       # - max_cart_items: 12
-│       # - abandoned_cart_hours: 24
-│
-├── database/
-│   ├── factories/
-│   │   ├── UserFactory.php
-│   │   ├── ProductFactory.php
-│   │   ├── ProductVariantFactory.php
-│   │   ├── OrderFactory.php
-│   │   ├── ReviewFactory.php
-│   │   └── TestimonialFactory.php
-│   │
-│   ├── migrations/
-│   │   ├── 0001_01_01_000001_create_users_table.php
-│   │   ├── 0001_01_01_000002_create_password_reset_tokens_table.php
-│   │   ├── 0001_01_01_000003_create_sessions_table.php
-│   │   ├── 2024_01_01_000001_create_categories_table.php
-│   │   ├── 2024_01_01_000002_create_products_table.php
-│   │   ├── 2024_01_01_000003_create_product_variants_table.php
-│   │   ├── 2024_01_01_000004_create_product_images_table.php
-│   │   ├── 2024_01_01_000005_create_tags_table.php
-│   │   ├── 2024_01_01_000006_create_product_tag_table.php
-│   │   ├── 2024_01_01_000007_create_addresses_table.php
-│   │   ├── 2024_01_01_000008_create_carts_table.php
-│   │   ├── 2024_01_01_000009_create_cart_items_table.php
-│   │   ├── 2024_01_01_000010_create_orders_table.php
-│   │   ├── 2024_01_01_000011_create_order_items_table.php
-│   │   ├── 2024_01_01_000012_create_payments_table.php
-│   │   ├── 2024_01_01_000013_create_coupons_table.php
-│   │   ├── 2024_01_01_000014_create_coupon_usages_table.php
-│   │   ├── 2024_01_01_000015_create_reviews_table.php
-│   │   ├── 2024_01_01_000016_create_testimonials_table.php
-│   │   ├── 2024_01_01_000017_create_wishlists_table.php
-│   │   ├── 2024_01_01_000018_create_wishlist_items_table.php
-│   │   ├── 2024_01_01_000019_create_newsletter_subscribers_table.php
-│   │   ├── 2024_01_01_000020_create_inventories_table.php
-│   │   ├── 2024_01_01_000021_create_inventory_movements_table.php
-│   │   └── 2024_01_01_000022_create_settings_table.php
-│   │
-│   └── seeders/
-│       ├── DatabaseSeeder.php
-│       ├── UserSeeder.php
-│       ├── CategorySeeder.php
-│       ├── ProductSeeder.php                 # Sample essences
-│       ├── TestimonialSeeder.php
-│       └── SettingsSeeder.php
-│
-├── public/
-│   ├── index.php
-│   └── .htaccess
-│
-├── resources/
-│   └── views/
-│       ├── emails/
-│       │   ├── order-confirmation.blade.php
-│       │   ├── order-shipped.blade.php
-│       │   ├── abandoned-cart.blade.php
-│       │   ├── welcome.blade.php
-│       │   └── quarterly-folio.blade.php
-│       │
-│       └── pdf/
-│           └── invoice.blade.php
-│
-├── routes/
-│   ├── api.php                               # V1 API routes
-│   ├── channels.php                          # Broadcast channels
-│   ├── console.php                           # Artisan commands
-│   └── web.php                               # Filament admin
-│
-├── storage/
-│   ├── app/
-│   ├── framework/
-│   └── logs/
-│
-└── tests/
-    ├── Feature/
-    │   ├── Api/
-    │   │   ├── AuthTest.php
-    │   │   ├── ProductTest.php
-    │   │   ├── CartTest.php
-    │   │   ├── CheckoutTest.php
-    │   │   └── OrderTest.php
-    │   │
-    │   └── Admin/
-    │       ├── ProductManagementTest.php
-    │       └── OrderManagementTest.php
-    │
-    └── Unit/
-        ├── Services/
-        │   ├── CartServiceTest.php
-        │   ├── GSTServiceTest.php
-        │   ├── CouponServiceTest.php
-        │   └── InventoryServiceTest.php
-        │
-        └── Models/
-            ├── ProductTest.php
-            └── OrderTest.php
-```
+**Atelier Arôme** is a production-grade **headless e-commerce platform** for a Singapore-based artisanal aromatherapy company. The platform features a distinctive **"Illuminated Manuscript"** Renaissance-inspired aesthetic that deliberately rejects generic e-commerce templates.
 
-## Frontend (Next.js 15)
+### Key Differentiators
 
-```
-atelier-arome-web/
-├── .env.local.example
-├── .eslintrc.json
-├── .gitignore
-├── .prettierrc
-├── components.json                           # Shadcn-UI config
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.ts
-├── tsconfig.json
-├── README.md
-│
-├── public/
-│   ├── fonts/
-│   │   ├── cormorant-garamond/
-│   │   │   ├── CormorantGaramond-Light.woff2
-│   │   │   ├── CormorantGaramond-Regular.woff2
-│   │   │   ├── CormorantGaramond-Medium.woff2
-│   │   │   ├── CormorantGaramond-SemiBold.woff2
-│   │   │   └── CormorantGaramond-Bold.woff2
-│   │   │
-│   │   ├── crimson-pro/
-│   │   │   └── ... (similar structure)
-│   │   │
-│   │   └── great-vibes/
-│   │       └── GreatVibes-Regular.woff2
-│   │
-│   ├── images/
-│   │   ├── og-image.jpg                      # Social preview
-│   │   ├── logo-seal.svg                     # Atelier seal
-│   │   └── botanicals/                       # Static botanical SVGs
-│   │
-│   ├── favicon.ico
-│   ├── apple-touch-icon.png
-│   └── manifest.json
-│
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx                        # Root layout
-│   │   ├── page.tsx                          # Homepage
-│   │   ├── loading.tsx                       # Global loading UI
-│   │   ├── error.tsx                         # Global error UI
-│   │   ├── not-found.tsx                     # 404 page
-│   │   ├── globals.css                       # Global styles + Tailwind
-│   │   │
-│   │   ├── (marketing)/                      # Marketing pages group
-│   │   │   ├── layout.tsx
-│   │   │   ├── about/
-│   │   │   │   └── page.tsx                  # The Atelier story
-│   │   │   ├── alchemy/
-│   │   │   │   └── page.tsx                  # Our process
-│   │   │   ├── contact/
-│   │   │   │   └── page.tsx
-│   │   │   └── faq/
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── (shop)/                           # E-commerce pages group
-│   │   │   ├── layout.tsx
-│   │   │   ├── compendium/                   # Product catalog
-│   │   │   │   ├── page.tsx                  # Product listing
-│   │   │   │   ├── loading.tsx
-│   │   │   │   └── [slug]/
-│   │   │   │       ├── page.tsx              # Product detail
-│   │   │   │       └── loading.tsx
-│   │   │   │
-│   │   │   ├── collections/                  # Category pages
-│   │   │   │   ├── page.tsx                  # All collections
-│   │   │   │   └── [category]/
-│   │   │   │       └── page.tsx
-│   │   │   │
-│   │   │   └── search/
-│   │   │       └── page.tsx                  # Search results
-│   │   │
-│   │   ├── (checkout)/                       # Checkout flow group
-│   │   │   ├── layout.tsx                    # Minimal checkout layout
-│   │   │   ├── cart/
-│   │   │   │   └── page.tsx                  # Full cart page
-│   │   │   │
-│   │   │   └── checkout/
-│   │   │       ├── page.tsx                  # Checkout redirect
-│   │   │       ├── shipping/
-│   │   │       │   └── page.tsx              # Shipping address step
-│   │   │       ├── payment/
-│   │   │       │   └── page.tsx              # Payment step
-│   │   │       └── confirmation/
-│   │   │           └── page.tsx              # Order confirmation
-│   │   │
-│   │   ├── (account)/                        # User account group
-│   │   │   ├── layout.tsx
-│   │   │   ├── account/
-│   │   │   │   ├── page.tsx                  # Account dashboard
-│   │   │   │   ├── orders/
-│   │   │   │   │   ├── page.tsx              # Order history
-│   │   │   │   │   └── [id]/
-│   │   │   │   │       └── page.tsx          # Order detail
-│   │   │   │   ├── addresses/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── wishlist/
-│   │   │   │   │   └── page.tsx              # Bookmarked essences
-│   │   │   │   └── settings/
-│   │   │   │       └── page.tsx
-│   │   │   │
-│   │   │   ├── login/
-│   │   │   │   └── page.tsx
-│   │   │   ├── register/
-│   │   │   │   └── page.tsx
-│   │   │   ├── forgot-password/
-│   │   │   │   └── page.tsx
-│   │   │   └── reset-password/
-│   │   │       └── page.tsx
-│   │   │
-│   │   └── api/                              # Next.js API routes (BFF)
-│   │       ├── auth/
-│   │       │   └── [...nextauth]/
-│   │       │       └── route.ts              # NextAuth.js handlers
-│   │       │
-│   │       ├── cart/
-│   │       │   └── route.ts                  # Cart session handler
-│   │       │
-│   │       ├── newsletter/
-│   │       │   └── route.ts
-│   │       │
-│   │       └── revalidate/
-│   │           └── route.ts                  # On-demand ISR revalidation
-│   │
-│   ├── components/
-│   │   ├── ui/                               # Shadcn-UI base components
-│   │   │   ├── button.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── dialog.tsx
-│   │   │   ├── drawer.tsx                    # Vial drawer base
-│   │   │   ├── dropdown-menu.tsx
-│   │   │   ├── form.tsx
-│   │   │   ├── input.tsx
-│   │   │   ├── label.tsx
-│   │   │   ├── select.tsx
-│   │   │   ├── separator.tsx
-│   │   │   ├── sheet.tsx
-│   │   │   ├── skeleton.tsx
-│   │   │   ├── toast.tsx
-│   │   │   ├── toaster.tsx
-│   │   │   └── tooltip.tsx
-│   │   │
-│   │   ├── layout/                           # Layout components
-│   │   │   ├── header/
-│   │   │   │   ├── header.tsx
-│   │   │   │   ├── atelier-seal.tsx          # Animated logo
-│   │   │   │   ├── nav-link.tsx
-│   │   │   │   ├── header-tools.tsx
-│   │   │   │   ├── mobile-nav.tsx
-│   │   │   │   └── search-dialog.tsx
-│   │   │   │
-│   │   │   ├── footer/
-│   │   │   │   ├── colophon.tsx
-│   │   │   │   └── newsletter-form.tsx
-│   │   │   │
-│   │   │   ├── atelier-banner.tsx
-│   │   │   ├── texture-overlay.tsx
-│   │   │   ├── gold-leaf-accents.tsx
-│   │   │   └── skip-link.tsx
-│   │   │
-│   │   ├── sections/                         # Page sections
-│   │   │   ├── hero/
-│   │   │   │   ├── hero.tsx
-│   │   │   │   ├── illuminated-initial.tsx
-│   │   │   │   ├── hero-vessel.tsx           # Animated vessel
-│   │   │   │   ├── botanical-specimens.tsx
-│   │   │   │   └── scroll-indicator.tsx
-│   │   │   │
-│   │   │   ├── compendium/
-│   │   │   │   ├── compendium-section.tsx
-│   │   │   │   ├── filter-bar.tsx
-│   │   │   │   ├── sort-select.tsx
-│   │   │   │   └── load-more-button.tsx
-│   │   │   │
-│   │   │   ├── alchemy/
-│   │   │   │   ├── alchemy-section.tsx
-│   │   │   │   ├── alchemy-step.tsx
-│   │   │   │   └── apparatus-display.tsx
-│   │   │   │
-│   │   │   ├── manuscript/
-│   │   │   │   ├── manuscript-section.tsx
-│   │   │   │   ├── testimonial-card.tsx
-│   │   │   │   └── pagination-controls.tsx
-│   │   │   │
-│   │   │   └── correspondence/
-│   │   │       ├── correspondence-section.tsx
-│   │   │       ├── subscription-form.tsx
-│   │   │       └── envelope-visual.tsx
-│   │   │
-│   │   ├── product/                          # Product components
-│   │   │   ├── essence-card.tsx              # Product card
-│   │   │   ├── essence-card-featured.tsx
-│   │   │   ├── product-gallery.tsx
-│   │   │   ├── product-info.tsx
-│   │   │   ├── variant-selector.tsx
-│   │   │   ├── add-to-cart-button.tsx
-│   │   │   ├── product-notes.tsx
-│   │   │   ├── humour-badge.tsx
-│   │   │   ├── rarity-badge.tsx
-│   │   │   ├── product-reviews.tsx
-│   │   │   └── related-essences.tsx
-│   │   │
-│   │   ├── cart/                             # Cart components
-│   │   │   ├── vial-drawer.tsx               # Slide-out cart
-│   │   │   ├── cart-item.tsx
-│   │   │   ├── cart-summary.tsx
-│   │   │   ├── quantity-controls.tsx
-│   │   │   ├── empty-cart.tsx
-│   │   │   └── cart-total.tsx
-│   │   │
-│   │   ├── checkout/                         # Checkout components
-│   │   │   ├── checkout-progress.tsx
-│   │   │   ├── address-form.tsx
-│   │   │   ├── address-selector.tsx
-│   │   │   ├── shipping-options.tsx
-│   │   │   ├── payment-form.tsx
-│   │   │   ├── order-summary.tsx
-│   │   │   ├── coupon-input.tsx
-│   │   │   └── gst-display.tsx
-│   │   │
-│   │   ├── account/                          # Account components
-│   │   │   ├── auth-form.tsx
-│   │   │   ├── order-card.tsx
-│   │   │   ├── order-timeline.tsx
-│   │   │   ├── address-card.tsx
-│   │   │   └── wishlist-item.tsx
-│   │   │
-│   │   ├── shared/                           # Shared components
-│   │   │   ├── section-header.tsx
-│   │   │   ├── section-border.tsx
-│   │   │   ├── ornamental-rule.tsx
-│   │   │   ├── wax-seal.tsx
-│   │   │   ├── price-display.tsx
-│   │   │   ├── currency-formatter.tsx
-│   │   │   ├── loading-spinner.tsx
-│   │   │   ├── animated-counter.tsx
-│   │   │   └── back-to-top.tsx
-│   │   │
-│   │   └── seo/
-│   │       ├── structured-data.tsx           # JSON-LD for products
-│   │       └── meta-tags.tsx
-│   │
-│   ├── hooks/                                # Custom React hooks
-│   │   ├── use-cart.ts                       # Cart state hook
-│   │   ├── use-wishlist.ts
-│   │   ├── use-auth.ts
-│   │   ├── use-checkout.ts
-│   │   ├── use-scroll-position.ts
-│   │   ├── use-intersection-observer.ts
-│   │   ├── use-debounce.ts
-│   │   ├── use-local-storage.ts
-│   │   ├── use-media-query.ts
-│   │   ├── use-reduced-motion.ts
-│   │   └── use-toast.ts
-│   │
-│   ├── lib/                                  # Utilities and configs
-│   │   ├── api/
-│   │   │   ├── client.ts                     # Axios/fetch wrapper
-│   │   │   ├── endpoints.ts                  # API endpoint constants
-│   │   │   ├── products.ts                   # Product API calls
-│   │   │   ├── cart.ts                       # Cart API calls
-│   │   │   ├── checkout.ts
-│   │   │   ├── orders.ts
-│   │   │   ├── auth.ts
-│   │   │   └── newsletter.ts
-│   │   │
-│   │   ├── utils/
-│   │   │   ├── cn.ts                         # Class name merger
-│   │   │   ├── format-currency.ts
-│   │   │   ├── format-date.ts
-│   │   │   ├── calculate-gst.ts
-│   │   │   ├── get-humour-data.ts
-│   │   │   ├── get-season-label.ts
-│   │   │   └── slugify.ts
-│   │   │
-│   │   ├── constants/
-│   │   │   ├── alchemical-data.ts            # Humours, seasons, rarities
-│   │   │   ├── navigation.ts
-│   │   │   └── site-config.ts
-│   │   │
-│   │   └── validations/
-│   │       ├── auth-schema.ts                # Zod schemas
-│   │       ├── checkout-schema.ts
-│   │       ├── address-schema.ts
-│   │       └── newsletter-schema.ts
-│   │
-│   ├── stores/                               # Zustand stores
-│   │   ├── cart-store.ts
-│   │   ├── wishlist-store.ts
-│   │   ├── ui-store.ts                       # Modal, drawer, toast states
-│   │   └── checkout-store.ts
-│   │
-│   ├── providers/
-│   │   ├── query-provider.tsx                # TanStack Query
-│   │   ├── auth-provider.tsx
-│   │   ├── cart-provider.tsx
-│   │   ├── theme-provider.tsx
-│   │   └── toast-provider.tsx
-│   │
-│   ├── styles/
-│   │   ├── fonts.ts                          # Font declarations
-│   │   └── animations.ts                     # Framer Motion variants
-│   │
-│   └── types/
-│       ├── product.ts
-│       ├── cart.ts
-│       ├── order.ts
-│       ├── user.ts
-│       ├── address.ts
-│       ├── checkout.ts
-│       ├── testimonial.ts
-│       └── api.ts                            # API response types
-│
-└── tests/
-    ├── components/
-    │   ├── essence-card.test.tsx
-    │   ├── vial-drawer.test.tsx
-    │   └── checkout-flow.test.tsx
-    │
-    └── e2e/
-        ├── checkout.spec.ts
-        └── product-browsing.spec.ts
-```
+| Aspect | Atelier Arôme Approach |
+|--------|------------------------|
+| **Aesthetic** | Renaissance "Illuminated Manuscript" theme, NOT modern minimalism |
+| **Typography** | Cormorant Garamond, Crimson Pro, Great Vibes (NOT Inter/Roboto) |
+| **Colors** | Ink (#2A2D26), Gold (#C9A769), Parchment (#FAF8F5) |
+| **Localization** | Singapore-first: GST (9%), PayNow, SingPost, SGD currency |
+| **Architecture** | Headless commerce: Laravel 12 API + Next.js 15 Frontend |
+
+### Core Philosophy: Anti-Generic
+
+We deliberately reject:
+- ❌ Inter/Roboto/system font "safety"
+- ❌ Purple-gradient-on-white clichés
+- ❌ Predictable card grids and hero sections
+- ❌ Homogenized "AI slop" aesthetics
+
+We embrace:
+- ✅ Renaissance-inspired visual language
+- ✅ Custom Tailwind theme with serif typography
+- ✅ Alchemical and botanical themes
+- ✅ WCAG AAA accessibility standards
 
 ---
 
-# 📊 Database Schema (Mermaid ERD)
+## 2. Architecture Overview
 
-```mermaid
-erDiagram
-    USERS {
-        uuid id PK
-        string name
-        string email UK
-        string password
-        string phone
-        enum role "customer|admin|superadmin"
-        boolean email_verified
-        timestamp email_verified_at
-        string remember_token
-        timestamp created_at
-        timestamp updated_at
-        timestamp deleted_at
-    }
+### High-Level System Diagram
 
-    CATEGORIES {
-        uuid id PK
-        string name
-        string slug UK
-        text description
-        string image_url
-        integer sort_order
-        boolean is_active
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    PRODUCTS {
-        uuid id PK
-        uuid category_id FK
-        string name
-        string slug UK
-        string latin_name
-        text description
-        text long_description
-        enum humour "calming|uplifting|grounding|clarifying"
-        enum rarity "common|rare|limited"
-        enum season "spring|summer|autumn|winter"
-        string extraction_method
-        string folio_number
-        boolean is_featured
-        boolean is_active
-        integer sort_order
-        jsonb meta_data
-        timestamp created_at
-        timestamp updated_at
-        timestamp deleted_at
-    }
-
-    PRODUCT_VARIANTS {
-        uuid id PK
-        uuid product_id FK
-        string name "5ml|15ml|30ml"
-        string sku UK
-        decimal price_sgd "precision:10,2"
-        decimal compare_at_price
-        integer weight_grams
-        boolean is_default
-        boolean is_active
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    PRODUCT_IMAGES {
-        uuid id PK
-        uuid product_id FK
-        string url
-        string alt_text
-        integer sort_order
-        boolean is_primary
-        timestamp created_at
-    }
-
-    TAGS {
-        uuid id PK
-        string name UK
-        string slug UK
-        timestamp created_at
-    }
-
-    PRODUCT_TAG {
-        uuid product_id FK
-        uuid tag_id FK
-    }
-
-    INVENTORIES {
-        uuid id PK
-        uuid variant_id FK
-        integer quantity
-        integer reserved_quantity
-        integer low_stock_threshold
-        timestamp last_restocked_at
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    INVENTORY_MOVEMENTS {
-        uuid id PK
-        uuid inventory_id FK
-        uuid order_id FK
-        enum type "addition|subtraction|reservation|release"
-        integer quantity
-        string reason
-        timestamp created_at
-    }
-
-    ADDRESSES {
-        uuid id PK
-        uuid user_id FK
-        string label "Home|Office|etc"
-        string recipient_name
-        string phone
-        string line_1
-        string line_2
-        string postal_code
-        string city
-        string country "SG default"
-        boolean is_default_shipping
-        boolean is_default_billing
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    CARTS {
-        uuid id PK
-        uuid user_id FK "nullable for guest"
-        string session_id "for guest carts"
-        uuid coupon_id FK
-        decimal subtotal
-        decimal discount_amount
-        decimal gst_amount
-        decimal total
-        timestamp expires_at
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    CART_ITEMS {
-        uuid id PK
-        uuid cart_id FK
-        uuid variant_id FK
-        integer quantity
-        decimal unit_price
-        decimal total_price
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    ORDERS {
-        uuid id PK
-        uuid user_id FK
-        string order_number UK "AA-YYYYMMDD-XXXX"
-        enum status "pending|processing|shipped|delivered|cancelled"
-        enum payment_status "pending|paid|failed|refunded"
-        uuid shipping_address_id FK
-        uuid billing_address_id FK
-        uuid coupon_id FK
-        decimal subtotal
-        decimal discount_amount
-        decimal shipping_amount
-        decimal gst_amount
-        decimal total
-        text notes
-        text admin_notes
-        string tracking_number
-        string tracking_url
-        timestamp shipped_at
-        timestamp delivered_at
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    ORDER_ITEMS {
-        uuid id PK
-        uuid order_id FK
-        uuid variant_id FK
-        string product_name "snapshot"
-        string variant_name "snapshot"
-        string sku "snapshot"
-        integer quantity
-        decimal unit_price
-        decimal total_price
-        timestamp created_at
-    }
-
-    PAYMENTS {
-        uuid id PK
-        uuid order_id FK
-        string stripe_payment_intent_id UK
-        string stripe_charge_id
-        enum method "card|paynow|grabpay"
-        enum status "pending|succeeded|failed|refunded"
-        decimal amount
-        string currency "SGD"
-        jsonb metadata
-        string failure_reason
-        timestamp paid_at
-        timestamp refunded_at
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    COUPONS {
-        uuid id PK
-        string code UK
-        text description
-        enum type "percentage|fixed_amount|free_shipping"
-        decimal value
-        decimal minimum_order_amount
-        integer usage_limit
-        integer usage_count
-        boolean is_active
-        timestamp starts_at
-        timestamp expires_at
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    COUPON_USAGES {
-        uuid id PK
-        uuid coupon_id FK
-        uuid user_id FK
-        uuid order_id FK
-        timestamp used_at
-    }
-
-    REVIEWS {
-        uuid id PK
-        uuid product_id FK
-        uuid user_id FK
-        uuid order_id FK
-        integer rating "1-5"
-        text title
-        text body
-        boolean is_verified_purchase
-        boolean is_approved
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    TESTIMONIALS {
-        uuid id PK
-        string author_name
-        string author_title
-        text quote
-        boolean is_verified
-        boolean is_illuminated "featured style"
-        string folio_reference
-        integer sort_order
-        boolean is_active
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    WISHLISTS {
-        uuid id PK
-        uuid user_id FK
-        string name "default: Bookmarked Essences"
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    WISHLIST_ITEMS {
-        uuid id PK
-        uuid wishlist_id FK
-        uuid product_id FK
-        timestamp added_at
-    }
-
-    NEWSLETTER_SUBSCRIBERS {
-        uuid id PK
-        string email UK
-        string name
-        boolean is_confirmed
-        string confirmation_token
-        timestamp confirmed_at
-        timestamp unsubscribed_at
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    SETTINGS {
-        uuid id PK
-        string key UK
-        text value
-        string type "string|integer|boolean|json"
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    %% Relationships
-    USERS ||--o{ ADDRESSES : "has many"
-    USERS ||--o{ ORDERS : "places"
-    USERS ||--o{ REVIEWS : "writes"
-    USERS ||--o{ WISHLISTS : "has"
-    USERS ||--o| CARTS : "has one"
-
-    CATEGORIES ||--o{ PRODUCTS : "contains"
-
-    PRODUCTS ||--o{ PRODUCT_VARIANTS : "has variants"
-    PRODUCTS ||--o{ PRODUCT_IMAGES : "has images"
-    PRODUCTS }o--o{ TAGS : "tagged with"
-    PRODUCTS ||--o{ REVIEWS : "receives"
-    PRODUCTS ||--o{ WISHLIST_ITEMS : "bookmarked in"
-
-    PRODUCT_VARIANTS ||--|| INVENTORIES : "tracks stock"
-    PRODUCT_VARIANTS ||--o{ CART_ITEMS : "added to"
-    PRODUCT_VARIANTS ||--o{ ORDER_ITEMS : "ordered as"
-
-    INVENTORIES ||--o{ INVENTORY_MOVEMENTS : "logs"
-
-    CARTS ||--o{ CART_ITEMS : "contains"
-    CARTS }o--o| COUPONS : "applies"
-
-    ORDERS ||--o{ ORDER_ITEMS : "contains"
-    ORDERS ||--o{ PAYMENTS : "paid via"
-    ORDERS ||--|| ADDRESSES : "ships to"
-    ORDERS }o--o| COUPONS : "used"
-
-    WISHLISTS ||--o{ WISHLIST_ITEMS : "contains"
-
-    COUPONS ||--o{ COUPON_USAGES : "tracked by"
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     HEADLESS COMMERCE                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  ┌──────────────────┐              ┌──────────────────┐     │
+│  │  Next.js 15      │◄────JSON────►│  Laravel 12 API  │     │
+│  │  (Vercel Edge)   │              │  (Forge/Vapor)   │     │
+│  │  localhost:3000  │              │  localhost:8000  │     │
+│  └──────────────────┘              └──────────────────┘     │
+│         │                                   │                │
+│         │                                   ▼                │
+│         │                          ┌──────────────────┐     │
+│         │                          │  PostgreSQL 16   │     │
+│         │                          │  Redis 7.x       │     │
+│         │                          │  Meilisearch     │     │
+│         │                          └──────────────────┘     │
+│         │                                                    │
+│         ▼                                                    │
+│  ┌──────────────────┐                                       │
+│  │  Stripe + PayNow │                                       │
+│  │  Cloudinary CDN  │                                       │
+│  │  SingPost API    │                                       │
+│  └──────────────────┘                                       │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
 ```
 
----
-
-# 🔄 Application Flow Diagrams
-
-## User Authentication Flow
+### Data Flow
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    participant U as User (Browser)
-    participant N as Next.js Frontend
-    participant L as Laravel API
-    participant DB as PostgreSQL
-    participant R as Redis
+    participant U as User Browser
+    participant FE as Next.js 15<br/>(localhost:3000)
+    participant API as Laravel 12<br/>(localhost:8000)
+    participant DB as PostgreSQL 16
+    participant Cache as Redis 7.x
 
-    rect rgb(240, 248, 255)
-        Note over U,R: Registration Flow
-        U->>N: Fill registration form
-        N->>N: Validate with Zod
-        N->>L: POST /api/v1/auth/register
-        L->>L: Validate request
-        L->>DB: Create user record
-        L->>L: Hash password (bcrypt)
-        L->>DB: Store user
-        L->>L: Generate Sanctum token
-        L->>R: Store session
-        L-->>N: 201 Created + token + user
-        N->>N: Store token in httpOnly cookie
-        N->>N: Update auth store
-        N-->>U: Redirect to account
+    U->>FE: Request Page
+    FE->>API: GET /api/v1/products
+    API->>Cache: Check cache
+    alt Cache Hit
+        Cache-->>API: Return cached data
+    else Cache Miss
+        API->>DB: Query products
+        DB-->>API: Return records
+        API->>Cache: Store in cache
     end
-
-    rect rgb(255, 248, 240)
-        Note over U,R: Login Flow
-        U->>N: Submit login form
-        N->>L: POST /api/v1/auth/login
-        L->>DB: Find user by email
-        L->>L: Verify password
-        alt Invalid credentials
-            L-->>N: 401 Unauthorized
-            N-->>U: Show error message
-        else Valid credentials
-            L->>L: Generate Sanctum token
-            L->>R: Store session
-            L-->>N: 200 OK + token + user
-            N->>N: Merge guest cart if exists
-            N-->>U: Redirect to intended page
-        end
-    end
-
-    rect rgb(248, 255, 240)
-        Note over U,R: Authenticated Request
-        U->>N: Navigate to /account/orders
-        N->>N: Check auth store
-        N->>L: GET /api/v1/orders
-        Note right of N: Bearer token in header
-        L->>L: Validate Sanctum token
-        L->>DB: Fetch user orders
-        L-->>N: 200 OK + orders
-        N-->>U: Render order history
-    end
+    API-->>FE: JSON response
+    FE-->>U: Rendered HTML
 ```
 
-## Cart to Checkout Flow
+---
 
-```mermaid
-flowchart TB
-    subgraph Browse["Product Browsing"]
-        A[View Product] --> B{Add to Cart?}
-        B -->|Yes| C[Add to Cart API]
-        B -->|No| A
-    end
+## 3. Technology Stack
 
-    subgraph Cart["Cart Management"]
-        C --> D[Update Cart State]
-        D --> E[Show Vial Drawer]
-        E --> F{Modify Cart?}
-        F -->|Update Qty| G[Update Item API]
-        F -->|Remove| H[Remove Item API]
-        F -->|Continue Shopping| A
-        F -->|Checkout| I{Authenticated?}
-        G --> D
-        H --> D
-    end
+### Backend Stack
 
-    subgraph Auth["Authentication Gate"]
-        I -->|No| J[Login/Register]
-        J --> K[Merge Guest Cart]
-        K --> L[Proceed to Checkout]
-        I -->|Yes| L
-    end
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| **Framework** | Laravel | 12.x | PHP API framework |
+| **Language** | PHP | 8.2+ | Server-side logic |
+| **Database** | PostgreSQL | 16 | Primary data store |
+| **Cache** | Redis | 7.x | Cache, sessions, queues |
+| **Auth** | Laravel Sanctum | 4.2 | API token authentication |
+| **Admin** | Filament | 3.x (planned) | Admin panel |
+| **Queue** | Laravel Horizon | 5.x (planned) | Queue management |
+| **Search** | Meilisearch | 1.x (planned) | Full-text search |
 
-    subgraph Checkout["Checkout Flow"]
-        L --> M[Shipping Address Step]
-        M --> N{New Address?}
-        N -->|Yes| O[Address Form]
-        N -->|No| P[Select Saved Address]
-        O --> Q[Validate Address]
-        P --> Q
-        Q --> R[Calculate Shipping]
-        R --> S[Payment Step]
-        S --> T[Enter Payment Details]
-        T --> U[Apply Coupon Optional]
-        U --> V[Calculate GST 9%]
-        V --> W[Review Order]
-        W --> X{Confirm?}
-        X -->|No| M
-        X -->|Yes| Y[Process Payment]
-    end
+### Frontend Stack
 
-    subgraph Payment["Payment Processing"]
-        Y --> Z[Create Stripe PaymentIntent]
-        Z --> AA{Payment Success?}
-        AA -->|No| AB[Show Error]
-        AB --> T
-        AA -->|Yes| AC[Create Order]
-        AC --> AD[Reserve Inventory]
-        AD --> AE[Send Confirmation Email]
-        AE --> AF[Order Confirmation Page]
-    end
+| Component | Technology | Version | Purpose |
+|-----------|------------|---------|---------|
+| **Framework** | Next.js | 15.5.9 | React framework with App Router |
+| **UI Library** | React | 19.2.3 | Component library |
+| **Language** | TypeScript | 5.9.3 | Type safety |
+| **Styling** | Tailwind CSS | 4.1.18 | Utility-first CSS |
+| **Components** | Shadcn-UI + Radix | Latest | UI primitives |
+| **State (Client)** | Zustand | 5.0.9 | Client-side state |
+| **State (Server)** | TanStack Query | 5.90.16 | Server state management |
+| **Forms** | React Hook Form + Zod | 7.70 / 4.3.5 | Form validation |
+| **Animations** | Framer Motion | 12.23.26 | Motion library |
+| **HTTP** | Axios | 1.13.2 | API client |
 
-    style Browse fill:#f0f9ff
-    style Cart fill:#fef3c7
-    style Auth fill:#f0fdf4
-    style Checkout fill:#fdf4ff
-    style Payment fill:#fef2f2
+### Infrastructure
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Containers** | Docker Compose | Local development |
+| **Database** | atelier_db (Docker) | PostgreSQL container |
+| **Cache** | atelier_redis (Docker) | Redis container |
+| **Email** | atelier_mailhog (Docker) | Email testing |
+
+---
+
+## 4. Repository Structure
+
+### Root Directory
+
+```
+atelier-arome/                          # Monorepo root
+├── atelier-arome-api/                  # Laravel 12 Backend (137 files)
+├── atelier-arome-web/                  # Next.js 15 Frontend (59 files)
+├── docker/                             # Docker configuration
+│   └── docker-compose.yml
+├── docs/                               # Documentation (27 files)
+│   ├── Comprehensive_Project_Understanding.md
+│   └── architecture_decision.md
+├── AGENT.md                            # Agent guidance (1360 lines)
+├── CLAUDE.md                           # Claude-specific guidance (1392 lines)
+├── GEMINI.md                           # Gemini-specific guidance (109 lines)
+├── README.md                           # Project README (1186 lines)
+├── MASTER_EXECUTION_PLAN.md            # 16-phase plan (2263 lines)
+├── index.html                          # Static mockup reference
+├── styles.css                          # Design system reference
+├── main.js                             # JavaScript reference
+└── docker-compose.yml                  # Root Docker compose
 ```
 
-## Order Lifecycle Flow
+### Backend Structure (`atelier-arome-api/`)
+
+```
+atelier-arome-api/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Api/
+│   │   │   │   └── V1/                 # 12 API Controllers ✅
+│   │   │   │       ├── AddressController.php
+│   │   │   │       ├── AuthController.php
+│   │   │   │       ├── CartController.php
+│   │   │   │       ├── CategoryController.php
+│   │   │   │       ├── CheckoutController.php
+│   │   │   │       ├── NewsletterController.php
+│   │   │   │       ├── OrderController.php
+│   │   │   │       ├── ProductController.php
+│   │   │   │       ├── ReviewController.php
+│   │   │   │       ├── TagController.php
+│   │   │   │       ├── TestimonialController.php
+│   │   │   │       └── WishlistController.php
+│   │   │   └── Controller.php
+│   │   ├── Middleware/
+│   │   └── Resources/                  # 14 API Resources ✅
+│   │       ├── AddressResource.php
+│   │       ├── CartItemResource.php
+│   │       ├── CartResource.php
+│   │       ├── CategoryResource.php
+│   │       ├── CouponResource.php
+│   │       ├── OrderItemResource.php
+│   │       ├── OrderResource.php
+│   │       ├── ProductImageResource.php
+│   │       ├── ProductResource.php
+│   │       ├── ProductVariantResource.php
+│   │       ├── ReviewResource.php
+│   │       ├── TagResource.php
+│   │       ├── TestimonialResource.php
+│   │       └── UserResource.php
+│   ├── Models/                         # 22 Eloquent Models ✅
+│   │   ├── Address.php
+│   │   ├── Cart.php
+│   │   ├── CartItem.php
+│   │   ├── Category.php
+│   │   ├── Coupon.php
+│   │   ├── CouponUsage.php
+│   │   ├── Inventory.php
+│   │   ├── InventoryMovement.php
+│   │   ├── NewsletterSubscriber.php
+│   │   ├── Order.php
+│   │   ├── OrderItem.php
+│   │   ├── Payment.php
+│   │   ├── Product.php
+│   │   ├── ProductImage.php
+│   │   ├── ProductVariant.php
+│   │   ├── Review.php
+│   │   ├── Setting.php
+│   │   ├── Tag.php
+│   │   ├── Testimonial.php
+│   │   ├── User.php
+│   │   ├── Wishlist.php
+│   │   └── WishlistItem.php
+│   └── Providers/
+├── config/                             # 11 config files
+├── database/
+│   ├── migrations/                     # 26 migrations ✅
+│   └── seeders/                        # 7 seeders ✅
+│       ├── CategorySeeder.php
+│       ├── DatabaseSeeder.php
+│       ├── ProductSeeder.php
+│       ├── SettingsSeeder.php
+│       ├── TagSeeder.php
+│       ├── TestimonialSeeder.php
+│       └── UserSeeder.php
+├── routes/
+│   ├── api.php                         # 144 lines, full V1 API ✅
+│   ├── console.php
+│   └── web.php
+├── tests/
+├── .env                                # Environment config
+└── composer.json                       # PHP dependencies
+```
+
+### Frontend Structure (`atelier-arome-web/`)
+
+```
+atelier-arome-web/
+├── src/
+│   ├── app/                            # Next.js App Router ✅
+│   │   ├── (account)/                  # Account route group
+│   │   ├── (checkout)/                 # Checkout route group
+│   │   ├── (marketing)/                # Marketing route group
+│   │   ├── (shop)/                     # Shop route group
+│   │   │   ├── compendium/
+│   │   │   │   └── page.tsx            # Product catalog page
+│   │   │   └── layout.tsx
+│   │   ├── atelier.css                 # BEM styles (84KB)
+│   │   ├── globals.css                 # Global styles
+│   │   ├── layout.tsx                  # Root layout
+│   │   ├── loading.tsx                 # Loading skeleton
+│   │   ├── error.tsx                   # Error boundary
+│   │   └── page.tsx                    # Homepage
+│   ├── components/
+│   │   ├── cart/
+│   │   │   └── vial-drawer.tsx         # Cart drawer ✅
+│   │   ├── catalog/                    # Product catalog ✅
+│   │   │   ├── filter-sidebar.tsx
+│   │   │   ├── product-card.tsx
+│   │   │   └── product-grid.tsx
+│   │   ├── hero/                       # Atomic hero components ✅
+│   │   │   ├── alchemical-vessel.tsx
+│   │   │   ├── botanical-layer.tsx
+│   │   │   ├── hero-frame.tsx
+│   │   │   └── hero-section.tsx
+│   │   ├── layout/
+│   │   │   ├── header.tsx
+│   │   │   └── footer.tsx
+│   │   ├── sections/                   # Page sections ✅
+│   │   │   ├── alchemy-section.tsx
+│   │   │   ├── compendium-section.tsx
+│   │   │   ├── newsletter-section.tsx
+│   │   │   └── testimonials-section.tsx
+│   │   └── ui/                         # Shadcn UI primitives ✅
+│   │       ├── animate-in-view.tsx
+│   │       ├── button.tsx
+│   │       ├── sheet.tsx
+│   │       ├── skeleton.tsx
+│   │       └── toast.tsx
+│   ├── hooks/                          # Custom React hooks ✅
+│   │   ├── index.ts                    # Barrel export
+│   │   ├── use-intersection.ts
+│   │   ├── use-products.ts             # TanStack Query hook
+│   │   ├── use-reduced-motion.ts
+│   │   └── use-scroll.ts
+│   ├── lib/                            # Utilities ✅
+│   │   ├── a11y.ts                     # Accessibility helpers
+│   │   ├── api-client.ts               # Axios API client
+│   │   └── utils.ts                    # cn() class merger
+│   ├── stores/                         # Zustand stores ✅
+│   │   ├── cart-store.ts
+│   │   └── toast-store.ts
+│   └── types/
+│       └── api.ts                      # TypeScript API types
+├── public/
+├── tailwind.config.ts                  # Custom theme (156 lines) ✅
+├── next.config.ts
+├── tsconfig.json
+└── package.json                        # Node dependencies
+```
+
+---
+
+## 5. Backend Architecture (Laravel 12)
+
+### Models (22 Total)
+
+All models use **UUID primary keys** via `HasUuids` trait.
+
+| Model | Table | Key Features |
+|-------|-------|--------------|
+| `User` | users | Roles (customer/admin/superadmin), soft deletes |
+| `Product` | products | Alchemical properties (humour/rarity/season), soft deletes |
+| `ProductVariant` | product_variants | 5ml/15ml/30ml sizes, SKU, price_sgd |
+| `ProductImage` | product_images | Multiple images, is_primary, sort_order |
+| `Category` | categories | Singles/Blends/Sets/Gifts |
+| `Tag` | tags | Scent note tags |
+| `Order` | orders | Order number AA-YYYYMMDD-XXXX, GST calculation |
+| `OrderItem` | order_items | **Snapshot pattern** (stores product data at purchase) |
+| `Cart` | carts | Guest/authenticated support, expires_at |
+| `CartItem` | cart_items | Variant FK, quantity, unit_price snapshot |
+| `Payment` | payments | Stripe payment_intent_id, method enum |
+| `Address` | addresses | Shipping/billing, Singapore postal codes |
+| `Coupon` | coupons | Percentage/fixed/free_shipping types |
+| `CouponUsage` | coupon_usages | Redemption tracking |
+| `Review` | reviews | 1-5 rating, verified purchase flag |
+| `Testimonial` | testimonials | is_illuminated for featured styling |
+| `Wishlist` | wishlists | User wishlist |
+| `WishlistItem` | wishlist_items | Product in wishlist |
+| `Inventory` | inventories | Stock per variant |
+| `InventoryMovement` | inventory_movements | Stock audit log |
+| `NewsletterSubscriber` | newsletter_subscribers | Double opt-in |
+| `Setting` | settings | Key-value store |
+
+### Critical Model Relationships
+
+```php
+// User → Orders (one-to-many)
+$user->orders()->get();
+
+// Product → Variants (one-to-many)
+$product->variants()->get();
+$product->defaultVariant(); // Helper method
+
+// Product → Images (one-to-many, ordered)
+$product->images()->orderBy('sort_order')->get();
+$product->primaryImage(); // Helper method
+
+// Product → Tags (many-to-many)
+$product->tags()->attach($tagIds);
+
+// Cart → CartItems (one-to-many, with eager loading)
+$cart->items()->with('variant.product')->get();
+
+// Order → OrderItems (snapshot data)
+$order->items; // Uses snapshot, not live product data
+```
+
+### Controllers (12 API Controllers)
+
+All controllers are namespaced under `App\Http\Controllers\Api\V1\`:
+
+| Controller | Endpoints | Auth Required |
+|------------|-----------|---------------|
+| `ProductController` | Products list, detail, featured | No |
+| `CategoryController` | Categories list, detail | No |
+| `TagController` | Tags list | No |
+| `TestimonialController` | Testimonials list | No |
+| `CartController` | Cart CRUD, coupon apply | No (session-based) |
+| `AuthController` | Login, register, logout, profile | Partial |
+| `AddressController` | Address CRUD | Yes |
+| `OrderController` | Order list, detail | Yes |
+| `WishlistController` | Wishlist CRUD | Yes |
+| `ReviewController` | Review CRUD | Yes |
+| `CheckoutController` | Initiate, complete checkout | Yes |
+| `NewsletterController` | Subscribe, confirm, unsubscribe | No |
+
+### API Resources (14 JSON Transformers)
+
+Resources transform Eloquent models to JSON API responses:
+
+- `ProductResource`, `ProductVariantResource`, `ProductImageResource`
+- `CategoryResource`, `TagResource`
+- `CartResource`, `CartItemResource`
+- `OrderResource`, `OrderItemResource`
+- `UserResource`, `AddressResource`
+- `ReviewResource`, `TestimonialResource`, `CouponResource`
+
+---
+
+## 6. Frontend Architecture (Next.js 15)
+
+### App Router Structure
+
+```
+src/app/
+├── (account)/          # Protected account pages
+├── (checkout)/         # Checkout flow
+├── (marketing)/        # About, Alchemy, Contact
+├── (shop)/             # Product catalog
+│   └── compendium/     # /compendium route
+└── layout.tsx          # Root layout with fonts, providers
+```
+
+### Component Architecture (Atomic Design)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  ORCHESTRATORS (Compose multiple atoms)                 │
+│  • hero-section.tsx (imports frame, vessel, botanical)  │
+│  • header.tsx (navigation + cart integration)           │
+│  • compendium page (grid + sidebar + cards)             │
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│  ATOMIC COMPONENTS (Single responsibility, ~60-150 LOC) │
+│  • hero-frame.tsx (layout + border ornaments)           │
+│  • alchemical-vessel.tsx (SVG + CSS animations)         │
+│  • botanical-layer.tsx (parallax elements)              │
+│  • product-card.tsx (single product display)            │
+│  • filter-sidebar.tsx (filtering controls)              │
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│  UI PRIMITIVES (Shadcn-UI + Radix)                      │
+│  • sheet.tsx (dialog drawer)                            │
+│  • button.tsx (styled button)                           │
+│  • toast.tsx (notifications)                            │
+│  • skeleton.tsx (loading placeholder)                   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Custom Hooks (5 Hooks)
+
+| Hook | Purpose | Pattern |
+|------|---------|---------|
+| `useScroll` | Scroll position + smooth scroll | useSyncExternalStore |
+| `useIntersection` | IntersectionObserver wrapper | useRef + useEffect |
+| `useReducedMotion` | Respects prefers-reduced-motion | useSyncExternalStore |
+| `useProducts` | Fetch products with TanStack Query | useQuery |
+| (Barrel export) | `index.ts` exports all hooks | - |
+
+### Stores (Zustand - 2 Stores)
+
+```typescript
+// cart-store.ts
+export const useCartStore = create<CartState>()(
+  persist(
+    (set) => ({
+      items: [],
+      cartDrawerOpen: false,
+      addToCart: (item) => { /* ... */ },
+      removeFromCart: (id) => { /* ... */ },
+      updateQuantity: (id, qty) => { /* ... */ },
+      clearCart: () => { /* ... */ },
+      toggleCartDrawer: () => { /* ... */ },
+    }),
+    { name: 'atelier-arome-cart' } // localStorage key
+  )
+);
+
+// toast-store.ts
+export const useToastStore = create<ToastState>((set) => ({
+  toasts: [],
+  addToast: (toast) => { /* ... */ },
+  removeToast: (id) => { /* ... */ },
+}));
+```
+
+---
+
+## 7. Database Schema
+
+### Schema Overview
+
+**Total Tables:** 26 (via 26 migrations)
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Pending: Order Placed
-
-    Pending --> Processing: Payment Confirmed
-    Pending --> Cancelled: Payment Failed
-
-    Processing --> Shipped: Dispatch Confirmed
-    Processing --> Cancelled: Customer Request
-
-    Shipped --> Delivered: Delivery Confirmed
-    Shipped --> Returned: Return Initiated
-
-    Delivered --> Reviewed: Customer Review
-    Delivered --> Returned: Return Requested
-
-    Returned --> Refunded: Return Processed
-
-    Cancelled --> Refunded: Refund Processed
+erDiagram
+    User ||--o{ Order : places
+    User ||--o{ Cart : owns
+    User ||--o{ Address : has
+    User ||--o{ Review : writes
+    User ||--o{ Wishlist : has
     
-    Reviewed --> [*]
-    Refunded --> [*]
-
-    note right of Pending
-        - Inventory reserved
-        - Payment intent created
-        - Confirmation email queued
-    end note
-
-    note right of Processing
-        - Payment captured
-        - Invoice generated
-        - Packing initiated
-    end note
-
-    note right of Shipped
-        - Tracking number assigned
-        - Shipping notification sent
-        - SingPost API updated
-    end note
+    Product ||--o{ ProductVariant : has
+    Product ||--o{ ProductImage : has
+    Product }o--|| Category : belongsTo
+    Product }o--o{ Tag : hasMany
+    
+    Order ||--|{ OrderItem : contains
+    Order ||--o{ Payment : has
+    
+    Cart ||--|{ CartItem : contains
+    CartItem }o--|| ProductVariant : references
+    
+    Coupon ||--o{ CouponUsage : tracks
 ```
 
-## Admin Order Management Flow
+### Table Categories
 
-```mermaid
-flowchart LR
-    subgraph Dashboard["Admin Dashboard"]
-        A[Orders List] --> B{Filter By}
-        B --> C[Status]
-        B --> D[Date Range]
-        B --> E[Customer]
-        C --> F[View Orders]
-        D --> F
-        E --> F
-    end
+| Category | Tables | Count |
+|----------|--------|-------|
+| **Core Auth** | users, password_reset_tokens, sessions, personal_access_tokens | 4 |
+| **Products** | categories, products, product_variants, product_images, tags, product_tag, inventories, inventory_movements | 8 |
+| **Shopping** | carts, cart_items | 2 |
+| **Orders** | orders, order_items, payments, addresses, coupons, coupon_usages | 6 |
+| **User Data** | reviews, testimonials, wishlists, wishlist_items, newsletter_subscribers | 5 |
+| **System** | settings | 1 |
 
-    subgraph OrderDetail["Order Detail"]
-        F --> G[Select Order]
-        G --> H[View Order Details]
-        H --> I{Action}
-        I --> J[Update Status]
-        I --> K[Add Note]
-        I --> L[Process Refund]
-        I --> M[Print Invoice]
-        I --> N[Update Tracking]
-    end
+### Critical Design Patterns
 
-    subgraph Fulfillment["Fulfillment"]
-        J --> O{New Status}
-        O -->|Processing| P[Generate Packing Slip]
-        O -->|Shipped| Q[Enter Tracking]
-        Q --> R[Notify Customer]
-        O -->|Delivered| S[Complete Order]
-    end
+#### 1. UUID Primary Keys
 
-    subgraph Refunds["Refund Processing"]
-        L --> T[Enter Refund Amount]
-        T --> U[Process via Stripe]
-        U --> V[Update Inventory]
-        V --> W[Send Refund Confirmation]
-    end
+```php
+// All tables use UUID, not auto-increment
+$table->uuid('id')->primary();
 
-    style Dashboard fill:#e0f2fe
-    style OrderDetail fill:#fef9c3
-    style Fulfillment fill:#d1fae5
-    style Refunds fill:#fee2e2
+// Why: Security (prevents enumeration), distributed generation
 ```
+
+#### 2. Soft Deletes
+
+```php
+// Applied to: users, products, orders, addresses
+$table->softDeletes();
+
+// Why: Data retention, order history integrity
+```
+
+#### 3. Snapshot Pattern (Order Items)
+
+```php
+// order_items stores product data at purchase time
+$table->string('product_name');    // NOT FK to products.name
+$table->string('variant_name');    // Snapshot
+$table->string('sku');             // Snapshot
+$table->decimal('unit_price', 10, 2); // Snapshot
+
+// Why: Product edits don't corrupt historical orders
+```
+
+#### 4. Alchemical Properties
+
+```php
+// Products have thematic categorization
+$table->enum('humour', ['calming', 'uplifting', 'grounding', 'clarifying']);
+$table->enum('rarity', ['common', 'rare', 'limited']);
+$table->enum('season', ['spring', 'summer', 'autumn', 'winter']);
+```
+
+### Seeded Data
+
+| Entity | Count | Examples |
+|--------|-------|----------|
+| Users | 5 | superadmin@atelierarome.sg, admin@atelierarome.sg |
+| Categories | 4 | Singles, Blends, Sets, Gifts |
+| Tags | 27 | Lavender, Bergamot, Calming, Uplifting |
+| Products | 5 | Lavender Essential Oil, Peace & Harmony Blend |
+| Variants | 13 | 5ml, 15ml, 30ml per product |
+| Testimonials | 5 | Featured patron reviews |
+| Settings | 7 | GST rate, currency, store info |
 
 ---
 
-# 🔌 API Route Specification
+## 8. API Reference
 
-## Authentication Endpoints
-
-```
-POST   /api/v1/auth/register          # User registration
-POST   /api/v1/auth/login             # User login
-POST   /api/v1/auth/logout            # User logout (authenticated)
-GET    /api/v1/auth/me                # Get current user
-POST   /api/v1/auth/forgot-password   # Request password reset
-POST   /api/v1/auth/reset-password    # Reset password with token
-POST   /api/v1/auth/verify-email      # Verify email address
-POST   /api/v1/auth/resend-verification
-```
-
-## Product Endpoints
+### Base URL
 
 ```
-GET    /api/v1/products               # List products (paginated, filterable)
-GET    /api/v1/products/:slug         # Get single product
-GET    /api/v1/products/featured      # Get featured products
-GET    /api/v1/products/search        # Search products (Meilisearch)
-
-GET    /api/v1/categories             # List all categories
-GET    /api/v1/categories/:slug       # Get category with products
-
-GET    /api/v1/tags                   # List all scent tags
+Development: http://localhost:8000/api/v1
 ```
 
-## Cart Endpoints
+### Authentication
 
-```
-GET    /api/v1/cart                   # Get current cart
-POST   /api/v1/cart/items             # Add item to cart
-PATCH  /api/v1/cart/items/:id         # Update cart item quantity
-DELETE /api/v1/cart/items/:id         # Remove item from cart
-DELETE /api/v1/cart                   # Clear entire cart
-POST   /api/v1/cart/merge             # Merge guest cart after login
-POST   /api/v1/cart/coupon            # Apply coupon code
-DELETE /api/v1/cart/coupon            # Remove coupon
-```
+```http
+# Register
+POST /auth/register
+Content-Type: application/json
+{ "name": "...", "email": "...", "password": "..." }
 
-## Checkout Endpoints
+# Login
+POST /auth/login
+Content-Type: application/json
+{ "email": "...", "password": "..." }
+→ Returns: { "token": "...", "user": {...} }
 
-```
-POST   /api/v1/checkout/initiate      # Start checkout, validate cart
-POST   /api/v1/checkout/shipping      # Set shipping address
-GET    /api/v1/checkout/shipping-rates # Get available shipping options
-POST   /api/v1/checkout/payment-intent # Create Stripe PaymentIntent
-POST   /api/v1/checkout/confirm       # Confirm and place order
-```
+# Get Current User (Protected)
+GET /user
+Authorization: Bearer {token}
 
-## Order Endpoints
-
-```
-GET    /api/v1/orders                 # List user's orders
-GET    /api/v1/orders/:id             # Get order details
-GET    /api/v1/orders/:id/invoice     # Download invoice PDF
-POST   /api/v1/orders/:id/cancel      # Request cancellation
+# Logout (Protected)
+POST /user/logout
+Authorization: Bearer {token}
 ```
 
-## Account Endpoints
+### Products (Public)
 
-```
-GET    /api/v1/addresses              # List saved addresses
-POST   /api/v1/addresses              # Create address
-PATCH  /api/v1/addresses/:id          # Update address
-DELETE /api/v1/addresses/:id          # Delete address
+```http
+# List Products (paginated, filterable)
+GET /products
+GET /products?humour=calming
+GET /products?rarity=rare
+GET /products?category=singles
+GET /products?featured=true
+GET /products?search=lavender
+GET /products?page=2&per_page=12
 
-GET    /api/v1/wishlist               # Get wishlist
-POST   /api/v1/wishlist/:productId    # Add to wishlist
-DELETE /api/v1/wishlist/:productId    # Remove from wishlist
+# Featured Products
+GET /products/featured
 
-PATCH  /api/v1/account                # Update account settings
-PATCH  /api/v1/account/password       # Change password
-```
-
-## Public Endpoints
-
-```
-GET    /api/v1/testimonials           # Get approved testimonials
-POST   /api/v1/newsletter/subscribe   # Subscribe to newsletter
-POST   /api/v1/newsletter/unsubscribe # Unsubscribe
-POST   /api/v1/contact                # Contact form submission
+# Single Product
+GET /products/{slug}
 ```
 
-## Webhook Endpoints
+### Categories & Tags (Public)
 
-```
-POST   /api/webhooks/stripe           # Stripe webhook handler
-POST   /api/webhooks/singpost         # SingPost tracking updates
-```
+```http
+# List Categories
+GET /categories
 
-## Admin Endpoints (Protected)
+# Category Detail
+GET /categories/{slug}
 
-```
-# Dashboard
-GET    /api/v1/admin/dashboard/stats  # Key metrics
-GET    /api/v1/admin/dashboard/revenue # Revenue charts
-GET    /api/v1/admin/dashboard/orders  # Recent orders
-
-# Products
-GET    /api/v1/admin/products         # List all products
-POST   /api/v1/admin/products         # Create product
-GET    /api/v1/admin/products/:id     # Get product for editing
-PATCH  /api/v1/admin/products/:id     # Update product
-DELETE /api/v1/admin/products/:id     # Soft delete product
-
-# Variants
-POST   /api/v1/admin/products/:id/variants
-PATCH  /api/v1/admin/variants/:id
-DELETE /api/v1/admin/variants/:id
-
-# Orders
-GET    /api/v1/admin/orders           # List all orders
-GET    /api/v1/admin/orders/:id       # Get order details
-PATCH  /api/v1/admin/orders/:id/status # Update order status
-POST   /api/v1/admin/orders/:id/refund # Process refund
-POST   /api/v1/admin/orders/:id/tracking # Add tracking info
-
-# Customers
-GET    /api/v1/admin/customers        # List customers
-GET    /api/v1/admin/customers/:id    # Customer details + orders
-
-# Inventory
-GET    /api/v1/admin/inventory        # Stock levels
-PATCH  /api/v1/admin/inventory/:variantId # Adjust stock
-
-# Coupons
-GET    /api/v1/admin/coupons
-POST   /api/v1/admin/coupons
-PATCH  /api/v1/admin/coupons/:id
-DELETE /api/v1/admin/coupons/:id
-
-# Testimonials
-GET    /api/v1/admin/testimonials
-POST   /api/v1/admin/testimonials
-PATCH  /api/v1/admin/testimonials/:id
-DELETE /api/v1/admin/testimonials/:id
-
-# Settings
-GET    /api/v1/admin/settings
-PATCH  /api/v1/admin/settings
+# List Tags
+GET /tags
 ```
 
----
+### Cart (Session-based)
 
-# 🎨 Design System Mapping
+```http
+# Get Cart
+GET /cart
 
-## Tailwind Theme Extension
+# Add Item
+POST /cart/items
+{ "variant_id": "uuid", "quantity": 1 }
 
-```typescript
-// tailwind.config.ts
-import type { Config } from 'tailwindcss'
+# Update Quantity
+PUT /cart/items/{id}
+{ "quantity": 2 }
 
-const config: Config = {
-  darkMode: ['class'],
-  content: ['./src/**/*.{ts,tsx}'],
-  theme: {
-    extend: {
-      // Color System - Illuminated Manuscript
-      colors: {
-        // Ink colors
-        ink: {
-          DEFAULT: '#2A2D26',
-          light: '#4A4D46',
-          muted: '#545752', // Accessible version
-        },
-        // Gold system
-        gold: {
-          DEFAULT: '#C9A769',
-          light: '#E8D8B6',
-          dark: '#A98750',
-          muted: 'rgba(201, 167, 105, 0.3)',
-          text: '#8B7355', // Accessible for text
-        },
-        // Parchment background
-        parchment: {
-          DEFAULT: '#FAF8F5',
-          dark: '#F5F1EB',
-          darker: '#E8E4D9',
-        },
-        // Accent colors
-        bronze: '#9A8C6D',
-        rose: '#B87D7D',
-        sage: '#7C6354',
-        slate: '#7A8C9D',
-        // Botanical accents
-        lavender: '#B8A9C9',
-        eucalyptus: '#7CB9A0',
-        bergamot: '#F5D489',
-        rosehip: '#E8B4B8',
-      },
-      
-      // Typography
-      fontFamily: {
-        display: ['Cormorant Garamond', 'Georgia', 'serif'],
-        body: ['Crimson Pro', 'Georgia', 'serif'],
-        accent: ['Great Vibes', 'cursive'],
-        ornament: ['Playfair Display', 'serif'],
-      },
-      
-      // Fluid Typography Scale
-      fontSize: {
-        xs: ['clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)', { lineHeight: '1.5' }],
-        sm: ['clamp(0.875rem, 0.8rem + 0.35vw, 1rem)', { lineHeight: '1.5' }],
-        base: ['clamp(1rem, 0.95rem + 0.25vw, 1.125rem)', { lineHeight: '1.6' }],
-        lg: ['clamp(1.125rem, 1rem + 0.5vw, 1.25rem)', { lineHeight: '1.6' }],
-        xl: ['clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem)', { lineHeight: '1.4' }],
-        '2xl': ['clamp(1.5rem, 1.25rem + 1.25vw, 2rem)', { lineHeight: '1.3' }],
-        '3xl': ['clamp(2rem, 1.5rem + 2.5vw, 3rem)', { lineHeight: '1.1' }],
-        '4xl': ['clamp(2.5rem, 2rem + 2.5vw, 4rem)', { lineHeight: '0.95' }],
-        '5xl': ['clamp(3rem, 2.5rem + 2.5vw, 5rem)', { lineHeight: '0.9' }],
-      },
-      
-      // Spacing - Golden Ratio inspired
-      spacing: {
-        '3xs': '0.125rem',
-        '2xs': '0.25rem',
-        'xs': '0.5rem',
-        'sm': '0.75rem',
-        'md': '1rem',
-        'lg': '1.5rem',
-        'xl': '2rem',
-        '2xl': '3rem',
-        '3xl': '4rem',
-        '4xl': '6rem',
-        '5xl': '8rem',
-        '6xl': '12rem',
-      },
-      
-      // Border Radius
-      borderRadius: {
-        sm: '0.125rem',
-        md: '0.25rem',
-        lg: '0.5rem',
-        xl: '1rem',
-        '2xl': '2rem',
-        '3xl': '4rem',
-      },
-      
-      // Box Shadows
-      boxShadow: {
-        sm: '0 1px 2px rgba(42, 45, 38, 0.05)',
-        md: '0 4px 12px rgba(42, 45, 38, 0.08)',
-        lg: '0 8px 24px rgba(42, 45, 38, 0.1)',
-        xl: '0 16px 48px rgba(42, 45, 38, 0.12)',
-        gold: '0 0 40px rgba(201, 167, 105, 0.2)',
-      },
-      
-      // Transitions
-      transitionDuration: {
-        micro: '150ms',
-        fast: '300ms',
-        base: '500ms',
-        slow: '800ms',
-      },
-      
-      // Z-Index
-      zIndex: {
-        base: '1',
-        elevated: '10',
-        sticky: '100',
-        overlay: '1000',
-        modal: '2000',
-        toast: '3000',
-      },
-      
-      // Container
-      maxWidth: {
-        container: '1400px',
-      },
-      
-      // Animations
-      keyframes: {
-        'liquid-wave': {
-          '0%, 100%': { transform: 'translateY(0) scaleY(1)' },
-          '50%': { transform: 'translateY(-10px) scaleY(1.05)' },
-        },
-        'float-botanical': {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '50%': { transform: 'translateY(-20px) rotate(5deg)' },
-        },
-        'rotate-seal': {
-          from: { transform: 'rotate(0deg)' },
-          to: { transform: 'rotate(360deg)' },
-        },
-        'write-scroll': {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '50%': { transform: 'translateY(10px) rotate(5deg)' },
-        },
-        pulse: {
-          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-          '50%': { opacity: '0.7', transform: 'scale(1.05)' },
-        },
-      },
-      animation: {
-        'liquid-wave': 'liquid-wave 8s ease-in-out infinite',
-        'float-botanical': 'float-botanical 6s ease-in-out infinite',
-        'rotate-seal': 'rotate-seal 30s linear infinite',
-        'write-scroll': 'write-scroll 2s ease-in-out infinite',
-        pulse: 'pulse 3s ease-in-out infinite',
-      },
-    },
-  },
-  plugins: [
-    require('tailwindcss-animate'),
-    require('@tailwindcss/typography'),
-  ],
-}
+# Remove Item
+DELETE /cart/items/{id}
 
-export default config
+# Apply Coupon
+POST /cart/coupon
+{ "code": "SAVE10" }
+
+# Remove Coupon
+DELETE /cart/coupon
 ```
 
-## Shadcn-UI Component Customization
+### Orders (Protected)
 
-```typescript
-// components.json (Shadcn config)
+```http
+# List User Orders
+GET /orders
+Authorization: Bearer {token}
+
+# Order Detail
+GET /orders/{orderNumber}
+Authorization: Bearer {token}
+```
+
+### Checkout (Protected)
+
+```http
+# Initiate Checkout
+POST /checkout/initiate
+Authorization: Bearer {token}
+
+# Complete Checkout
+POST /checkout/complete
+Authorization: Bearer {token}
+{ "payment_intent_id": "...", "address_id": "..." }
+```
+
+### Response Format
+
+```json
 {
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "default",
-  "rsc": true,
-  "tsx": true,
-  "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "src/app/globals.css",
-    "baseColor": "neutral",
-    "cssVariables": true,
-    "prefix": ""
+  "data": { /* Resource or collection */ },
+  "meta": {
+    "current_page": 1,
+    "per_page": 12,
+    "total": 147
   },
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+  "links": {
+    "self": "/api/v1/products?page=1",
+    "next": "/api/v1/products?page=2"
   }
 }
 ```
 
 ---
 
-# 🚀 Development Phases & Timeline
+## 9. Design System: Illuminated Manuscript
 
-```mermaid
-gantt
-    title Atelier Arôme E-Commerce Development Timeline
-    dateFormat  YYYY-MM-DD
-    
-    section Phase 1: Foundation
-    Project Setup & Architecture     :p1a, 2024-01-01, 3d
-    Database Schema & Migrations     :p1b, after p1a, 3d
-    Laravel API Scaffolding          :p1c, after p1b, 5d
-    Next.js Project Setup           :p1d, after p1a, 2d
-    Design System Implementation    :p1e, after p1d, 5d
-    
-    section Phase 2: Core Features
-    Product Management API          :p2a, after p1c, 5d
-    Product Catalog UI              :p2b, after p1e, 7d
-    Cart System (API + UI)          :p2c, after p2a, 5d
-    User Authentication             :p2d, after p2c, 5d
-    
-    section Phase 3: Checkout
-    Address Management              :p3a, after p2d, 3d
-    Shipping Integration            :p3b, after p3a, 4d
-    Stripe Payment Integration      :p3c, after p3b, 5d
-    Order Processing                :p3d, after p3c, 4d
-    Email Notifications             :p3e, after p3d, 3d
-    
-    section Phase 4: Account & Admin
-    User Account Pages              :p4a, after p3e, 5d
-    Order History & Tracking        :p4b, after p4a, 3d
-    Wishlist Feature                :p4c, after p4b, 2d
-    Filament Admin Panel            :p4d, after p3e, 7d
-    Inventory Management            :p4e, after p4d, 3d
-    
-    section Phase 5: Enhancement
-    Search Implementation           :p5a, after p4e, 3d
-    Reviews & Testimonials          :p5b, after p5a, 3d
-    Newsletter System               :p5c, after p5b, 2d
-    Performance Optimization        :p5d, after p5c, 4d
-    
-    section Phase 6: Launch
-    Testing & QA                    :p6a, after p5d, 5d
-    Security Audit                  :p6b, after p6a, 3d
-    Staging Deployment              :p6c, after p6b, 2d
-    Production Launch               :p6d, after p6c, 2d
+### Color Palette
+
+```typescript
+// tailwind.config.ts - Custom Colors
+colors: {
+  // Primary Palette
+  ink: {
+    DEFAULT: '#2A2D26',     // Deep charcoal (text)
+    light: '#4A4D46',       // Lighter ink
+    muted: '#545752',       // Accessible muted text
+  },
+  gold: {
+    DEFAULT: '#C9A769',     // Byzantine gold (accents)
+    light: '#E8D8B6',       // Light gold
+    dark: '#A98750',        // Dark gold
+    muted: 'rgba(201, 167, 105, 0.3)', // Subtle gold
+    text: '#8B7355',        // WCAG AA compliant gold
+  },
+  parchment: {
+    DEFAULT: '#FAF8F5',     // Warm off-white (background)
+    dark: '#F5F1EB',        // Darker parchment
+    darker: '#E8E4D9',      // Even darker
+  },
+  
+  // Botanical Accents
+  lavender: '#B8A9C9',      // Calming
+  eucalyptus: '#7CB9A0',    // Clarifying
+  bergamot: '#F5D489',      // Uplifting
+  rosehip: '#E8B4B8',       // Rare
+  
+  // Supporting Colors
+  bronze: '#9A8C6D',
+  rose: '#B87D7D',
+  sage: '#7C6354',
+  slate: '#7A8C9D',
+}
 ```
 
-## Phase Deliverables Summary
+### Typography
 
-| Phase | Duration | Key Deliverables |
-|-------|----------|------------------|
-| **1. Foundation** | 2 weeks | Project setup, database, API scaffold, design system |
-| **2. Core Features** | 3 weeks | Products, catalog, cart, authentication |
-| **3. Checkout** | 3 weeks | Addresses, shipping, payments, orders, emails |
-| **4. Account & Admin** | 3 weeks | User accounts, admin panel, inventory |
-| **5. Enhancement** | 2 weeks | Search, reviews, newsletter, optimization |
-| **6. Launch** | 2 weeks | Testing, security, deployment |
+```typescript
+// tailwind.config.ts - Font Families
+fontFamily: {
+  display: ['var(--font-display)', 'Cormorant Garamond', 'Georgia', 'serif'],
+  body: ['var(--font-body)', 'Crimson Pro', 'Georgia', 'serif'],
+  accent: ['var(--font-accent)', 'Great Vibes', 'cursive'],
+  ornament: ['Playfair Display', 'serif'],
+}
 
-**Total Estimated Duration: 15 weeks**
+// Fluid Typography (clamp-based)
+fontSize: {
+  xs: ['clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)', { lineHeight: '1.5' }],
+  base: ['clamp(1rem, 0.95rem + 0.25vw, 1.125rem)', { lineHeight: '1.6' }],
+  '3xl': ['clamp(2rem, 1.8rem + 2.5vw, 3rem)', { lineHeight: '0.9' }],
+  // ...
+}
+```
+
+### Animation System
+
+```typescript
+// tailwind.config.ts - Keyframes & Animations
+keyframes: {
+  'liquid-wave': {
+    '0%, 100%': { transform: 'translateY(0) scaleY(1)' },
+    '50%': { transform: 'translateY(-10px) scaleY(1.05)' },
+  },
+  'float-botanical': {
+    '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+    '50%': { transform: 'translateY(-20px) rotate(5deg)' },
+  },
+  'seal-rotate': {
+    from: { transform: 'rotate(0deg)' },
+    to: { transform: 'rotate(360deg)' },
+  },
+  'bubble-rise': {
+    '0%': { transform: 'translateY(0)', opacity: '1' },
+    '100%': { transform: 'translateY(-40px)', opacity: '0' },
+  },
+},
+animation: {
+  'seal-rotate': 'seal-rotate 30s linear infinite',
+  'liquid-sway': 'liquid-sway 3s ease-in-out infinite',
+  'bubble-rise': 'bubble-rise 2s ease-out infinite',
+  'float': 'float 6s ease-in-out infinite',
+}
+```
+
+### Accessibility Requirements
+
+```css
+/* globals.css - Reduced Motion Support (CRITICAL) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+**WCAG Compliance:**
+- Color contrast: AA minimum, AAA target
+- Focus states: 3px gold outline + 4px offset
+- ARIA live regions for cart updates, errors
+- Keyboard navigation support
+- Screen reader announcements via `a11y.ts`
 
 ---
 
-# ✅ Validation Checkpoint
+## 10. State Management
 
-Before I begin implementation, please confirm:
+### Client State (Zustand)
 
-1. **Stack Confirmed**: Laravel 12 API + Next.js 15 frontend ✓
-2. **Database**: PostgreSQL with the schema defined above
-3. **Payment Priority**: Stripe primary, PayNow secondary
-4. **Hosting**: Laravel Forge/Vapor + Vercel
-5. **Admin Panel**: Filament 3.x for Laravel
-6. **Scope**: Full e-commerce with the features outlined
+Used for UI-only state that doesn't need server sync:
 
-**Questions for you:**
+```typescript
+// Cart drawer open/close
+const { cartDrawerOpen, toggleCartDrawer } = useCartStore();
 
-1. **Product Variants**: Do you want fixed sizes (5ml, 15ml, 30ml) or configurable per product?
+// Toast notifications
+const { addToast } = useToastStore();
+```
 
-2. **Inventory**: Single warehouse or multiple stock locations?
+### Server State (TanStack Query)
 
-3. **Shipping**: SingPost API integration, or flat-rate shipping to start?
+Used for data that originates from the API:
 
-4. **Social Login**: Google only, or also Facebook/Apple?
+```typescript
+// Fetching products with caching
+const { data: products, isLoading, error } = useProducts({
+  category: 'singles',
+  humour: 'calming',
+  page: 1,
+});
 
-5. **Launch Priority**: Which features are MVP vs. post-launch?
+// Query configuration
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000,   // 10 minutes (was cacheTime)
+    },
+  },
+});
+```
+
+### Why NOT Redux?
+
+| Library | Bundle Size | Learning Curve |
+|---------|-------------|----------------|
+| Zustand | 1.2KB | Simple |
+| TanStack Query | 12KB | Moderate |
+| Redux Toolkit | 45KB | Complex |
+
+Zustand + TanStack Query provides better separation of concerns with smaller bundle.
 
 ---
 
-**Ready to proceed to Phase 1 implementation upon your confirmation.**
+## 11. Development Workflow
+
+### Prerequisites
+
+**Backend:**
+- PHP 8.3+
+- Composer 2.x
+- PostgreSQL 16 (Docker recommended)
+- Redis 7.x (Docker recommended)
+
+**Frontend:**
+- Node.js 20+
+- pnpm 8+ (preferred) or npm 10+
+
+### Quick Start with Docker
+
+```bash
+# 1. Start Docker services
+docker-compose up -d
+
+# 2. Setup Backend
+cd atelier-arome-api
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+php artisan serve
+
+# 3. Setup Frontend (new terminal)
+cd atelier-arome-web
+pnpm install
+cp .env.local.example .env.local
+pnpm dev
+
+# 4. Access
+# Frontend: http://localhost:3000
+# Backend:  http://localhost:8000
+# Mailhog:  http://localhost:8025
+```
+
+### Common Commands
+
+**Backend:**
+```bash
+php artisan serve          # Start dev server
+php artisan test           # Run tests
+php artisan migrate:fresh --seed  # Reset DB
+./vendor/bin/pint          # Code formatting
+```
+
+**Frontend:**
+```bash
+pnpm dev                   # Start dev server
+pnpm build                 # Production build
+pnpm lint                  # ESLint
+pnpm type-check            # TypeScript check
+```
+
+### Component Creation Workflow ("Construct and Conquer")
+
+1. **NEVER patch broken code** - Create new, clean component
+2. Build atomic component first (~60-150 lines)
+3. Test in isolation
+4. Compose into orchestrator
+5. Run `pnpm build` to verify
+
+```bash
+# Example: Creating a new component
+mkdir -p src/components/catalog
+touch src/components/catalog/product-card.tsx
+
+# Write clean component, then:
+pnpm type-check && pnpm build
+```
+
+---
+
+## 12. Testing Strategy
+
+### Backend Testing (PHPUnit/Pest)
+
+```bash
+php artisan test                          # All tests
+php artisan test --testsuite=Feature      # Integration
+php artisan test --testsuite=Unit         # Unit
+php artisan test --coverage               # With coverage
+```
+
+**Test Structure:**
+```
+tests/
+├── Feature/
+│   └── Api/
+│       ├── AuthTest.php
+│       ├── ProductTest.php
+│       └── CartTest.php
+└── Unit/
+    ├── Services/
+    └── Models/
+```
+
+### Frontend Testing (Vitest + Playwright)
+
+```bash
+pnpm test              # Unit tests (Vitest)
+pnpm test:watch        # Watch mode
+pnpm test:e2e          # E2E tests (Playwright)
+```
+
+**Test Structure:**
+```
+src/
+├── __tests__/
+│   ├── components/
+│   └── utils/
+└── e2e/
+    ├── checkout.spec.ts
+    └── product-browsing.spec.ts
+```
+
+---
+
+## 13. Infrastructure & Deployment
+
+### Local Development (Docker)
+
+| Container | Image | Port | Purpose |
+|-----------|-------|------|---------|
+| atelier_db | postgres:16-alpine | 5432 | PostgreSQL |
+| atelier_redis | redis:7.4-alpine | 6379 | Redis |
+| atelier_mailhog | mailhog/mailhog | 1025/8025 | Email testing |
+
+### Production Architecture
+
+| Layer | Service | Purpose |
+|-------|---------|---------|
+| Frontend | Vercel (Edge) | Next.js hosting, ISR |
+| Backend | Laravel Forge/Vapor | Laravel hosting |
+| Database | Neon | Managed PostgreSQL |
+| Cache | Upstash | Managed Redis |
+| CDN | Cloudflare | Static assets |
+| Payments | Stripe | Payment processing |
+| Monitoring | Sentry | Error tracking |
+
+### Environment Stages
+
+| Environment | Frontend | Backend | Database |
+|-------------|----------|---------|----------|
+| Development | localhost:3000 | localhost:8000 | Docker (atelier_db) |
+| Staging | staging.atelierarome.com | api-staging.atelierarome.com | Neon staging |
+| Production | atelierarome.com | api.atelierarome.com | Neon production |
+
+---
+
+## 14. Security Considerations
+
+### OWASP Top 10 Mitigations
+
+| Threat | Mitigation |
+|--------|------------|
+| SQL Injection | Eloquent ORM, parameterized queries |
+| XSS | React auto-escaping, Blade `{{ }}` |
+| CSRF | Laravel CSRF tokens, SameSite cookies |
+| Broken Auth | Sanctum tokens, bcrypt hashing |
+| Broken Access | Laravel policies, role-based access |
+
+### Rate Limiting
+
+```php
+// 60 requests per minute per IP
+Route::middleware(['throttle:60,1'])->group(function () {
+    // ...
+});
+```
+
+### Payment Security
+
+- **NEVER** store credit card numbers or CVV
+- Use Stripe Elements for client-side tokenization
+- Verify Stripe webhook signatures
+- PCI compliance offloaded to Stripe
+
+---
+
+## 15. Common Pitfalls & Solutions
+
+### 1. JSX Syntax Errors
+
+**Problem:** Unclosed tags or template literals in JSX
+```
+Error: x Expression expected
+```
+
+**Solution:** "Construct and Conquer"
+- Don't debug line-by-line
+- Create new clean component
+- Overwrite broken file
+
+### 2. N+1 Query Problems
+
+**Problem:** Loading products without relationships
+```php
+// ❌ N+1 queries
+$products = Product::all();
+foreach ($products as $product) {
+    echo $product->category->name; // +1 query!
+}
+```
+
+**Solution:** Eager loading
+```php
+// ✅ Single query
+$products = Product::with(['category', 'variants', 'images'])->get();
+```
+
+### 3. CORS Issues
+
+**Problem:** Frontend can't connect to API
+
+**Solution:** Configure `config/cors.php`:
+```php
+'paths' => ['api/*', 'sanctum/csrf-cookie'],
+'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+'supports_credentials' => true,
+```
+
+### 4. Cart Overselling
+
+**Problem:** Multiple users buying last item
+
+**Solution:** Pessimistic locking:
+```php
+DB::transaction(function () {
+    $inventory = Inventory::where('variant_id', $id)
+        ->lockForUpdate()  // Pessimistic lock
+        ->first();
+    // Check and decrement
+});
+```
+
+---
+
+## 16. Phase Status & Roadmap
+
+### Current Status
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| **1. Foundation** | ✅ Complete | Project setup, database, Docker |
+| **2. Backend Core** | ✅ Complete | Models, Controllers, Resources, Routes |
+| **3. Frontend Foundation** | ✅ Complete | Next.js setup, atomic components |
+| **4. Design System** | ✅ Complete | Tailwind theme, Shadcn-UI |
+| **5. Authentication** | ✅ Complete | Sanctum integration |
+| **6. Product Mgmt (BE)** | ✅ Complete | Product API endpoints |
+| **7. Product Catalog (FE)** | ✅ Complete | Grid, Cards, Filters, URL sync |
+| **8. Cart System** | 🚧 Pending | Cart backend + frontend integration |
+| **9. Checkout Flow** | 🚧 Pending | Multi-step checkout |
+| **10-16** | 📋 Planned | Payment, Orders, Admin, Search, Launch |
+
+### Next Immediate Actions
+
+1. **Product Detail Page** (`/compendium/[slug]`) - Show full product details
+2. **Cart Integration** - Verify "Add to Vial" works with API
+3. **Real Images** - Verify images load from API
+
+### See Also
+
+- `MASTER_EXECUTION_PLAN.md` - Full 16-phase breakdown (2263 lines)
+- `Updated_Project_Understanding.md` - Deep project analysis
+
+---
+
+## 17. Quick Reference
+
+### File Locations
+
+| What | Where |
+|------|-------|
+| API Controllers | `atelier-arome-api/app/Http/Controllers/Api/V1/` |
+| Eloquent Models | `atelier-arome-api/app/Models/` |
+| API Routes | `atelier-arome-api/routes/api.php` |
+| Migrations | `atelier-arome-api/database/migrations/` |
+| React Components | `atelier-arome-web/src/components/` |
+| Custom Hooks | `atelier-arome-web/src/hooks/` |
+| Zustand Stores | `atelier-arome-web/src/stores/` |
+| Tailwind Config | `atelier-arome-web/tailwind.config.ts` |
+| App Router | `atelier-arome-web/src/app/` |
+
+### Key Commands
+
+```bash
+# Backend
+cd atelier-arome-api
+php artisan serve              # Start server
+php artisan migrate:fresh --seed  # Reset DB
+php artisan test               # Run tests
+
+# Frontend
+cd atelier-arome-web
+pnpm dev                       # Start server
+pnpm build                     # Build check
+pnpm type-check                # TypeScript check
+
+# Docker
+docker-compose up -d           # Start containers
+docker exec -it atelier_db psql -U postgres -d atelier_arome_dev
+```
+
+### Design Tokens (Quick Copy)
+
+```css
+/* Colors */
+--ink: #2A2D26;
+--gold: #C9A769;
+--parchment: #FAF8F5;
+
+/* Fonts */
+--font-display: 'Cormorant Garamond';
+--font-body: 'Crimson Pro';
+--font-accent: 'Great Vibes';
+```
+
+### Environment Variables
+
+**Backend (`.env`):**
+```env
+DB_CONNECTION=pgsql
+DB_DATABASE=atelier_arome_dev
+REDIS_HOST=127.0.0.1
+```
+
+**Frontend (`.env.local`):**
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+NEXTAUTH_SECRET=<generate-with-openssl>
+```
+
+---
+
+## Document History
+
+| Version | Date | Author | Changes |
+|---------|------|--------|---------|
+| 2.0.0 | 2026-01-09 | AI Agent | Complete rewrite with validated codebase status |
+| 1.0.0 | 2026-01-05 | AI Agent | Initial document |
+
+---
+
+**This document is the single source of truth. When in doubt, consult this document first.**
