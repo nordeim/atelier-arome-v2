@@ -1,22 +1,23 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CheckoutController;
 use App\Http\Controllers\Api\V1\NewsletterController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\TestimonialController;
+use App\Http\Controllers\Api\V1\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group.
 |
 | API Prefix: /api/v1
 |
@@ -106,37 +107,37 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
-    // Addresses (placeholder - to be implemented)
+    // Addresses
     Route::prefix('addresses')->group(function () {
-        Route::get('/', fn() => response()->json(['message' => 'Address index - Coming soon']));
-        Route::post('/', fn() => response()->json(['message' => 'Address create - Coming soon']));
-        Route::put('/{id}', fn() => response()->json(['message' => 'Address update - Coming soon']));
-        Route::delete('/{id}', fn() => response()->json(['message' => 'Address delete - Coming soon']));
+        Route::get('/', [AddressController::class, 'index']);
+        Route::post('/', [AddressController::class, 'store']);
+        Route::put('/{id}', [AddressController::class, 'update']);
+        Route::delete('/{id}', [AddressController::class, 'destroy']);
     });
 
-    // Orders (placeholder - to be implemented)
+    // Orders
     Route::prefix('orders')->group(function () {
-        Route::get('/', fn() => response()->json(['message' => 'Order index - Coming soon']));
-        Route::get('/{orderNumber}', fn() => response()->json(['message' => 'Order show - Coming soon']));
+        Route::get('/', [OrderController::class, 'index']);
+        Route::get('/{orderNumber}', [OrderController::class, 'show']);
     });
 
-    // Wishlist (placeholder - to be implemented)
+    // Wishlist
     Route::prefix('wishlist')->group(function () {
-        Route::get('/', fn() => response()->json(['message' => 'Wishlist show - Coming soon']));
-        Route::post('/items', fn() => response()->json(['message' => 'Wishlist add - Coming soon']));
-        Route::delete('/items/{productId}', fn() => response()->json(['message' => 'Wishlist remove - Coming soon']));
+        Route::get('/', [WishlistController::class, 'show']);
+        Route::post('/items', [WishlistController::class, 'addItem']);
+        Route::delete('/items/{productId}', [WishlistController::class, 'removeItem']);
     });
 
-    // Reviews (placeholder - to be implemented)
+    // Reviews
     Route::prefix('reviews')->group(function () {
-        Route::post('/', fn() => response()->json(['message' => 'Review create - Coming soon']));
-        Route::put('/{id}', fn() => response()->json(['message' => 'Review update - Coming soon']));
-        Route::delete('/{id}', fn() => response()->json(['message' => 'Review delete - Coming soon']));
+        Route::post('/', [ReviewController::class, 'store']);
+        Route::put('/{id}', [ReviewController::class, 'update']);
+        Route::delete('/{id}', [ReviewController::class, 'destroy']);
     });
 
-    // Checkout (placeholder - to be implemented)
+    // Checkout
     Route::prefix('checkout')->group(function () {
-        Route::post('/initiate', fn() => response()->json(['message' => 'Checkout initiate - Coming soon']));
-        Route::post('/complete', fn() => response()->json(['message' => 'Checkout complete - Coming soon']));
+        Route::post('/initiate', [CheckoutController::class, 'initiate']);
+        Route::post('/complete', [CheckoutController::class, 'complete']);
     });
 });
