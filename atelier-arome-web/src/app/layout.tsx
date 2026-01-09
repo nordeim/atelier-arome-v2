@@ -1,5 +1,39 @@
 import type { Metadata } from 'next';
+import { Cormorant_Garamond, Crimson_Pro, Great_Vibes, Playfair_Display } from 'next/font/google';
 import './globals.css';
+import './atelier.css';
+
+// Renaissance Typography Stack
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+const crimson = Crimson_Pro({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-crimson',
+  display: 'swap',
+});
+
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-great-vibes',
+  display: 'swap',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
@@ -43,14 +77,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${cormorant.variable} ${crimson.variable} ${greatVibes.variable} ${playfair.variable}`}>
       <body className="min-h-screen bg-background font-body text-ink antialiased">
-        <div
-          className="fixed inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E")`,
-          }}
-        />
+        {/* Parchment Texture Overlay - from static mockup */}
+        <div className="texture-overlay" aria-hidden="true" />
+
+        {/* Gold Leaf Accents */}
+        <div className="gold-leaf gold-leaf--1" aria-hidden="true" />
+        <div className="gold-leaf gold-leaf--2" aria-hidden="true" />
+        <div className="gold-leaf gold-leaf--3" aria-hidden="true" />
+
+        {/* Skip Navigation for Accessibility */}
+        <a href="#main-content" className="skip-link">Skip to main content</a>
 
         {children}
       </body>
