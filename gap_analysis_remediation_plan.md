@@ -401,3 +401,37 @@ body {
   box-shadow: 0 0 16px
 
 [1](http://localhost:3000/)
+
+---
+
+Visual Gap Analysis Complete
+I've completed a meticulous comparative analysis of the dynamic landing page against the static HTML reference mockup. Here's what I found:
+
+Key Findings
+Validation of Existing Gap Analysis:
+
+✅ Confirmed all major findings from gap_analysis_dynamic_land_page_vs_static.md
+⚠️ Found some items already implemented (rotating seal animation, fluid typography, gold leaf system)
+Identified 8 Visual Gaps to Remediate:
+
+Priority	Gap	Description
+🔴 Critical	Atelier Hours Banner	Missing entirely from dynamic page
+🔴 Critical	Header Seal SVG	Simplified vs reference's elaborate alchemical paths
+🔴 Critical	Apparatus Section	Missing 3-item apparatus illustrations grid
+🟡 High	Alchemy Watermark	SVG geometric vs "Ars Magna" text
+🟡 High	Roman Numerals	Arabic (1,2,3,4) vs Roman (I,II,III,IV)
+🟡 High	Filter Buttons	Missing humour icons (☾ ☀ ♁ ☁)
+🟢 Minor	Continue Reading	Missing "Load More Essences" button
+🟢 Minor	Section Copy	Shortened descriptions vs reference
+Implementation Approach
+Uses existing BEM classes from atelier.css where possible
+Zero impact on architectural integrity
+Preserves all existing functionality
+Questions Before Execution
+Scope Confirmation: Should I proceed with all 8 gaps, or focus only on Critical (🔴) items first?
+Apparatus Illustrations: The static reference has placeholder containers for apparatus illustrations. Should I:
+(a) Add placeholder containers only (matching static)
+(b) Create simple SVG illustrations
+(c) Skip the apparatus section entirely
+Product Data: The compendium shows different essences (English Lavender vs Provence Lavender). Should I update the essence naming to match the static reference, or leave the data as-is from the API?
+

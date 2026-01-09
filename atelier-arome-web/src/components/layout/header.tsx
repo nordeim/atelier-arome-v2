@@ -28,12 +28,18 @@ export function Header() {
         {/* Atelier Seal */}
         <a href="#hero" className="header__seal" aria-label="Atelier Arôme - Home">
           <div className="header__seal-inner">
-            <svg className="header__seal-svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="2" />
-              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3,2" />
-              <text x="50" y="58" textAnchor="middle" className="header__seal-letter">A</text>
+            <svg className="header__seal-svg" viewBox="0 0 100 100" aria-hidden="true">
+              {/* Outer dashed circle */}
+              <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2,2" />
+              {/* Ornate alchemical path */}
+              <path d="M50 20 Q70 30 80 50 Q70 70 50 80 Q30 70 20 50 Q30 30 50 20 Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              {/* Inner circle */}
+              <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="1" />
+              {/* Cross pattern */}
+              <path d="M50 35 L50 65 M35 50 L65 50" stroke="currentColor" strokeWidth="1.5" />
             </svg>
             <div className="header__seal-text">
+              <span className="header__seal-name">Atelier</span>
               <span className="header__seal-name">Arôme</span>
             </div>
           </div>

@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 interface FilterSidebarProps {
   filters: ProductFilters;
-  onFilterChange: (key: keyof ProductFilters, value: any) => void;
+  onFilterChange: (key: keyof ProductFilters, value: string | boolean | number | undefined) => void;
   className?: string;
 }
 
@@ -83,7 +83,7 @@ export function FilterSidebar({ filters, onFilterChange, className }: FilterSide
                 className="accent-gold"
                 checked={filters.humour === humour}
                 onChange={() => onFilterChange('humour', filters.humour === humour ? undefined : humour)}
-                onClick={(e) => {
+                onClick={() => {
                   if (filters.humour === humour) {
                     // Allow deselecting radio button
                     onFilterChange('humour', undefined);
@@ -113,21 +113,21 @@ export function FilterSidebar({ filters, onFilterChange, className }: FilterSide
           ))}
         </div>
       </div>
-      
-       {/* Season */}
-       <div className="space-y-3">
+
+      {/* Season */}
+      <div className="space-y-3">
         <h3 className="font-display text-lg font-medium text-ink">Season</h3>
         <div className="flex flex-wrap gap-2">
           {SEASONS.map((season) => (
             <button
-               key={season}
-               onClick={() => onFilterChange('season', filters.season === season ? undefined : season)} // Note: Type needs update in hook to support season if missing
-               className={cn(
-                 "px-2 py-1 text-xs border rounded-sm transition-all",
-                 filters.season === season // Note: Type needs update
-                   ? "border-gold bg-gold/10 text-gold-dark"
-                   : "border-gold/20 text-ink-muted hover:border-gold/50"
-               )}
+              key={season}
+              onClick={() => onFilterChange('season', filters.season === season ? undefined : season)} // Note: Type needs update in hook to support season if missing
+              className={cn(
+                "px-2 py-1 text-xs border rounded-sm transition-all",
+                filters.season === season // Note: Type needs update
+                  ? "border-gold bg-gold/10 text-gold-dark"
+                  : "border-gold/20 text-ink-muted hover:border-gold/50"
+              )}
             >
               <span className="capitalize">{season}</span>
             </button>

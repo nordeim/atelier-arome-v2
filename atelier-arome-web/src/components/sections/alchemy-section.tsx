@@ -1,3 +1,9 @@
+// Helper function to convert number to Roman numeral
+const toRoman = (num: number): string => {
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+  return romanNumerals[num - 1] || String(num);
+};
+
 export function AlchemySection() {
   const steps = [
     {
@@ -40,12 +46,9 @@ export function AlchemySection() {
 
   return (
     <section className="alchemy" id="process">
-      {/* Watermark */}
+      {/* Watermark - Gap 4 Fix: "Ars Magna" text instead of SVG */}
       <div className="alchemy__watermark" aria-hidden="true">
-        <svg viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2,4" />
-          <path d="M100 20 L180 100 L100 180 L20 100 Z" fill="none" stroke="currentColor" strokeWidth="1" />
-        </svg>
+        <span className="alchemy__watermark-text">Ars Magna</span>
       </div>
 
       <div className="alchemy__container">
@@ -53,21 +56,23 @@ export function AlchemySection() {
         <div className="alchemy__header">
           <span className="section-label">Second Folio</span>
           <h2 className="section-title">
-            <span className="section-title__line">Our Alchemical</span>
-            <span className="section-title__line section-title__line--emph">Process</span>
+            <span className="section-title__line">The Art of</span>
+            <span className="section-title__line section-title__line--emph">Alchemical Transformation</span>
           </h2>
           <div className="alchemy__rule" aria-hidden="true"></div>
           <p className="section-description">
-            Where Botany Becomes Poetry
+            Our practice follows the ancient alchemical principle: <em>solve et coagula</em>.
+            To dissolve and reconstitute. To transform base botanical matter into olfactory
+            gold through time, heat, and intention.
           </p>
         </div>
 
-        {/* Process Steps */}
+        {/* Process Steps - Gap 5 Fix: Roman numerals */}
         <div className="alchemy__process">
           {steps.map((step) => (
             <div className="alchemy-step" key={step.number}>
               <div className={`alchemy-step__number ${step.colorClass}`}>
-                {step.number}
+                <span className="alchemy-step__roman">{toRoman(step.number)}</span>
               </div>
 
               <div className="alchemy-step__content">
@@ -100,12 +105,50 @@ export function AlchemySection() {
           ))}
         </div>
 
-        {/* Apparatus Illustration Placeholder */}
-        <div className="alchemy__apparatus" aria-hidden="true">
-          <svg viewBox="0 0 300 200">
-            <path d="M150 20 L150 60 Q100 100 100 150 Q100 180 150 180 Q200 180 200 150 Q200 100 150 60"
-              fill="none" stroke="currentColor" strokeWidth="2" />
-          </svg>
+        {/* Apparatus Illustrations - Gap 3 Fix: 3-item grid */}
+        <div className="alchemy__apparatus">
+          <div className="apparatus__item apparatus__item--still">
+            <div className="apparatus__illustration">
+              <svg viewBox="0 0 80 100" aria-hidden="true">
+                {/* Copper Alembic Still */}
+                <ellipse cx="40" cy="80" rx="25" ry="8" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M15 80 L15 50 Q15 35 40 25 Q65 35 65 50 L65 80" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M40 25 L40 10 Q50 5 55 10 L55 20" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <ellipse cx="55" cy="18" rx="5" ry="2" fill="none" stroke="currentColor" strokeWidth="1" />
+              </svg>
+            </div>
+            <div className="apparatus__caption">Copper Alembic Still</div>
+          </div>
+          <div className="apparatus__item apparatus__item--vessel">
+            <div className="apparatus__illustration">
+              <svg viewBox="0 0 80 100" aria-hidden="true">
+                {/* Maturation Vessel */}
+                <ellipse cx="40" cy="85" rx="20" ry="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M20 85 L20 40 Q20 25 40 25 Q60 25 60 40 L60 85" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M35 25 L35 15 M45 25 L45 15" stroke="currentColor" strokeWidth="1.5" />
+                <ellipse cx="40" cy="15" rx="8" ry="3" fill="none" stroke="currentColor" strokeWidth="1" />
+                {/* Liquid level */}
+                <path d="M22 60 Q40 55 58 60" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2,2" />
+              </svg>
+            </div>
+            <div className="apparatus__caption">Maturation Vessels</div>
+          </div>
+          <div className="apparatus__item apparatus__item--tools">
+            <div className="apparatus__illustration">
+              <svg viewBox="0 0 80 100" aria-hidden="true">
+                {/* Alchemist Tools */}
+                {/* Mortar */}
+                <ellipse cx="25" cy="75" rx="15" ry="5" fill="none" stroke="currentColor" strokeWidth="1" />
+                <path d="M10 75 Q10 60 25 60 Q40 60 40 75" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {/* Pestle */}
+                <path d="M28 55 L35 30 Q36 28 38 30 L42 50" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {/* Dropper */}
+                <path d="M55 80 L55 50 Q55 45 60 45 Q65 45 65 50 L65 55" fill="none" stroke="currentColor" strokeWidth="1" />
+                <ellipse cx="60" cy="83" rx="4" ry="6" fill="none" stroke="currentColor" strokeWidth="1" />
+              </svg>
+            </div>
+            <div className="apparatus__caption">Alchemist&apos;s Tools</div>
+          </div>
         </div>
 
         {/* Manifesto Quote */}

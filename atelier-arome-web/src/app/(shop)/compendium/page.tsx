@@ -16,16 +16,16 @@ function CompendiumContent() {
     category: searchParams.get('category') || undefined,
     humour: searchParams.get('humour') || undefined,
     rarity: searchParams.get('rarity') || undefined,
-    season: (searchParams.get('season') as any) || undefined,
+    season: searchParams.get('season') || undefined,
     search: searchParams.get('search') || undefined,
     sort: searchParams.get('sort') || 'sort_order',
   };
 
   // Update URL when filters change
   const handleFilterChange = useCallback(
-    (key: keyof ProductFilters, value: any) => {
+    (key: keyof ProductFilters, value: string | boolean | number | undefined) => {
       const params = new URLSearchParams(searchParams.toString());
-      
+
       if (value === undefined || value === null || value === '') {
         params.delete(key);
       } else {
@@ -52,16 +52,16 @@ function CompendiumContent() {
         </h1>
         <div className="mx-auto mt-6 h-px w-24 bg-gold/50" />
         <p className="mx-auto mt-6 max-w-2xl text-lg text-ink-light font-serif">
-          A curated collection of artisanal essences, extracted with patience and 
-          precision from nature's most aromatic specimens.
+          A curated collection of artisanal essences, extracted with patience and
+          precision from nature&apos;s most aromatic specimens.
         </p>
       </div>
 
       <div className="flex flex-col gap-12 lg:flex-row">
         {/* Sidebar */}
-        <FilterSidebar 
-          filters={filters} 
-          onFilterChange={handleFilterChange} 
+        <FilterSidebar
+          filters={filters}
+          onFilterChange={handleFilterChange}
         />
 
         {/* Grid */}
@@ -80,7 +80,7 @@ function CompendiumContent() {
               <option value="created_at">Newest First</option>
             </select>
           </div>
-          
+
           <ProductGrid filters={filters} />
         </main>
       </div>

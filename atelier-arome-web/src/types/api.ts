@@ -77,7 +77,7 @@ export interface Product {
   is_featured: boolean;
   is_active: boolean;
   sort_order: number;
-  meta_data: Record<string, any> | null;
+  meta_data: Record<string, unknown> | null;
   category: Category;
   default_variant: ProductVariant;
   primary_image: ProductImage;

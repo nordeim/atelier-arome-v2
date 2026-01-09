@@ -1,0 +1,76 @@
+# Task: Visual Alignment - Dynamic Landing Page to Static HTML Reference
+
+## Objective
+Close the visual UI/UX aesthetic gap between the Next.js dynamic landing page and the static HTML mockup reference, while preserving architectural integrity and functionality.
+
+## Pre-Flight Checklist
+- [x] Review dynamic landing page (landing_page.html)
+- [x] Review static reference (index.html, styles.css, main.js)
+- [x] Validate existing gap analysis documents
+- [x] Identify which CSS/components already exist
+- [x] Create validated remediation plan
+
+## Phase 1: Critical Visual Elements
+
+### 1.1 Add Atelier Hours Banner
+- [ ] Add banner component before header in page.tsx
+- [ ] Use existing `.atelier-banner` CSS classes
+- [ ] Add correct copy: "The Atelier is Open" / "N° 724 • Lavandula × intermedia"
+- [ ] Test responsive behavior (hidden subtext on mobile)
+
+### 1.2 Enhance Header Seal SVG
+- [ ] Update SVG in header.tsx to match reference
+- [ ] Include dashed outer circle (strokeDasharray="2,2")
+- [ ] Add ornate alchemical path
+- [ ] Add inner circle and cross pattern
+- [ ] Verify rotation animation still works
+
+### 1.3 Add Apparatus Illustrations Section
+- [ ] Add `.alchemy__apparatus` container to alchemy-section.tsx
+- [ ] Add 3 apparatus items: Copper Alembic, Maturation Vessels, Tools
+- [ ] Add CSS for grid layout
+- [ ] Style illustration placeholders
+- [ ] Add caption text
+
+## Phase 2: High Priority Enhancements
+
+### 2.1 Update Alchemy Watermark
+- [ ] Replace SVG watermark with "Ars Magna" text
+- [ ] Add `.alchemy__watermark-text` class
+- [ ] Style with low opacity and large font
+
+### 2.2 Change to Roman Numerals
+- [ ] Update alchemy steps from Arabic (1, 2, 3, 4) to Roman (I, II, III, IV)
+- [ ] Add `.alchemy-step__roman` class
+- [ ] Maintain color modifiers
+
+### 2.3 Enhance Filter Button Structure
+- [ ] Add separate text and icon spans
+- [ ] Add humour icons: ☾ ☀ ♁ ☁
+- [ ] Update "All" filter with ✦ ornament
+
+## Phase 3: Polish and Refinement
+
+### 3.1 Add "Continue Reading" Button
+- [ ] Add button after compendium counter
+- [ ] Use `.btn.btn--outline` styling
+- [ ] Link to /compendium page
+
+### 3.2 Extend Section Copy
+- [ ] Update compendium description to full reference text
+- [ ] Add "solve et coagula" to alchemy description
+
+## Verification Checkpoints
+- [ ] Run `pnpm build` after each phase
+- [ ] Test at 1920px viewport
+- [ ] Test at 1024px viewport  
+- [ ] Test at 768px viewport
+- [ ] Test at 375px viewport
+- [ ] Compare visually against static reference
+- [ ] Verify all animations functional
+
+## Status
+- **Phase 1:** Not Started
+- **Phase 2:** Not Started
+- **Phase 3:** Not Started
+- **Verification:** Not Started

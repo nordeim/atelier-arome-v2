@@ -1,0 +1,211 @@
+# Implementation Plan: Update CLAUDE.md
+
+## Goal
+
+Update [CLAUDE.md](file:///home/project/atelier-arome/CLAUDE.md) to accurately reflect the validated codebase status as of January 9, 2026.
+
+---
+
+## Discrepancies Identified
+
+### Critical Errors (Must Fix)
+
+| Location | Current (Incorrect) | Correct Value |
+|----------|---------------------|---------------|
+| Line 81 | `└── AGENT.md  # This file` | Should be `└── CLAUDE.md  # This file` |
+| Line 84 | `Phase 2 Frontend Core Complete` | `Phase 7 Complete (Product Catalog Grid)` |
+| Line 97-98 | Controllers: ⚠️ PARTIAL, API Resources: ❌ MISSING | Both are ✅ **COMPLETE** |
+| Line 99 | Routes: ⚠️ PARTIAL | ✅ **COMPLETE** (144 lines, full V1 API) |
+| Line 108 | 3 hooks | 5 hooks (added [use-products.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-products.ts)) |
+| Line 122-128 | "Next Steps: Create API Resources, Controllers, Routes" | These are DONE |
+| Lines 137-171 | Component structure missing `catalog/` folder | Add `catalog/` with 3 components |
+| Line 1249 | `Phase 3 Complete → Phase 4 Ready` | `Phase 7 Complete → Phase 7.1 (Product Detail Page)` |
+| Lines 1254, 1259 | 24 migrations, 6 seeders | 26 migrations, 7 seeders |
+| Lines 1276-1285 | Phase 2 Backend "Ready to Begin" (all unchecked) | Phase 2 is **COMPLETE** (all checked) |
+| Line 1384 | Last Updated: January 5, 2026 | January 9, 2026 |
+| Line 1385 | Phase 1 Complete - Phase 2 Ready | Phase 7 Complete |
+
+### Additional Updates Needed
+
+1. Add **catalog components** to the component tree ([filter-sidebar.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/filter-sidebar.tsx), [product-card.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/product-card.tsx), [product-grid.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/product-grid.tsx))
+2. Add **[use-products.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-products.ts)** hook to the hooks section
+3. Add **[api-client.ts](file:///home/project/atelier-arome/atelier-arome-web/src/lib/api-client.ts)** to lib utilities
+4. Update **Phase 7** status to show completed items
+5. Update footer metadata to reflect current status
+
+---
+
+## Proposed Changes
+
+### 1. Fix Line 81 (Repository Structure Comment)
+
+```diff
+- └── AGENT.md               # This file
++ └── CLAUDE.md              # This file
+```
+
+### 2. Fix Line 84 (Current Status)
+
+```diff
+- **Current Status:** Phase 2 Frontend Core Complete ✅ (January 9, 2026)
++ **Current Status:** Phase 7 Complete (Product Catalog Grid) ✅ → Phase 7.1 (Product Detail Page)
+```
+
+### 3. Fix Lines 94-100 (Backend Ground Truth Table)
+
+```diff
+ ### Backend (Laravel 12 API)
+ 
+ | Component | Status | Details ||
+ | **Models** | ✅ **COMPLETE** | 22+ models in `app/Models/` |
+-| **Controllers** | ⚠️ **PARTIAL** | Base controller exists, API controllers needed |
+-| **API Resources** | ❌ **MISSING** | Directory doesn't exist |
+-| **Routes** | ⚠️ **PARTIAL** | Basic routing, versioned API routes needed |
+-| **Database** | ✅ **COMPLETE** | 26 tables, migrations run, seeders executed |
++| **Controllers** | ✅ **COMPLETE** | 12 API controllers in `app/Http/Controllers/Api/V1/` |
++| **API Resources** | ✅ **COMPLETE** | 14 resources in `app/Http/Resources/` |
++| **Routes** | ✅ **COMPLETE** | Full V1 API in `routes/api.php` (144 lines) |
++| **Database** | ✅ **COMPLETE** | 26 migrations, 7 seeders, all executed |
+```
+
+### 4. Fix Lines 107-110 (Frontend Ground Truth)
+
+```diff
+ | **App Router** | ✅ **COMPLETE** | All route groups configured |
+-| **Components** | ✅ **17+ components** | hero, layout, cart, sections, ui |
+-| **Custom Hooks** | ✅ **3 hooks** | use-scroll, use-intersection, use-reduced-motion |
++| **Components** | ✅ **19+ components** | hero, layout, cart, sections, ui, catalog |
++| **Custom Hooks** | ✅ **5 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products, index |
+ | **Stores** | ✅ **2 stores** | cart-store, toast-store |
+```
+
+### 5. Replace Lines 112-128 (Phase Features & Next Steps)
+
+Replace "Phase 2 Features" and "Next Steps (Phase 3)" with current status:
+
+```markdown
+### Current Phase: 7 Complete ✅
+
+**Phase 7 Features Completed:**
+- ✅ **Product Catalog Grid** — `/compendium` page with live API integration
+- ✅ **ProductCard Component** — Illuminated manuscript styling
+- ✅ **ProductGrid Component** — Responsive grid with skeleton loading
+- ✅ **FilterSidebar Component** — Category, Humour, Rarity filters
+- ✅ **URL-Based Filtering** — Shareable filter states via query params
+- ✅ **TanStack Query Integration** — `useProducts` hook with caching
+- ✅ **API Client** — Axios-based `api-client.ts`
+
+**Immediate Next Steps (Phase 7.1):**
+1. **Product Detail Page:** Implement `/compendium/[slug]`
+2. **Cart Integration:** Verify "Add to Vial" works with Cart Store
+3. **Real Images:** Verify product images load from API
+```
+
+### 6. Update Lines 137-171 (Component Structure)
+
+Add the `catalog/` folder to the component tree:
+
+```markdown
+src/components/
+├── catalog/                   # Product Catalog (Phase 7)
+│   ├── filter-sidebar.tsx      # Category/Humour/Rarity filters
+│   ├── product-card.tsx        # Individual product card
+│   └── product-grid.tsx        # Responsive product grid
+├── hero/                      # Atomic hero components
+...
+```
+
+### 7. Update Lines 158-171 (Hooks & Lib)
+
+Add [use-products.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-products.ts) and [api-client.ts](file:///home/project/atelier-arome/atelier-arome-web/src/lib/api-client.ts):
+
+```markdown
+src/hooks/                     # Custom React hooks
+├── index.ts                   # Barrel export
+├── use-scroll.ts              # useSyncExternalStore for scroll
+├── use-intersection.ts        # IntersectionObserver wrapper
+├── use-reduced-motion.ts      # Reduced motion detection
+└── use-products.ts            # TanStack Query hook for products
+
+src/lib/                       # Utilities
+├── utils.ts                   # cn() class merger
+├── a11y.ts                    # Screen reader announcements
+└── api-client.ts              # Axios API client
+```
+
+### 8. Update Lines 1247-1286 (Phase Status)
+
+Replace entire phase status section with accurate information:
+
+```markdown
+## Phase Status
+
+**Current Phase:** Phase 7 Complete ✅ → Phase 7.1 (Product Detail Page)
+
+**Phase 1 (Foundation) - 100% Complete ✅:**
+- [x] Create `atelier-arome-api/` Laravel 12 project ✅
+- [x] Create `atelier-arome-web/` Next.js 15 project ✅
+- [x] Set up PostgreSQL database with 26 table migrations ✅
+- [x] Configure Redis for cache/session/queue ✅
+- [x] Docker infrastructure configured ✅
+- [x] Install Shadcn-UI components with custom theme ✅
+- [x] Implement "Illuminated Manuscript" Tailwind theme ✅
+- [x] Create all database seeders (7 seeders) ✅
+- [x] Seed sample data ✅
+
+**Phase 2 (Backend Core) - 100% Complete ✅:**
+- [x] All 22 Eloquent models with relationships ✅
+- [x] 14 API resource transformers ✅
+- [x] 12 API controllers in `Api/V1/` ✅
+- [x] Authentication routes (Laravel Sanctum) ✅
+- [x] Product, Category, Tag API endpoints ✅
+- [x] Cart and Checkout endpoints ✅
+- [x] Full route definitions in `routes/api.php` ✅
+
+**Phase 3-6 - Complete ✅:**
+- [x] Frontend foundation and atomic components ✅
+- [x] Design system implementation ✅
+- [x] Authentication integration ✅
+- [x] Product management backend ✅
+
+**Phase 7 (Product Catalog FE) - 100% Complete ✅:**
+- [x] API Client (`src/lib/api-client.ts`) ✅
+- [x] TanStack Query hook (`useProducts`) ✅
+- [x] Product Grid & Card components ✅
+- [x] Filter Sidebar with URL sync ✅
+- [x] `/compendium` page integrated ✅
+
+**Phase 7.1 (Product Detail Page) - In Progress 🚧:**
+- [ ] Implement `/compendium/[slug]` route
+- [ ] Product detail component with variants
+- [ ] Add to Cart integration verification
+```
+
+### 9. Update Lines 1384-1385 (Footer Metadata)
+
+```diff
+- **Last Updated:** January 5, 2026
+- **Project Status:** Phase 1 Complete ✅ (100%) - Phase 2 Ready ⏳
++ **Last Updated:** January 9, 2026
++ **Project Status:** Phase 7 Complete ✅ → Phase 7.1 (Product Detail Page)
+```
+
+---
+
+## Verification Plan
+
+After making changes:
+1. Verify line counts and structure are correct
+2. Cross-reference with validated codebase structure
+3. Ensure consistency with [Project_Architecture_Document.md](file:///home/project/atelier-arome/Project_Architecture_Document.md)
+4. Check that all file paths mentioned actually exist
+
+---
+
+## Risk Assessment
+
+| Risk | Mitigation |
+|------|------------|
+| Breaking existing content | Use targeted line replacements, not full rewrites |
+| Introducing new errors | Cross-validate against actual `list_dir` results from earlier |
+| Inconsistent with AGENT.md | CLAUDE.md serves different purpose (Claude-specific guidance) |

@@ -26,18 +26,18 @@ export function ProductCard({ product, className }: ProductCardProps) {
     e.preventDefault(); // Prevent navigation
     addToCart({
       id: product.id,
-      variantId: product.default_variant.id,
       name: product.name,
+      latinName: product.latin_name || '',
       price: product.default_variant.price_sgd,
       quantity: 1,
-      image: product.primary_image.url,
+      variant: product.default_variant.name,
     });
   };
 
   const humourData = product.humour ? HUMOUR_ICONS[product.humour] : null;
 
   return (
-    <Link 
+    <Link
       href={`/compendium/${product.slug}`}
       className={cn(
         "group relative flex flex-col overflow-hidden rounded-sm border border-gold/30 bg-parchment p-4 transition-all duration-500 hover:border-gold hover:shadow-gold",
@@ -72,10 +72,10 @@ export function ProductCard({ product, className }: ProductCardProps) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-gold/20">
-             {/* Fallback pattern */}
-             <svg width="40" height="40" viewBox="0 0 100 100" className="animate-pulse">
-                <circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" />
-             </svg>
+            {/* Fallback pattern */}
+            <svg width="40" height="40" viewBox="0 0 100 100" className="animate-pulse">
+              <circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" />
+            </svg>
           </div>
         )}
       </div>
@@ -112,17 +112,17 @@ export function ProductCard({ product, className }: ProductCardProps) {
         {/* Footer */}
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-gold/10">
           <div className="flex flex-col">
-             <span className="font-display text-lg text-ink">
-               {product.default_variant.price_sgd_formatted.replace('SGD ', '$')}
-             </span>
-             <span className="text-[10px] text-ink-muted uppercase tracking-wider">
-               {product.default_variant.name}
-             </span>
+            <span className="font-display text-lg text-ink">
+              {product.default_variant.price_sgd_formatted.replace('SGD ', '$')}
+            </span>
+            <span className="text-[10px] text-ink-muted uppercase tracking-wider">
+              {product.default_variant.name}
+            </span>
           </div>
-          
-          <Button 
+
+          <Button
             onClick={handleAddToCart}
-            variant="outline" 
+            variant="outline"
             size="sm"
             className="border-gold/50 hover:bg-gold hover:text-white hover:border-gold transition-colors duration-300"
           >
