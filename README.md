@@ -10,7 +10,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-Proprietary-E50914?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Phase_7_In_Progress-orange?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
+[![Status](https://img.shields.io/badge/Status-Phase_7_Visual_Alignment_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
 
 </div>
 
@@ -369,6 +369,58 @@ graph TD
     style EUCALYPTUS fill:#7CB9A0
     style BERGAMOT fill:#F5D489
     style ROSEHIP fill:#E8B4B8
+```
+
+---
+
+### Visual UI/UX Alignment (January 2026) 🎨
+
+A meticulous visual alignment was performed between the dynamic Next.js landing page and the static HTML reference mockup (`index.html`, `styles.css`, `main.js`) to ensure pixel-perfect visual parity while maintaining React/Next.js architecture.
+
+#### Key Visual Elements Implemented
+
+| Component | Static Reference | Implementation |
+|-----------|-----------------|----------------|
+| **Atelier Hours Banner** | Top page notification bar | `AtelierBanner` in `page.tsx` |
+| **Header Seal SVG** | Ornate alchemical paths + cross | Enhanced SVG in `header.tsx` |
+| **Apparatus Illustrations** | 3-item grid with icons | SVG illustrations in `alchemy-section.tsx` |
+| **"Ars Magna" Watermark** | Large decorative text | Text watermark in Alchemy section |
+| **Roman Numerals** | I, II, III, IV for steps | `toRoman()` helper function |
+| **Filter Humour Icons** | ☾ ☀ ♁ ☁ symbols | Enhanced filter buttons |
+| **Cart Icon** | Shopping bag design | Updated SVG in `header.tsx` |
+| **Newsletter Form** | Name + Email fields | 2-field form with validation |
+| **Newsletter Title** | "Receive Our Quarterly Folio" | Updated title copy |
+
+#### Key Files Modified
+
+**Components:**
+```
+src/app/page.tsx                              # +AtelierBanner component
+src/components/layout/header.tsx              # Enhanced seal SVG, cart icon  
+src/components/sections/alchemy-section.tsx   # Watermark, Roman numerals, apparatus
+src/components/sections/compendium-section.tsx # Filter icons, Continue Reading
+src/components/sections/newsletter-section.tsx # Title update, required name field
+```
+
+**Styles:**
+```
+src/app/atelier.css                           # +BEM classes for new elements
+```
+
+#### BEM Class Architecture
+
+The project follows **BEM (Block Element Modifier)** naming conventions from the static reference:
+
+```css
+/* Block */
+.correspondence { }
+
+/* Element */  
+.correspondence__title { }
+.correspondence__title-line { }
+
+/* Modifier */
+.correspondence__title-line--emph { }
 ```
 
 ---
@@ -1095,7 +1147,7 @@ UPSTASH_REDIS_REST_URL=...
 
 ## 🗺️ Roadmap
 
-### Current Status: Phase 3 Complete ✅
+### Current Status: Phase 7 Complete + Visual Alignment ✅
 
 - [x] Project structure created
 - [x] Database schema designed (24 tables)
@@ -1109,9 +1161,19 @@ UPSTASH_REDIS_REST_URL=...
 - [x] Tailwind animation utilities configured
 - [x] Build error resolved (JSX syntax elimination)
 - [x] Zero TypeScript errors, Zero ESLint warnings
-- [x] Dev server running on http://localhost:3000
+- [x] Product Catalog Grid integrated with API
+- [x] URL-based filtering (Category, Humour, Rarity, Search)
+- [x] **Visual UI/UX Alignment** (January 9, 2026):
+  - [x] Atelier Hours Banner
+  - [x] Enhanced Header Seal SVG
+  - [x] Apparatus Illustrations Grid
+  - [x] "Ars Magna" Watermark
+  - [x] Roman Numerals (I, II, III, IV)
+  - [x] Filter Humour Icons (☾ ☀ ♁ ☁)
+  - [x] Shopping Bag Cart Icon
+  - [x] Newsletter Title + Name Field
 
-### Upcoming Phases
+### Phase Overview
 
 | Phase | Name | Duration | Status |
 |-------|------|----------|--------|
@@ -1119,9 +1181,10 @@ UPSTASH_REDIS_REST_URL=...
 | 2 | Backend Core | 5 days | ✅ Complete |
 | 3 | Frontend Foundation | 3 days | ✅ Complete |
 | 4 | Design System | 5 days | ✅ Complete |
-| 5 | Authentication | 5 days | ⏳ Upcoming |
-| 6 | Product Management (BE) | 5 days | ⏳ Upcoming |
-| 7 | Product Catalog (FE) | 7 days | 🚀 In Progress |
+| 5 | Authentication | 5 days | ✅ Complete |
+| 6 | Product Management (BE) | 5 days | ✅ Complete |
+| 7 | Product Catalog (FE) | 7 days | ✅ Complete |
+| 7.1 | Visual UI/UX Alignment | 1 day | ✅ Complete |
 | 8 | Cart System | 5 days | ⏳ Upcoming |
 | 9 | Checkout Flow | 7 days | ⏳ Upcoming |
 | 10 | Payment Integration | 5 days | ⏳ Upcoming |

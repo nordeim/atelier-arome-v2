@@ -640,33 +640,33 @@ export default function RootLayout({
   --color-ink: #2A2D26;
   --color-ink-light: #4A4D46;
   --color-ink-muted: #6A6D66;
-  
+
   --color-gold: #C9A769;
   --color-gold-light: #E8D8B6;
   --color-gold-dark: #A98750;
   --color-gold-muted: rgba(201, 167, 105, 0.3);
-  
+
   --color-parchment: #FAF8F5;
   --color-parchment-dark: #F5F1EB;
   --color-parchment-darker: #E8E4D9;
-  
+
   --color-bronze: #9A8C6D;
   --color-rose: #B87D7D;
   --color-sage: #7C6354;
   --color-slate: #7A8C9D;
-  
+
   /* Botanical Accents */
   --color-lavender: #B8A9C9;
   --color-eucalyptus: #7CB9A0;
   --color-bergamot: #F5D489;
   --color-rosehip: #E8B4B8;
-  
+
   /* Typography - Renaissance Elegance */
   --font-display: 'Cormorant Garamond', 'Georgia', serif;
   --font-body: 'Crimson Pro', 'Georgia', serif;
   --font-accent: 'Great Vibes', cursive;
   --font-ornament: 'Playfair Display', serif;
-  
+
   /* Fluid Typography Scale */
   --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
   --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
@@ -677,7 +677,7 @@ export default function RootLayout({
   --text-3xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
   --text-4xl: clamp(2.5rem, 2rem + 2.5vw, 4rem);
   --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 5rem);
-  
+
   /* Spacing - Golden Ratio */
   --space-3xs: 0.125rem;
   --space-2xs: 0.25rem;
@@ -691,11 +691,11 @@ export default function RootLayout({
   --space-4xl: 6rem;
   --space-5xl: 8rem;
   --space-6xl: 12rem;
-  
+
   /* Layout */
   --container-max: 1400px;
   --container-padding: clamp(1rem, 5vw, 2rem);
-  
+
   /* Border Radius - Soft, Organic */
   --radius-sm: 0.125rem;
   --radius-md: 0.25rem;
@@ -704,24 +704,24 @@ export default function RootLayout({
   --radius-2xl: 2rem;
   --radius-3xl: 4rem;
   --radius-full: 9999px;
-  
+
   /* Shadows - Subtle Depth */
   --shadow-sm: 0 1px 2px rgba(42, 45, 38, 0.05);
   --shadow-md: 0 4px 12px rgba(42, 45, 38, 0.08);
   --shadow-lg: 0 8px 24px rgba(42, 45, 38, 0.1);
   --shadow-xl: 0 16px 48px rgba(42, 45, 38, 0.12);
   --shadow-gold: 0 0 40px rgba(201, 167, 105, 0.2);
-  
+
   /* Parchment Texture */
   --parchment-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
-  
+
   /* Transitions - Deliberate & Elegant */
   --transition-micro: 150ms ease;
   --transition-fast: 300ms ease;
   --transition-base: 500ms ease;
   --transition-slow: 800ms ease;
   --transition-bounce: 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  
+
   /* Z-Index - Manuscript Layers */
   --z-base: 1;
   --z-elevated: 10;
@@ -898,10 +898,10 @@ select {
    ATELIER BANNER
    ============================================ */
 .atelier-banner {
-  background: linear-gradient(90deg, 
-    var(--color-ink) 0%, 
-    var(--color-sage) 50%, 
-    var(--color-ink) 100%);
+  background: linear-gradient(90deg,
+      var(--color-ink) 0%,
+      var(--color-sage) 50%,
+      var(--color-ink) 100%);
   color: var(--color-parchment);
   padding: var(--space-sm) var(--container-padding);
   text-align: center;
@@ -1002,8 +1002,13 @@ select {
 }
 
 @keyframes rotateSeal {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .header__seal-text {
@@ -1277,7 +1282,7 @@ select {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 80%, rgba(201, 167, 105, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(124, 99, 84, 0.1) 0%, transparent 50%);
   pointer-events: none;
@@ -1406,10 +1411,10 @@ select {
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, 
-    var(--color-parchment) 0%, 
-    #F5F1EB 50%, 
-    var(--color-parchment) 100%);
+  background: linear-gradient(135deg,
+      var(--color-parchment) 0%,
+      #F5F1EB 50%,
+      var(--color-parchment) 100%);
   padding: var(--space-5xl) var(--container-padding);
 }
 
@@ -1666,10 +1671,10 @@ select {
 .hero__subtitle-flourish {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--color-ink-light), 
-    transparent);
+  background: linear-gradient(90deg,
+      transparent,
+      var(--color-ink-light),
+      transparent);
   opacity: 0.3;
 }
 
@@ -1714,9 +1719,9 @@ select {
 .hero__excerpt-rule {
   width: 100px;
   height: 1px;
-  background: linear-gradient(90deg, 
-    var(--color-gold), 
-    transparent);
+  background: linear-gradient(90deg,
+      var(--color-gold),
+      transparent);
   margin-bottom: var(--space-sm);
 }
 
@@ -1769,10 +1774,10 @@ select {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.2), 
-    transparent);
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
   transition: left var(--transition-slow);
 }
 
@@ -1901,9 +1906,9 @@ select {
   width: 40px;
   height: 40px;
   margin: 0 auto;
-  background: linear-gradient(180deg, 
-    rgba(250, 248, 245, 0.9) 0%,
-    rgba(250, 248, 245, 0.7) 100%);
+  background: linear-gradient(180deg,
+      rgba(250, 248, 245, 0.9) 0%,
+      rgba(250, 248, 245, 0.7) 100%);
   border: 2px solid var(--color-parchment-dark);
   border-bottom: none;
   border-radius: 20px 20px 0 0;
@@ -1914,14 +1919,14 @@ select {
   position: relative;
   width: 200px;
   height: 300px;
-  background: linear-gradient(180deg, 
-    rgba(250, 248, 245, 0.95) 0%,
-    rgba(250, 248, 245, 0.8) 20%,
-    rgba(250, 248, 245, 0.6) 100%);
+  background: linear-gradient(180deg,
+      rgba(250, 248, 245, 0.95) 0%,
+      rgba(250, 248, 245, 0.8) 20%,
+      rgba(250, 248, 245, 0.6) 100%);
   border: 2px solid var(--color-parchment-dark);
   border-top: none;
   border-radius: 0 0 60px 60px;
-  box-shadow: 
+  box-shadow:
     inset 0 4px 20px rgba(255, 255, 255, 0.8),
     0 20px 60px rgba(42, 45, 38, 0.15);
   overflow: hidden;
@@ -1933,21 +1938,24 @@ select {
   left: 8px;
   right: 8px;
   top: 60%;
-  background: linear-gradient(180deg, 
-    var(--color-lavender) 0%,
-    #9584A8 50%,
-    #7A6B8A 100%);
+  background: linear-gradient(180deg,
+      var(--color-lavender) 0%,
+      #9584A8 50%,
+      #7A6B8A 100%);
   border-radius: 40px 40px 50px 50px;
   animation: liquidWave 8s ease-in-out infinite;
 }
 
 @keyframes liquidWave {
-  0%, 100% { 
-    transform: translateY(0) scaleY(1); 
+
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
     top: 60%;
   }
-  50% { 
-    transform: translateY(-10px) scaleY(1.05); 
+
+  50% {
+    transform: translateY(-10px) scaleY(1.05);
     top: 55%;
   }
 }
@@ -1958,9 +1966,9 @@ select {
   left: 0;
   right: 0;
   height: 40px;
-  background: radial-gradient(ellipse at center, 
-    var(--color-lavender) 0%,
-    transparent 70%);
+  background: radial-gradient(ellipse at center,
+      var(--color-lavender) 0%,
+      transparent 70%);
   opacity: 0.6;
 }
 
@@ -1970,9 +1978,9 @@ select {
   left: 20%;
   right: 20%;
   bottom: 0;
-  background: linear-gradient(180deg, 
-    rgba(255, 255, 255, 0.4) 0%,
-    transparent 100%);
+  background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      transparent 100%);
   border-radius: 40px;
 }
 
@@ -2007,9 +2015,9 @@ select {
   width: 240px;
   height: 20px;
   margin: -10px auto 0;
-  background: linear-gradient(180deg, 
-    var(--color-bronze) 0%,
-    #7A6B5A 100%);
+  background: linear-gradient(180deg,
+      var(--color-bronze) 0%,
+      #7A6B5A 100%);
   border-radius: var(--radius-md);
   box-shadow: 0 8px 24px rgba(42, 45, 38, 0.2);
 }
@@ -2063,8 +2071,15 @@ select {
 }
 
 @keyframes floatBotanical {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(5deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
 }
 
 .botanical__stem {
@@ -2108,10 +2123,10 @@ select {
 .botanical__petals {
   width: 24px;
   height: 24px;
-  background: conic-gradient(var(--color-rose) 0deg 90deg, 
-                           var(--color-rosehip) 90deg 180deg,
-                           var(--color-rose) 180deg 270deg,
-                           var(--color-rosehip) 270deg 360deg);
+  background: conic-gradient(var(--color-rose) 0deg 90deg,
+      var(--color-rosehip) 90deg 180deg,
+      var(--color-rose) 180deg 270deg,
+      var(--color-rosehip) 270deg 360deg);
   border-radius: 50%;
   margin: 0 auto;
 }
@@ -2143,8 +2158,13 @@ select {
 }
 
 @keyframes rotateSymbol {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Scroll Indicator - Quill */
@@ -2167,11 +2187,14 @@ select {
 }
 
 @keyframes writeScroll {
-  0%, 100% { 
-    transform: translateY(0) rotate(0deg); 
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
   }
-  50% { 
-    transform: translateY(10px) rotate(5deg); 
+
+  50% {
+    transform: translateY(10px) rotate(5deg);
   }
 }
 
@@ -2204,10 +2227,10 @@ select {
   transform: translateX(-50%);
   width: 20px;
   height: 20px;
-  background: linear-gradient(45deg, 
-    transparent 40%, 
-    var(--color-gold-light) 50%, 
-    transparent 60%);
+  background: linear-gradient(45deg,
+      transparent 40%,
+      var(--color-gold-light) 50%,
+      transparent 60%);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
@@ -2266,10 +2289,10 @@ select {
 .compendium__rule {
   width: 100px;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--color-gold), 
-    transparent);
+  background: linear-gradient(90deg,
+      transparent,
+      var(--color-gold),
+      transparent);
   margin: var(--space-xl) auto;
 }
 
@@ -2396,8 +2419,16 @@ select {
   font-size: var(--text-sm);
 }
 
+/* Gap 6 Fix: Filter text styling */
+.compendium__filter-text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
 .compendium__filter-icon {
   font-size: var(--text-sm);
+  margin-left: var(--space-xs);
 }
 
 /* Compendium Sort */
@@ -2440,7 +2471,7 @@ select {
   transition: opacity var(--transition-fast);
 }
 
-.compendium__sort-select:focus + .compendium__sort-ornament {
+.compendium__sort-select:focus+.compendium__sort-ornament {
   opacity: 1;
 }
 
@@ -2500,9 +2531,9 @@ select {
 .essence-card__illumination {
   position: relative;
   height: 200px;
-  background: linear-gradient(135deg, 
-    rgba(201, 167, 105, 0.05) 0%,
-    transparent 100%);
+  background: linear-gradient(135deg,
+      rgba(201, 167, 105, 0.05) 0%,
+      transparent 100%);
   overflow: hidden;
 }
 
@@ -2588,9 +2619,9 @@ select {
 .essence-card__latin-rule {
   width: 40px;
   height: 1px;
-  background: linear-gradient(90deg, 
-    var(--color-gold), 
-    transparent);
+  background: linear-gradient(90deg,
+      var(--color-gold),
+      transparent);
 }
 
 /* Title */
@@ -2717,14 +2748,22 @@ select {
   text-transform: uppercase;
 }
 
-/* Compendium Footer */
+/* Compendium Footer - Gap 7 Fix */
 .compendium__footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-xl);
-  padding-top: var(--space-2xl);
+  padding-top: var(--space-3xl);
+  margin-top: var(--space-2xl);
   border-top: 1px solid var(--color-parchment-dark);
+}
+
+@media (min-width: 768px) {
+  .compendium__footer {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
 .compendium__counter {
@@ -2782,6 +2821,16 @@ select {
   z-index: var(--z-base);
 }
 
+/* Watermark Text - Gap 4 Fix */
+.alchemy__watermark-text {
+  display: block;
+  font-family: var(--font-accent);
+  font-size: clamp(15rem, 30vw, 40rem);
+  color: rgba(201, 167, 105, 0.04);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 .alchemy__container {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -2802,10 +2851,10 @@ select {
 .alchemy__rule {
   width: 100px;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--color-gold), 
-    transparent);
+  background: linear-gradient(90deg,
+      transparent,
+      var(--color-gold),
+      transparent);
   margin: var(--space-xl) auto;
 }
 
@@ -2847,6 +2896,14 @@ select {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
   font-weight: 600;
+}
+
+/* Roman Numeral Styling - Gap 5 Fix */
+.alchemy-step__roman {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  letter-spacing: 0.05em;
 }
 
 .alchemy-step__content {
@@ -2935,26 +2992,27 @@ select {
 }
 
 .apparatus__illustration {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 120px;
   margin: 0 auto var(--space-lg);
-  background: linear-gradient(135deg, 
-    rgba(201, 167, 105, 0.2) 0%,
-    transparent 100%);
-  border: 1px solid rgba(201, 167, 105, 0.3);
-  border-radius: 50%;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
 }
 
-.apparatus__illustration::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  bottom: 20px;
-  border: 1px dashed rgba(201, 167, 105, 0.3);
-  border-radius: 50%;
+/* SVG styling within apparatus illustrations */
+.apparatus__illustration svg {
+  width: 100%;
+  height: 100%;
+  color: var(--color-gold);
+  opacity: 0.7;
+  transition: all var(--transition-base);
+}
+
+.apparatus__item:hover .apparatus__illustration svg {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 .apparatus__caption {
@@ -3017,9 +3075,9 @@ select {
   transform: translate(-50%, -50%);
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, 
-    rgba(201, 167, 105, 0.05) 0%,
-    transparent 70%);
+  background: radial-gradient(circle,
+      rgba(201, 167, 105, 0.05) 0%,
+      transparent 70%);
   border-radius: 50%;
 }
 
@@ -3039,10 +3097,10 @@ select {
 .manuscript__rule {
   width: 100px;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--color-gold), 
-    transparent);
+  background: linear-gradient(90deg,
+      transparent,
+      var(--color-gold),
+      transparent);
   margin: var(--space-xl) auto;
 }
 
@@ -3395,9 +3453,9 @@ select {
 .correspondence__rule {
   width: 100px;
   height: 1px;
-  background: linear-gradient(90deg, 
-    var(--color-gold), 
-    transparent);
+  background: linear-gradient(90deg,
+      var(--color-gold),
+      transparent);
   margin: var(--space-xl) 0;
 }
 
@@ -3473,7 +3531,7 @@ select {
   transition: opacity var(--transition-fast);
 }
 
-.correspondence__input:focus + .correspondence__field-ornament {
+.correspondence__input:focus+.correspondence__field-ornament {
   opacity: 1;
 }
 
@@ -3620,11 +3678,14 @@ select {
 }
 
 @keyframes writeQuill {
-  0%, 100% { 
-    transform: translateY(0) rotate(0deg); 
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
   }
-  50% { 
-    transform: translateY(-20px) rotate(-10deg); 
+
+  50% {
+    transform: translateY(-20px) rotate(-10deg);
   }
 }
 
@@ -3635,10 +3696,10 @@ select {
   transform: translateX(-50%);
   width: 30px;
   height: 40px;
-  background: linear-gradient(45deg, 
-    var(--color-gold) 0%,
-    var(--color-gold-light) 50%,
-    var(--color-gold) 100%);
+  background: linear-gradient(45deg,
+      var(--color-gold) 0%,
+      var(--color-gold-light) 50%,
+      var(--color-gold) 100%);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   border-radius: 50% 50% 0 0;
 }
@@ -4096,8 +4157,17 @@ select {
    UTILITY CLASSES & ANIMATIONS
    ============================================ */
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
 }
 
 /* Responsive Adjustments */
@@ -4105,20 +4175,20 @@ select {
   .hero__title {
     font-size: var(--text-4xl);
   }
-  
+
   .section-title {
     font-size: var(--text-2xl);
   }
-  
+
   .alchemy-step {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
   }
-  
+
   .alchemy-step__symbol {
     display: none;
   }
-  
+
   .alchemy__apparatus {
     grid-template-columns: 1fr;
   }
@@ -4126,6 +4196,7 @@ select {
 
 /* Print Styles */
 @media print {
+
   .header,
   .atelier-banner,
   .hero__scroll-indicator,
@@ -4138,17 +4209,17 @@ select {
   .gold-leaf {
     display: none !important;
   }
-  
+
   body {
     color: #000;
     background: #fff;
   }
-  
+
   .essence-card {
     break-inside: avoid;
     border: 1px solid #ddd;
   }
-  
+
   .hero {
     min-height: auto;
     padding: var(--space-2xl) 0;
@@ -4175,13 +4246,13 @@ select {
 :root {
   /* PATCHED: Darkened muted colors for AA contrast compliance */
   --color-ink-muted-accessible: #545752;
-  
+
   /* PATCHED: Accessible gold for text on light backgrounds */
   --color-gold-text: #8B7355;
-  
+
   /* PATCHED: Accessible gold-dark for labels */
   --color-gold-dark-accessible: #7A6340;
-  
+
   /* NEW: High contrast mode support */
   --color-focus-ring: #C9A769;
   --color-focus-ring-offset: #2A2D26;
@@ -4224,6 +4295,7 @@ select {
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
   /* Global animation disable */
   *,
   *::before,
@@ -4233,69 +4305,69 @@ select {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Remove specific problematic animations */
   .header__seal-svg,
   .hero__symbol-svg {
     animation: none;
   }
-  
+
   .hero__vessel-liquid {
     animation: none;
     top: 55%;
   }
-  
+
   .hero__botanical {
     animation: none;
     transform: none;
   }
-  
+
   .scroll-indicator__quill,
   .correspondence__quill {
     animation: none;
   }
-  
+
   .mobile-nav__seal {
     animation: none;
   }
-  
+
   /* Disable parallax effects */
   .gold-leaf {
     transform: none !important;
   }
-  
+
   .hero__vessel-container {
     transform: none !important;
   }
-  
+
   /* Simplify hover transitions */
   .btn::before {
     display: none;
   }
-  
+
   .essence-card:hover,
   .manuscript-entry:hover,
   .alchemy-step:hover {
     transform: none;
   }
-  
+
   /* Maintain visual feedback without motion */
   .essence-card:hover {
     border-color: var(--color-gold);
     box-shadow: var(--shadow-lg);
   }
-  
+
   .btn--primary:hover,
   .btn--secondary:hover,
   .btn--outline:hover {
     transform: none;
   }
-  
+
   /* Static scroll indicator */
   .hero__scroll-indicator {
     opacity: 0.7;
   }
-  
+
   /* Disable liquid wave effect */
   .vessel__meniscus {
     opacity: 0.4;
@@ -4307,7 +4379,7 @@ select {
   .hero__botanical {
     will-change: transform;
   }
-  
+
   .hero__vessel-liquid {
     will-change: transform, top;
   }
@@ -4335,7 +4407,7 @@ select {
 .correspondence__input:focus-visible {
   outline: none;
   border-color: var(--color-gold);
-  box-shadow: 
+  box-shadow:
     0 0 0 3px rgba(201, 167, 105, 0.3),
     inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -4611,6 +4683,7 @@ select {
    ============================================ */
 
 @media (max-width: 768px) {
+
   .header__tool,
   .header__menu-toggle,
   .manuscript__nav-button,
@@ -4622,51 +4695,51 @@ select {
     min-width: 44px;
     min-height: 44px;
   }
-  
+
   .compendium__filter-buttons {
     gap: var(--space-md);
   }
-  
+
   .hero__initial {
     display: none;
   }
-  
+
   .hero__border {
     display: none;
   }
-  
+
   .hero__watermark {
     opacity: 0.03;
   }
-  
+
   .hero__botanicals {
     opacity: 0.5;
   }
-  
+
   .essence-card__notes {
     grid-template-columns: 1fr;
   }
-  
+
   .mobile-nav__link {
     padding: var(--space-xl) 0;
     min-height: 64px;
   }
-  
+
   .correspondence__input {
     padding: var(--space-lg);
     font-size: var(--text-base);
   }
-  
+
   .hero__actions {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .hero__actions .btn {
     width: 100%;
     justify-content: center;
   }
-  
+
   .hero__scroll-indicator {
     display: none;
   }
@@ -4677,17 +4750,17 @@ select {
     flex-direction: column;
     gap: var(--space-md);
   }
-  
+
   .essence-card__action {
     width: 100%;
     justify-content: center;
   }
-  
+
   .manuscript-entry__attribution {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .cart-item__quantity-btn {
     width: 40px;
     height: 40px;
@@ -4774,25 +4847,26 @@ select {
    ============================================ */
 
 @media (forced-colors: active) {
+
   .btn,
   .essence-card__action,
   .correspondence__submit {
     border: 2px solid currentColor;
   }
-  
+
   .essence-card {
     border: 2px solid currentColor;
   }
-  
+
   :focus-visible {
     outline: 3px solid currentColor;
     outline-offset: 3px;
   }
-  
+
   .correspondence__input {
     border: 2px solid currentColor;
   }
-  
+
   .compendium__filter[aria-pressed="true"] {
     border: 3px solid currentColor;
   }
@@ -4804,32 +4878,33 @@ select {
    ============================================ */
 
 @media print {
+
   body,
   .essence-card__description,
   .section-description,
   .hero__excerpt-text {
     color: #000 !important;
   }
-  
+
   .section-title__line--emph,
   .essence-card__folio,
   .essence-card__humour-icon {
     color: #666 !important;
   }
-  
+
   .essence-card {
     border: 1px solid #ccc !important;
     page-break-inside: avoid;
   }
-  
+
   .essence-card__illumination {
     background: none !important;
   }
-  
+
   .essence-card__notes {
     background: #f5f5f5 !important;
   }
-  
+
   .colophon__link::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
@@ -4840,7 +4915,6 @@ select {
 /* ============================================
    END OF ACCESSIBILITY & PERFORMANCE PATCH
    ============================================ */
-
 ```
 
 # atelier-arome-web/src/app/error.tsx
@@ -4960,9 +5034,26 @@ import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { NewsletterSection } from '@/components/sections/newsletter-section';
 import { Footer } from '@/components/layout/footer';
 
+// Atelier Hours Banner Component (Gap 1 Fix)
+function AtelierBanner() {
+  return (
+    <div className="atelier-banner" role="banner">
+      <div className="atelier-banner__container">
+        <span className="atelier-banner__icon" aria-hidden="true">✷</span>
+        <span className="atelier-banner__text">The Atelier is Open</span>
+        <span className="atelier-banner__subtext">
+          Current Batch: <em>N° 724 • Lavandula × intermedia</em>
+        </span>
+        <span className="atelier-banner__icon" aria-hidden="true">✷</span>
+      </div>
+    </div>
+  );
+}
+
 export default function Page() {
   return (
     <main className="relative w-full min-h-screen bg-parchment text-ink-900 font-serif selection:bg-gold/20">
+      <AtelierBanner />
       <Header />
       <HeroSection />
       <CompendiumSection />
@@ -4973,6 +5064,7 @@ export default function Page() {
     </main>
   );
 }
+
 
 ```
 
@@ -5050,6 +5142,108 @@ export default function ShopLayout({
         {children}
       </main>
     </main>
+  );
+}
+
+```
+
+# atelier-arome-web/src/app/(shop)/compendium/page.tsx
+```tsx
+'use client';
+
+import { Suspense, useCallback } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { ProductGrid } from '@/components/catalog/product-grid';
+import { FilterSidebar } from '@/components/catalog/filter-sidebar';
+import { ProductFilters } from '@/types/api';
+
+function CompendiumContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Parse filters from URL
+  const filters: ProductFilters = {
+    category: searchParams.get('category') || undefined,
+    humour: searchParams.get('humour') || undefined,
+    rarity: searchParams.get('rarity') || undefined,
+    season: searchParams.get('season') || undefined,
+    search: searchParams.get('search') || undefined,
+    sort: searchParams.get('sort') || 'sort_order',
+  };
+
+  // Update URL when filters change
+  const handleFilterChange = useCallback(
+    (key: keyof ProductFilters, value: string | boolean | number | undefined) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (value === undefined || value === null || value === '') {
+        params.delete(key);
+      } else {
+        params.set(key, String(value));
+      }
+
+      // Reset page when filtering
+      if (key !== 'page') {
+        params.delete('page');
+      }
+
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [router, pathname, searchParams]
+  );
+
+  return (
+    <div className="container mx-auto px-4 py-12 md:py-24">
+      {/* Header */}
+      <div className="mb-16 text-center">
+        <span className="font-display text-sm tracking-widest text-gold-dark uppercase">The First Folio</span>
+        <h1 className="mt-4 font-display text-5xl font-medium text-ink md:text-6xl">
+          Botanical Compendium
+        </h1>
+        <div className="mx-auto mt-6 h-px w-24 bg-gold/50" />
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-ink-light font-serif">
+          A curated collection of artisanal essences, extracted with patience and
+          precision from nature&apos;s most aromatic specimens.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-12 lg:flex-row">
+        {/* Sidebar */}
+        <FilterSidebar
+          filters={filters}
+          onFilterChange={handleFilterChange}
+        />
+
+        {/* Grid */}
+        <main className="flex-1">
+          <div className="mb-6 flex items-center justify-between">
+            <span className="text-sm text-ink-muted">
+              {/* Counter could go here */}
+            </span>
+            <select
+              value={filters.sort}
+              onChange={(e) => handleFilterChange('sort', e.target.value)}
+              className="rounded-sm border-none bg-transparent text-sm font-medium text-ink focus:ring-0 cursor-pointer hover:text-gold-dark transition-colors"
+            >
+              <option value="sort_order">Folio Order</option>
+              <option value="name">Name (A-Z)</option>
+              <option value="created_at">Newest First</option>
+            </select>
+          </div>
+
+          <ProductGrid filters={filters} />
+        </main>
+      </div>
+    </div>
+  );
+}
+
+export default function CompendiumPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-parchment" />}>
+      <CompendiumContent />
+    </Suspense>
   );
 }
 
@@ -5309,12 +5503,18 @@ export function Header() {
         {/* Atelier Seal */}
         <a href="#hero" className="header__seal" aria-label="Atelier Arôme - Home">
           <div className="header__seal-inner">
-            <svg className="header__seal-svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="2" />
-              <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3,2" />
-              <text x="50" y="58" textAnchor="middle" className="header__seal-letter">A</text>
+            <svg className="header__seal-svg" viewBox="0 0 100 100" aria-hidden="true">
+              {/* Outer dashed circle */}
+              <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2,2" />
+              {/* Ornate alchemical path */}
+              <path d="M50 20 Q70 30 80 50 Q70 70 50 80 Q30 70 20 50 Q30 30 50 20 Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              {/* Inner circle */}
+              <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="1" />
+              {/* Cross pattern */}
+              <path d="M50 35 L50 65 M35 50 L65 50" stroke="currentColor" strokeWidth="1.5" />
             </svg>
             <div className="header__seal-text">
+              <span className="header__seal-name">Atelier</span>
               <span className="header__seal-name">Arôme</span>
             </div>
           </div>
@@ -5362,15 +5562,15 @@ export function Header() {
 
           <button
             className="header__tool"
-            aria-label="View collected vials"
-            data-tooltip="Vial Collection"
+            aria-label="View collection vial"
+            data-tooltip="Collection Vial"
             data-count={cartItems.length > 0 ? cartItems.length : undefined}
             onClick={handleCartClick}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M9 2h6v4H9z" />
-              <path d="M9 6v5a3 3 0 003 3v0a3 3 0 003-3V6" />
-              <path d="M6 22h12a2 2 0 002-2v-6a6 6 0 00-6-6h0a6 6 0 00-6 6v6a2 2 0 002 2z" />
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <path d="M3 6h18" />
+              <path d="M16 10a4 4 0 01-8 0" />
             </svg>
           </button>
 
@@ -6087,6 +6287,88 @@ export function AnimateInView({
 
 ```
 
+# atelier-arome-web/src/components/ui/skeleton.tsx
+```tsx
+import { cn } from "@/lib/utils"
+
+function Skeleton({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("animate-pulse rounded-md bg-stone-200/50", className)}
+      {...props}
+    />
+  )
+}
+
+export { Skeleton }
+
+```
+
+# atelier-arome-web/src/components/ui/button.tsx
+```tsx
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-ink text-parchment hover:bg-ink/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        gold: "bg-gold text-ink hover:bg-gold-dark border border-gold-dark",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+
+```
+
 # atelier-arome-web/src/components/ui/toast.tsx
 ```tsx
 "use client";
@@ -6235,6 +6517,369 @@ const SheetContent = React.forwardRef<
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
 export { Sheet, SheetTrigger, SheetContent, SheetClose, SheetOverlay };
+
+```
+
+# atelier-arome-web/src/components/catalog/filter-sidebar.tsx
+```tsx
+'use client';
+
+import { useCategories } from '@/hooks/use-products';
+import { ProductFilters } from '@/types/api';
+import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+
+interface FilterSidebarProps {
+  filters: ProductFilters;
+  onFilterChange: (key: keyof ProductFilters, value: string | boolean | number | undefined) => void;
+  className?: string;
+}
+
+const HUMOURS = ['calming', 'uplifting', 'grounding', 'clarifying'];
+const RARITIES = ['common', 'rare', 'limited'];
+const SEASONS = ['spring', 'summer', 'autumn', 'winter'];
+
+export function FilterSidebar({ filters, onFilterChange, className }: FilterSidebarProps) {
+  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
+
+  return (
+    <aside className={cn("w-full space-y-8 lg:w-64", className)}>
+      {/* Search */}
+      <div className="space-y-3">
+        <h3 className="font-display text-lg font-medium text-ink">Search</h3>
+        <input
+          type="search"
+          placeholder="Search essences..."
+          className="w-full rounded-sm border border-gold/30 bg-parchment px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+          value={filters.search || ''}
+          onChange={(e) => onFilterChange('search', e.target.value)}
+        />
+      </div>
+
+      {/* Categories */}
+      <div className="space-y-3">
+        <h3 className="font-display text-lg font-medium text-ink">Categories</h3>
+        {isCategoriesLoading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+        ) : (
+          <ul className="space-y-2">
+            <li>
+              <button
+                onClick={() => onFilterChange('category', undefined)}
+                className={cn(
+                  "text-sm transition-colors hover:text-gold-dark",
+                  !filters.category ? "font-medium text-gold-dark" : "text-ink-light"
+                )}
+              >
+                All Categories
+              </button>
+            </li>
+            {categories?.data?.map((category) => (
+              <li key={category.id}>
+                <button
+                  onClick={() => onFilterChange('category', category.slug)}
+                  className={cn(
+                    "text-sm transition-colors hover:text-gold-dark",
+                    filters.category === category.slug ? "font-medium text-gold-dark" : "text-ink-light"
+                  )}
+                >
+                  {category.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Humours */}
+      <div className="space-y-3">
+        <h3 className="font-display text-lg font-medium text-ink">Alchemical Humour</h3>
+        <div className="space-y-2">
+          {HUMOURS.map((humour) => (
+            <label key={humour} className="flex items-center gap-2 text-sm text-ink-light cursor-pointer hover:text-ink">
+              <input
+                type="radio"
+                name="humour"
+                className="accent-gold"
+                checked={filters.humour === humour}
+                onChange={() => onFilterChange('humour', filters.humour === humour ? undefined : humour)}
+                onClick={() => {
+                  if (filters.humour === humour) {
+                    // Allow deselecting radio button
+                    onFilterChange('humour', undefined);
+                  }
+                }}
+              />
+              <span className="capitalize">{humour}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Rarity */}
+      <div className="space-y-3">
+        <h3 className="font-display text-lg font-medium text-ink">Rarity</h3>
+        <div className="space-y-2">
+          {RARITIES.map((rarity) => (
+            <label key={rarity} className="flex items-center gap-2 text-sm text-ink-light cursor-pointer hover:text-ink">
+              <input
+                type="checkbox"
+                className="accent-gold rounded-sm"
+                checked={filters.rarity === rarity}
+                onChange={() => onFilterChange('rarity', filters.rarity === rarity ? undefined : rarity)}
+              />
+              <span className="capitalize">{rarity}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Season */}
+      <div className="space-y-3">
+        <h3 className="font-display text-lg font-medium text-ink">Season</h3>
+        <div className="flex flex-wrap gap-2">
+          {SEASONS.map((season) => (
+            <button
+              key={season}
+              onClick={() => onFilterChange('season', filters.season === season ? undefined : season)} // Note: Type needs update in hook to support season if missing
+              className={cn(
+                "px-2 py-1 text-xs border rounded-sm transition-all",
+                filters.season === season // Note: Type needs update
+                  ? "border-gold bg-gold/10 text-gold-dark"
+                  : "border-gold/20 text-ink-muted hover:border-gold/50"
+              )}
+            >
+              <span className="capitalize">{season}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+```
+
+# atelier-arome-web/src/components/catalog/product-card.tsx
+```tsx
+'use client';
+
+import Link from 'next/link';
+import Image from 'next/image';
+import { Product } from '@/types/api';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { useCartStore } from '@/stores/cart-store';
+
+interface ProductCardProps {
+  product: Product;
+  className?: string;
+}
+
+const HUMOUR_ICONS = {
+  calming: { icon: '☁️', label: 'Air' }, // Placeholder icons, ideally SVGs
+  uplifting: { icon: '🔥', label: 'Fire' },
+  grounding: { icon: '🌍', label: 'Earth' },
+  clarifying: { icon: '💧', label: 'Water' },
+};
+
+export function ProductCard({ product, className }: ProductCardProps) {
+  const addToCart = useCartStore((state) => state.addToCart);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation
+    addToCart({
+      id: product.id,
+      name: product.name,
+      latinName: product.latin_name || '',
+      price: product.default_variant.price_sgd,
+      quantity: 1,
+      variant: product.default_variant.name,
+    });
+  };
+
+  const humourData = product.humour ? HUMOUR_ICONS[product.humour] : null;
+
+  return (
+    <Link
+      href={`/compendium/${product.slug}`}
+      className={cn(
+        "group relative flex flex-col overflow-hidden rounded-sm border border-gold/30 bg-parchment p-4 transition-all duration-500 hover:border-gold hover:shadow-gold",
+        className
+      )}
+    >
+      {/* Illumination Glow (Hover Effect) */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-gold/5 via-transparent to-gold/5 opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+
+      {/* Folio Number */}
+      <div className="mb-2 flex items-center justify-between text-xs font-medium text-ink-muted">
+        <span className="font-display tracking-widest uppercase">Folio {product.folio_number}</span>
+        {product.rarity !== 'common' && (
+          <span className={cn(
+            "flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-wider",
+            product.rarity === 'rare' ? "border-gold text-gold-dark" : "border-rose-400 text-rose-600"
+          )}>
+            ✦ {product.rarity}
+          </span>
+        )}
+      </div>
+
+      {/* Illustration */}
+      <div className="relative aspect-square w-full overflow-hidden rounded-sm bg-parchment-dark/50 mb-4">
+        {product.primary_image.url ? (
+          <Image
+            src={product.primary_image.url}
+            alt={product.primary_image.alt_text || product.name}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-gold/20">
+            {/* Fallback pattern */}
+            <svg width="40" height="40" viewBox="0 0 100 100" className="animate-pulse">
+              <circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" />
+            </svg>
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col">
+        {/* Latin Name */}
+        <div className="mb-1 flex items-center gap-2">
+          <span className="text-xs italic text-ink-light font-serif">{product.latin_name}</span>
+          <div className="h-px flex-1 bg-gold/20" />
+        </div>
+
+        {/* Name */}
+        <h3 className="font-display text-xl font-medium text-ink group-hover:text-gold-dark transition-colors duration-300">
+          {product.name}
+        </h3>
+
+        {/* Humour & Notes */}
+        <div className="mt-2 mb-4 flex items-center gap-3 text-sm text-ink-light">
+          {humourData && (
+            <div className="flex items-center gap-1.5" title={`Humour: ${product.humour}`}>
+              <span className="text-base">{humourData.icon}</span>
+              <span className="capitalize">{product.humour}</span>
+            </div>
+          )}
+          {product.season && (
+            <>
+              <span className="text-gold/40">•</span>
+              <span className="capitalize">{product.season}</span>
+            </>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="mt-auto flex items-center justify-between pt-4 border-t border-gold/10">
+          <div className="flex flex-col">
+            <span className="font-display text-lg text-ink">
+              {product.default_variant.price_sgd_formatted.replace('SGD ', '$')}
+            </span>
+            <span className="text-[10px] text-ink-muted uppercase tracking-wider">
+              {product.default_variant.name}
+            </span>
+          </div>
+
+          <Button
+            onClick={handleAddToCart}
+            variant="outline"
+            size="sm"
+            className="border-gold/50 hover:bg-gold hover:text-white hover:border-gold transition-colors duration-300"
+          >
+            Add to Vial
+          </Button>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+```
+
+# atelier-arome-web/src/components/catalog/product-grid.tsx
+```tsx
+'use client';
+
+import { ProductFilters } from '@/types/api';
+import { useProducts } from '@/hooks/use-products';
+import { ProductCard } from './product-card';
+import { Skeleton } from '@/components/ui/skeleton';
+
+interface ProductGridProps {
+  filters: ProductFilters;
+}
+
+export function ProductGrid({ filters }: ProductGridProps) {
+  const { data, isLoading, isError, error } = useProducts(filters);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="flex flex-col gap-4 p-4 border border-stone-200 rounded-sm">
+            <Skeleton className="h-[300px] w-full rounded-sm" />
+            <Skeleton className="h-4 w-2/3" />
+            <Skeleton className="h-4 w-1/2" />
+            <div className="mt-auto flex justify-between">
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-8 w-24" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-[400px] w-full flex-col items-center justify-center text-center text-ink-muted">
+        <span className="text-4xl">❦</span>
+        <h3 className="mt-4 text-xl font-display">The Archives are Unreachable</h3>
+        <p className="mt-2 max-w-md text-sm">
+          We could not retrieve the botanical records at this moment. 
+          Please try again later.
+        </p>
+        <p className="mt-2 text-xs text-rose-500">{(error as Error).message}</p>
+      </div>
+    );
+  }
+
+  if (!data?.data || data.data.length === 0) {
+    return (
+      <div className="flex h-[400px] w-full flex-col items-center justify-center text-center text-ink-muted">
+        <span className="text-4xl">∅</span>
+        <h3 className="mt-4 text-xl font-display">No Essences Found</h3>
+        <p className="mt-2 max-w-md text-sm">
+          Your search yielded no results in our compendium. 
+          Try adjusting your filters or search criteria.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {data.data.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+      
+      {/* Simple Pagination Feedback (Could be expanded to full pagination) */}
+      <div className="mt-8 text-center text-xs text-ink-muted">
+        Showing {data.data.length} of {data.meta?.total || data.data.length} essences
+      </div>
+    </>
+  );
+}
 
 ```
 
@@ -6411,6 +7056,7 @@ export function TestimonialsSection() {
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface Essence {
   id: string
@@ -6467,6 +7113,15 @@ const HUMOURS = {
   water: { icon: '💧', label: 'Water' }
 }
 
+// Filter configuration with humour icons - Gap 6 Fix
+const FILTERS = [
+  { key: 'all', label: 'All Essences', ornament: '✦' },
+  { key: 'calming', label: 'Calming', icon: '☾' },
+  { key: 'uplifting', label: 'Uplifting', icon: '☀' },
+  { key: 'grounding', label: 'Grounding', icon: '♁' },
+  { key: 'clarifying', label: 'Clarifying', icon: '☁' }
+]
+
 export function CompendiumSection() {
   const [filter, setFilter] = useState<string>('all')
   const [sort, setSort] = useState<string>('folio')
@@ -6494,6 +7149,9 @@ export function CompendiumSection() {
     }
   })
 
+  // Total essences for reference (simulating larger catalog)
+  const TOTAL_ESSENCES = 12
+
   return (
     <section className="compendium" id="compounds">
       {/* Section Border */}
@@ -6511,25 +7169,27 @@ export function CompendiumSection() {
           </h2>
           <div className="compendium__rule" aria-hidden="true"></div>
           <p className="section-description">
-            A curated collection of botanical essences, each extracted with patience and precision
-            from nature&apos;s most aromatic specimens.
+            A curated collection of botanical essences, each documented with the care of an
+            illuminated manuscript. These are not merely scents, but captured moments of
+            nature&apos;s poetry.
           </p>
         </div>
 
-        {/* Filters */}
+        {/* Filters - Gap 6 Fix: Enhanced with humour icons */}
         <div className="compendium__filters">
           <div className="compendium__filter-group">
-            <span className="compendium__filter-label">Filter by Humour</span>
+            <div className="compendium__filter-label">Filter by Humour:</div>
             <div className="compendium__filter-buttons">
-              {['all', 'calming', 'uplifting', 'grounding', 'clarifying'].map(f => (
+              {FILTERS.map(f => (
                 <button
-                  key={f}
-                  onClick={() => setFilter(f)}
+                  key={f.key}
+                  onClick={() => setFilter(f.key)}
                   className="compendium__filter"
-                  aria-pressed={filter === f}
+                  aria-pressed={filter === f.key}
                 >
-                  <span className="compendium__filter-ornament">✧</span>
-                  {f.charAt(0).toUpperCase() + f.slice(1)}
+                  {f.ornament && <span className="compendium__filter-ornament">{f.ornament}</span>}
+                  <span className="compendium__filter-text">{f.label}</span>
+                  {f.icon && <span className="compendium__filter-icon">{f.icon}</span>}
                 </button>
               ))}
             </div>
@@ -6540,12 +7200,14 @@ export function CompendiumSection() {
               value={sort}
               onChange={(e) => setSort(e.target.value)}
               className="compendium__sort-select"
+              aria-label="Sort compendium"
             >
               <option value="folio">Folio Order</option>
-              <option value="price">Price (Low to High)</option>
-              <option value="rarity">Rarity</option>
+              <option value="humour">By Humour</option>
+              <option value="rarity">By Rarity</option>
+              <option value="season">By Season</option>
             </select>
-            <span className="compendium__sort-ornament">▾</span>
+            <div className="compendium__sort-ornament"></div>
           </div>
         </div>
 
@@ -6604,25 +7266,31 @@ export function CompendiumSection() {
                   <span className="essence-card__price">${essence.price}</span>
                   <span className="essence-card__measure">/ 15ml</span>
                 </div>
-                <button className="essence-card__action">
+                <button className="essence-card__action" aria-label={`Add ${essence.commonName} to collection`}>
                   <svg className="essence-card__action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 5v14M5 12h14" />
                   </svg>
-                  <span className="essence-card__action-text">Add to Vial</span>
+                  <span className="essence-card__action-text">To Vial</span>
                 </button>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Footer Counter */}
+        {/* Footer Counter and Continue Reading - Gap 7 Fix */}
         <div className="compendium__footer">
           <div className="compendium__counter">
             <span className="compendium__counter-current">{sortedEssences.length}</span>
-            <span className="compendium__counter-separator">/</span>
-            <span className="compendium__counter-total">{MOCK_ESSENCES.length}</span>
-            <span className="compendium__counter-label">Essences</span>
+            <span className="compendium__counter-separator">of</span>
+            <span className="compendium__counter-total">{TOTAL_ESSENCES}</span>
+            <span className="compendium__counter-label">Essences Documented</span>
           </div>
+          <Link href="/compendium" className="btn btn--outline">
+            <span className="btn__text">Continue Reading</span>
+            <svg className="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
@@ -6633,6 +7301,12 @@ export function CompendiumSection() {
 
 # atelier-arome-web/src/components/sections/alchemy-section.tsx
 ```tsx
+// Helper function to convert number to Roman numeral
+const toRoman = (num: number): string => {
+  const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+  return romanNumerals[num - 1] || String(num);
+};
+
 export function AlchemySection() {
   const steps = [
     {
@@ -6675,12 +7349,9 @@ export function AlchemySection() {
 
   return (
     <section className="alchemy" id="process">
-      {/* Watermark */}
+      {/* Watermark - Gap 4 Fix: "Ars Magna" text instead of SVG */}
       <div className="alchemy__watermark" aria-hidden="true">
-        <svg viewBox="0 0 200 200">
-          <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2,4" />
-          <path d="M100 20 L180 100 L100 180 L20 100 Z" fill="none" stroke="currentColor" strokeWidth="1" />
-        </svg>
+        <span className="alchemy__watermark-text">Ars Magna</span>
       </div>
 
       <div className="alchemy__container">
@@ -6688,21 +7359,23 @@ export function AlchemySection() {
         <div className="alchemy__header">
           <span className="section-label">Second Folio</span>
           <h2 className="section-title">
-            <span className="section-title__line">Our Alchemical</span>
-            <span className="section-title__line section-title__line--emph">Process</span>
+            <span className="section-title__line">The Art of</span>
+            <span className="section-title__line section-title__line--emph">Alchemical Transformation</span>
           </h2>
           <div className="alchemy__rule" aria-hidden="true"></div>
           <p className="section-description">
-            Where Botany Becomes Poetry
+            Our practice follows the ancient alchemical principle: <em>solve et coagula</em>.
+            To dissolve and reconstitute. To transform base botanical matter into olfactory
+            gold through time, heat, and intention.
           </p>
         </div>
 
-        {/* Process Steps */}
+        {/* Process Steps - Gap 5 Fix: Roman numerals */}
         <div className="alchemy__process">
           {steps.map((step) => (
             <div className="alchemy-step" key={step.number}>
               <div className={`alchemy-step__number ${step.colorClass}`}>
-                {step.number}
+                <span className="alchemy-step__roman">{toRoman(step.number)}</span>
               </div>
 
               <div className="alchemy-step__content">
@@ -6735,12 +7408,50 @@ export function AlchemySection() {
           ))}
         </div>
 
-        {/* Apparatus Illustration Placeholder */}
-        <div className="alchemy__apparatus" aria-hidden="true">
-          <svg viewBox="0 0 300 200">
-            <path d="M150 20 L150 60 Q100 100 100 150 Q100 180 150 180 Q200 180 200 150 Q200 100 150 60"
-              fill="none" stroke="currentColor" strokeWidth="2" />
-          </svg>
+        {/* Apparatus Illustrations - Gap 3 Fix: 3-item grid */}
+        <div className="alchemy__apparatus">
+          <div className="apparatus__item apparatus__item--still">
+            <div className="apparatus__illustration">
+              <svg viewBox="0 0 80 100" aria-hidden="true">
+                {/* Copper Alembic Still */}
+                <ellipse cx="40" cy="80" rx="25" ry="8" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M15 80 L15 50 Q15 35 40 25 Q65 35 65 50 L65 80" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M40 25 L40 10 Q50 5 55 10 L55 20" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <ellipse cx="55" cy="18" rx="5" ry="2" fill="none" stroke="currentColor" strokeWidth="1" />
+              </svg>
+            </div>
+            <div className="apparatus__caption">Copper Alembic Still</div>
+          </div>
+          <div className="apparatus__item apparatus__item--vessel">
+            <div className="apparatus__illustration">
+              <svg viewBox="0 0 80 100" aria-hidden="true">
+                {/* Maturation Vessel */}
+                <ellipse cx="40" cy="85" rx="20" ry="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M20 85 L20 40 Q20 25 40 25 Q60 25 60 40 L60 85" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M35 25 L35 15 M45 25 L45 15" stroke="currentColor" strokeWidth="1.5" />
+                <ellipse cx="40" cy="15" rx="8" ry="3" fill="none" stroke="currentColor" strokeWidth="1" />
+                {/* Liquid level */}
+                <path d="M22 60 Q40 55 58 60" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2,2" />
+              </svg>
+            </div>
+            <div className="apparatus__caption">Maturation Vessels</div>
+          </div>
+          <div className="apparatus__item apparatus__item--tools">
+            <div className="apparatus__illustration">
+              <svg viewBox="0 0 80 100" aria-hidden="true">
+                {/* Alchemist Tools */}
+                {/* Mortar */}
+                <ellipse cx="25" cy="75" rx="15" ry="5" fill="none" stroke="currentColor" strokeWidth="1" />
+                <path d="M10 75 Q10 60 25 60 Q40 60 40 75" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {/* Pestle */}
+                <path d="M28 55 L35 30 Q36 28 38 30 L42 50" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {/* Dropper */}
+                <path d="M55 80 L55 50 Q55 45 60 45 Q65 45 65 50 L65 55" fill="none" stroke="currentColor" strokeWidth="1" />
+                <ellipse cx="60" cy="83" rx="4" ry="6" fill="none" stroke="currentColor" strokeWidth="1" />
+              </svg>
+            </div>
+            <div className="apparatus__caption">Alchemist&apos;s Tools</div>
+          </div>
         </div>
 
         {/* Manifesto Quote */}
@@ -6770,11 +7481,29 @@ import { showToast } from '@/stores/toast-store'
 import { isValidEmail, announce } from '@/lib/a11y'
 
 export function NewsletterSection() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errors, setErrors] = useState<{ email?: string }>({})
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({})
+
+  // Validate name on blur
+  const handleNameBlur = () => {
+    if (!name.trim()) {
+      setErrors(prev => ({ ...prev, name: 'Please enter your name' }))
+    } else {
+      setErrors(prev => ({ ...prev, name: undefined }))
+    }
+  }
+
+  // Clear name error on input
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+    if (errors.name) {
+      setErrors(prev => ({ ...prev, name: undefined }))
+    }
+  }
 
   // Validate email on blur
   const handleEmailBlur = () => {
@@ -6787,7 +7516,7 @@ export function NewsletterSection() {
     }
   }
 
-  // Clear error on input
+  // Clear email error on input
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
     if (errors.email) {
@@ -6798,15 +7527,22 @@ export function NewsletterSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate
+    // Validate name (required)
+    if (!name.trim()) {
+      setErrors(prev => ({ ...prev, name: 'Please enter your name' }))
+      showToast('Please enter your name', 'warning')
+      return
+    }
+
+    // Validate email
     if (!email.trim()) {
-      setErrors({ email: 'Please enter your email address' })
+      setErrors(prev => ({ ...prev, email: 'Please enter your email address' }))
       showToast('Please enter your email address', 'warning')
       return
     }
 
     if (!isValidEmail(email)) {
-      setErrors({ email: 'Please enter a valid email address' })
+      setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }))
       showToast('Please enter a valid email address', 'warning')
       return
     }
@@ -6824,6 +7560,7 @@ export function NewsletterSection() {
 
     setIsSubmitting(false)
     setSubscribed(true)
+    setName('')
     setEmail('')
     setConsent(false)
 
@@ -6870,29 +7607,58 @@ export function NewsletterSection() {
 
         {/* Content Area */}
         <div className="correspondence__content">
+          <span className="section-label section-label--light">Correspondence</span>
           <h2 className="correspondence__title">
-            <span className="correspondence__title-line">Join Our</span>
-            <span className="correspondence__title-line correspondence__title-line--emph">Correspondence</span>
+            <span className="correspondence__title-line">Receive Our</span>
+            <span className="correspondence__title-line correspondence__title-line--emph">Quarterly Folio</span>
           </h2>
           <div className="correspondence__rule" aria-hidden="true"></div>
           <p className="correspondence__description">
-            Subscribe to our quarterly folio for exclusive essays on botanical alchemy,
-            early access to new essences, and private atelier events.
+            Each season, we dispatch a handwritten folio detailing new discoveries,
+            alchemical notes, and insights from the atelier. Join our correspondence
+            to receive these missives directly.
           </p>
 
           {/* Form with validation */}
           <form onSubmit={handleSubmit} className="correspondence__form" id="correspondenceForm">
+            {/* Name Field (Required) */}
+            <div className={`correspondence__field ${errors.name ? 'correspondence__field--error' : ''}`}>
+              <label htmlFor="correspondenceName" className="visually-hidden">Your name</label>
+              <input
+                type="text"
+                id="correspondenceName"
+                value={name}
+                onChange={handleNameChange}
+                onBlur={handleNameBlur}
+                placeholder="Your name"
+                className="correspondence__input"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'name-error' : undefined}
+                aria-required="true"
+                disabled={isSubmitting}
+              />
+              <div className="correspondence__field-ornament"></div>
+              {errors.name && (
+                <span id="name-error" className="correspondence__field-error" role="alert">
+                  {errors.name}
+                </span>
+              )}
+            </div>
+
+            {/* Email Field */}
             <div className={`correspondence__field ${errors.email ? 'correspondence__field--error' : ''}`}>
+              <label htmlFor="correspondenceEmail" className="visually-hidden">Your email address</label>
               <input
                 type="email"
                 id="correspondenceEmail"
                 value={email}
                 onChange={handleEmailChange}
                 onBlur={handleEmailBlur}
-                placeholder="your.correspondence@example.com"
+                placeholder="Your email address"
                 className="correspondence__input"
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? 'email-error' : undefined}
+                aria-required="true"
                 disabled={isSubmitting}
               />
               <div className="correspondence__field-ornament"></div>
@@ -7082,6 +7848,68 @@ export function useIntersectionWithRef(
     }, [elementRef, threshold, root, rootMargin, freezeOnceVisible]);
 
     return { isInView, entry };
+}
+
+```
+
+# atelier-arome-web/src/hooks/use-products.ts
+```ts
+import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '@/lib/api-client';
+import { 
+  ApiResponse, 
+  Product, 
+  ProductFilters, 
+  Category, 
+  Tag 
+} from '@/types/api';
+
+// Hook for fetching product list with filters
+export function useProducts(filters: ProductFilters = {}) {
+  return useQuery({
+    queryKey: ['products', filters],
+    queryFn: () => {
+      // Convert filters to query string
+      const params = new URLSearchParams();
+      
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.append(key, String(value));
+        }
+      });
+
+      return apiClient<ApiResponse<Product[]>>(`/products?${params.toString()}`);
+    },
+    placeholderData: (previousData) => previousData, // Keep previous data while fetching new data
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Hook for fetching a single product
+export function useProduct(slug: string) {
+  return useQuery({
+    queryKey: ['product', slug],
+    queryFn: () => apiClient<ApiResponse<Product>>(`/products/${slug}`),
+    enabled: !!slug,
+  });
+}
+
+// Hook for fetching categories (for filters)
+export function useCategories() {
+  return useQuery({
+    queryKey: ['categories'],
+    queryFn: () => apiClient<ApiResponse<Category[]>>('/categories'),
+    staleTime: 60 * 60 * 1000, // 1 hour
+  });
+}
+
+// Hook for fetching tags (for filters)
+export function useTags() {
+  return useQuery({
+    queryKey: ['tags'],
+    queryFn: () => apiClient<ApiResponse<Tag[]>>('/tags'),
+    staleTime: 60 * 60 * 1000, // 1 hour
+  });
 }
 
 ```
@@ -7421,6 +8249,56 @@ export function cn(...inputs: ClassValue[]) {
 
 ```
 
+# atelier-arome-web/src/lib/api-client.ts
+```ts
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+
+class ApiError extends Error {
+  status: number;
+  data: unknown;
+
+  constructor(message: string, status: number, data: unknown) {
+    super(message);
+    this.status = status;
+    this.data = data;
+    this.name = 'ApiError';
+  }
+}
+
+export async function apiClient<T>(
+  endpoint: string,
+  { method = 'GET', body, headers = {}, ...customConfig }: RequestInit = {}
+): Promise<T> {
+  const config = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      ...headers,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    ...customConfig,
+  };
+
+  // Clean up endpoint to avoid double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  const response = await fetch(`${API_URL}${cleanEndpoint}`, config);
+  const data = await response.json();
+
+  if (response.ok) {
+    return data;
+  }
+
+  throw new ApiError(
+    data.message || 'An error occurred while fetching data.',
+    response.status,
+    data
+  );
+}
+
+```
+
 # atelier-arome-web/src/lib/a11y.ts
 ```ts
 /**
@@ -7571,6 +8449,113 @@ export function formatCurrency(amount: number): string {
         currency: 'USD',
         minimumFractionDigits: 0,
     }).format(amount);
+}
+
+```
+
+# atelier-arome-web/src/types/api.ts
+```ts
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  meta?: {
+    current_page: number;
+    from: number;
+    last_page: number;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  };
+  links?: {
+    first: string;
+    last: string;
+    prev: string | null;
+    next: string | null;
+  };
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  image_url: string | null;
+  sort_order: number;
+  is_active: boolean;
+  products_count?: number;
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+}
+
+export interface ProductImage {
+  id: string;
+  url: string;
+  alt_text: string | null;
+  is_primary: boolean;
+  sort_order: number;
+}
+
+export interface ProductVariant {
+  id: string;
+  name: string;
+  sku: string;
+  price_sgd: number;
+  price_sgd_formatted: string;
+  compare_at_price: number | null;
+  compare_at_price_formatted: string | null;
+  weight_grams: number;
+  is_default: boolean;
+  is_active: boolean;
+  inventory?: {
+    quantity: number;
+    in_stock: boolean;
+  };
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  latin_name: string | null;
+  description: string;
+  long_description: string | null;
+  humour: 'calming' | 'uplifting' | 'grounding' | 'clarifying' | null;
+  rarity: 'common' | 'rare' | 'limited';
+  season: 'spring' | 'summer' | 'autumn' | 'winter' | null;
+  extraction_method: string | null;
+  folio_number: string | null;
+  is_featured: boolean;
+  is_active: boolean;
+  sort_order: number;
+  meta_data: Record<string, unknown> | null;
+  category: Category;
+  default_variant: ProductVariant;
+  primary_image: ProductImage;
+  variants?: ProductVariant[];
+  images?: ProductImage[];
+  tags?: Tag[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProductFilters {
+  category?: string;
+  humour?: string;
+  rarity?: string;
+  featured?: boolean;
+  search?: string;
+  season?: string;
+  sort?: string;
+  order?: 'asc' | 'desc';
+  page?: number;
+  per_page?: number;
 }
 
 ```

@@ -96,7 +96,6 @@ atelier-arome-api/database/seeders/TestimonialSeeder.php
 atelier-arome-api/database/seeders/ProductSeeder.php
 atelier-arome-api/database/seeders/DatabaseSeeder.php
 atelier-arome-api/.env.example
-atelier-arome-api/.env
 atelier-arome-api/tests/Feature/ExampleTest.php
 atelier-arome-api/tests/Unit/ExampleTest.php
 atelier-arome-api/tests/TestCase.php
@@ -110,7 +109,6 @@ atelier-arome-api/package.json
 atelier-arome-api/phpunit.xml
 atelier-arome-api/README.md
 atelier-arome-api/vite.config.js
-atelier-arome-api/composer.lock
 atelier-arome-api/.editorconfig
 atelier-arome-api/routes/web.php
 atelier-arome-api/routes/api.php

@@ -1,160 +1,161 @@
-# Visual Gap Analysis: Round 2
-## Dynamic Landing Page vs Static HTML Reference
+# Implementation Plan: Documentation Update for Visual UI/UX Alignment
 
-Based on the uploaded screenshots, I've identified the following remaining visual differences:
-
----
-
-## Screenshot Analysis
-
-````carousel
-![Dynamic Hero - Image 0](/home/pete/.gemini/antigravity/brain/de8a6e54-9e8f-486d-9c08-9ca01869ab6a/uploaded_image_0_1767972629545.png)
-<!-- slide -->
-![Static Alchemy Section - Image 1](/home/pete/.gemini/antigravity/brain/de8a6e54-9e8f-486d-9c08-9ca01869ab6a/uploaded_image_1_1767972629545.png)
-<!-- slide -->
-![Static Newsletter Section - Image 2](/home/pete/.gemini/antigravity/brain/de8a6e54-9e8f-486d-9c08-9ca01869ab6a/uploaded_image_2_1767972629545.png)
-<!-- slide -->
-![Dynamic Hero with Cart - Image 3](/home/pete/.gemini/antigravity/brain/de8a6e54-9e8f-486d-9c08-9ca01869ab6a/uploaded_image_3_1767972629545.png)
-<!-- slide -->
-![Dynamic Alchemy Section - Image 4](/home/pete/.gemini/antigravity/brain/de8a6e54-9e8f-486d-9c08-9ca01869ab6a/uploaded_image_4_1767972629545.png)
-````
+## Objective
+Update `README.md` and `AGENT.md` to document the visual UI/UX aesthetic alignment work completed between the dynamic Next.js landing page and the static HTML reference mockup.
 
 ---
 
-## Identified Visual Gaps
+## Files to Update
 
-### Gap 1: Cart Icon Design (Header)
-| Aspect | Static Reference | Dynamic Page |
-|--------|------------------|--------------|
-| **Icon Shape** | Shopping bag with curved handle | Vial/test tube shape |
-| **Label** | "Vial" tooltip | "Vial Collection" label visible |
-| **Badge Position** | Small circle counter | Same |
-
-**Analysis:** The static reference uses a classic shopping bag icon (lines 122-126 of index.html) while the dynamic page uses a vial icon. Both are thematically appropriate, but differ visually.
-
-**Decision:** The vial icon better matches the "Atelier" alchemical aesthetic. **LOW PRIORITY** - Consider keeping the vial icon as an intentional improvement.
+| File | Current State | Changes Needed |
+|------|---------------|----------------|
+| `README.md` | Roadmap shows Phase 3 Complete | Update to Phase 7 + Visual Alignment work |
+| `AGENT.md` | Documents Phase 7 Product Catalog | Add Visual Alignment section |
 
 ---
 
-### Gap 2: Newsletter Section Title
-| Aspect | Static Reference (Image 2) | Dynamic Page |
-|--------|----------------------------|--------------|
-| **Title Line 1** | "Receive Our" | "Join Our" |
-| **Title Line 2** | "Quarterly Folio" | "Correspondence" |
+## Changes for README.md
 
-**Impact:** Medium - Different terminology, but both convey newsletter signup.
+### 1. Update Status Badge (Line 13)
+**Current:** `Phase_7_In_Progress`
+**Target:** `Phase_7_Visual_Alignment_Complete`
 
-**Fix Required:** Update newsletter title to match static reference.
+### 2. Add Visual Alignment Section (After Design System ~Line 373)
+**New Section: Visual UI/UX Alignment**
 
----
+Content to add:
+```markdown
+### Visual UI/UX Alignment (January 2026)
 
-### Gap 3: Newsletter Form Fields
-| Aspect | Static Reference (Image 2) | Dynamic Page |
-|--------|----------------------------|--------------|
-| **Fields** | Name field + Email field | Email field only |
-| **Placeholders** | "Your name", "Your email address" | "your.correspondence@example.com" |
+A meticulous visual alignment was performed between the dynamic Next.js landing page 
+and the static HTML reference mockup (`index.html`, `styles.css`, `main.js`).
 
-**Impact:** Medium - Static has 2 input fields, dynamic has 1.
+#### Key Visual Elements Implemented
 
-**Fix Required:** Add name field to match static reference.
+| Component | Static Reference | Implementation |
+|-----------|-----------------|----------------|
+| Atelier Hours Banner | Top page notification bar | `AtelierBanner` in `page.tsx` |
+| Header Seal SVG | Ornate alchemical paths + cross | Enhanced SVG in `header.tsx` |
+| Apparatus Illustrations | 3-item grid with icons | SVG illustrations in `alchemy-section.tsx` |
+| "Ars Magna" Watermark | Large decorative text | Text watermark in Alchemy section |
+| Roman Numerals | I, II, III, IV for steps | `toRoman()` helper function |
+| Filter Humour Icons | ☾ ☀ ♁ ☁ symbols | Enhanced filter buttons |
+| Cart Icon | Shopping bag design | Updated SVG in `header.tsx` |
+| Newsletter Form | Name + Email fields | 2-field form with validation |
+| Newsletter Title | "Receive Our Quarterly Folio" | Updated title copy |
 
----
+#### Key Files Modified
 
-### Gap 4: Alchemy Section - Already Aligned ✅
-Comparing Image 1 (static) and Image 4 (dynamic):
-- ✅ Roman numerals (I, II, III, IV) - ALIGNED
-- ✅ Step titles (Nigredo, Albedo, Citrinitas, Rubedo) - ALIGNED
-- ✅ Duration and Method labels - ALIGNED
-- ✅ Apparatus grid at bottom - ALIGNED (both show circular placeholders)
+**Components:**
+- `src/app/page.tsx` - Added Atelier Banner
+- `src/components/layout/header.tsx` - Enhanced seal SVG, cart icon
+- `src/components/sections/alchemy-section.tsx` - Watermark, Roman numerals, apparatus
+- `src/components/sections/compendium-section.tsx` - Filter icons, Continue Reading
+- `src/components/sections/newsletter-section.tsx` - Title, name field
 
----
-
-## Remediation Plan
-
-### Phase 1: Newsletter Section Alignment
-
-#### 1.1 Update Title Text
-**File:** `src/components/sections/newsletter-section.tsx`
-
-**Current (line 108-111):**
-```tsx
-<span className="correspondence__title-line">Join Our</span>
-<span className="correspondence__title-line correspondence__title-line--emph">Correspondence</span>
+**Styles:**
+- `src/app/atelier.css` - BEM classes for new elements
 ```
 
-**Target:**
-```tsx
-<span className="correspondence__title-line">Receive Our</span>
-<span className="correspondence__title-line correspondence__title-line--emph">Quarterly Folio</span>
-```
+### 3. Update Roadmap Section (Line 1096-1133)
+**Current:** Shows Phase 3 Complete
+**Target:** Show Phase 7 Complete + Visual Alignment milestone
 
 ---
 
-#### 1.2 Add Name Field
-**File:** `src/components/sections/newsletter-section.tsx`
+## Changes for AGENT.md
 
-**Add before email field (around line 120):**
-```tsx
-<div className="correspondence__field">
-  <label htmlFor="correspondenceName" className="visually-hidden">Your name</label>
-  <input
-    type="text"
-    id="correspondenceName"
-    value={name}
-    onChange={(e) => setName(e.target.value)}
-    placeholder="Your name"
-    className="correspondence__input"
-    disabled={isSubmitting}
-  />
-  <div className="correspondence__field-ornament"></div>
-</div>
+### 1. Update Current Status (Line 84)
+**Current:** `Phase 7 Product Catalog Integrated (Grid & Filters)`
+**Target:** `Phase 7 Complete + Visual UI/UX Alignment ✅ (January 9, 2026)`
+
+### 2. Add New Section: Visual Alignment Work
+**Insert After: Component Architecture section (~Line 165)**
+
+Content to add:
+```markdown
+## Visual UI/UX Alignment
+
+### Overview
+
+The dynamic Next.js landing page was meticulously aligned with the static HTML 
+reference mockup to ensure visual parity while maintaining React/Next.js architecture.
+
+### Static Reference Files
+- `index.html` - Structure and BEM class names
+- `styles.css` - CSS architecture and design tokens
+- `main.js` - Interactive behaviors
+
+### Alignment Strategy
+
+**"Construct and Align" Approach:**
+1. Identify visual gaps between dynamic and static pages
+2. Extract exact BEM class names from static reference
+3. Create/update React components matching structure
+4. Verify CSS classes exist in `atelier.css`
+5. Run build verification (`pnpm build`)
+
+### Key Alignments Completed
+
+| Gap | Priority | Solution |
+|-----|----------|----------|
+| Atelier Banner | Critical | Added `AtelierBanner` component before Header |
+| Header Seal SVG | Critical | Enhanced ornate paths matching static |
+| Apparatus Grid | Critical | 3-item grid with custom SVG illustrations |
+| "Ars Magna" Watermark | High | Text-based watermark in Alchemy section |
+| Roman Numerals | High | I, II, III, IV replacing Arabic 1, 2, 3, 4 |
+| Filter Icons | High | ☾ ☀ ♁ ☁ humour symbols on buttons |
+| Newsletter Title | Medium | "Receive Our Quarterly Folio" |
+| Name Field | Medium | Required field with validation |
+| Cart Icon | Low | Shopping bag matching static reference |
+
+### BEM Class Architecture
+
+The project uses **BEM (Block Element Modifier)** naming from the static reference:
+
+```css
+/* Block */
+.correspondence { }
+
+/* Element */
+.correspondence__title { }
+.correspondence__title-line { }
+.correspondence__field { }
+
+/* Modifier */
+.correspondence__title-line--emph { }
+.correspondence__field--error { }
 ```
 
-**Required state addition:**
-```tsx
-const [name, setName] = useState('')
+### Files Modified for Alignment
+
 ```
+src/
+├── app/
+│   ├── page.tsx                         # +AtelierBanner component
+│   └── atelier.css                      # +New BEM classes
+├── components/
+│   ├── layout/
+│   │   └── header.tsx                   # Enhanced seal SVG, cart icon
+│   └── sections/
+│       ├── alchemy-section.tsx          # Watermark, Roman numerals, apparatus
+│       ├── compendium-section.tsx        # Filter icons, Continue Reading
+│       └── newsletter-section.tsx       # Title update, name field
+```
+```
+
+### 3. Update Component Architecture List (Line 96-132)
+Add notation about visual alignment modifications to key components.
 
 ---
 
-### Phase 2: Cart Icon (Optional - Low Priority)
-The current vial icon is arguably more thematically appropriate for an aromatherapy atelier. This can be left as-is or updated if strict visual parity is required.
+## Execution Checklist
 
-If updating is desired:
-**File:** `src/components/layout/header.tsx` (lines 89-93)
-
-**Current:**
-```tsx
-<svg width="20" height="20" viewBox="0 0 24 24">
-  <path d="M9 2h6v4H9z" />
-  <path d="M9 6v5a3 3 0 003 3v0a3 3 0 003-3V6" />
-  <path d="M6 22h12a2 2 0 002-2v-6a6 6 0 00-6-6h0a6 6 0 00-6 6v6a2 2 0 002 2z" />
-</svg>
-```
-
-**Target (shopping bag from static):**
-```tsx
-<svg width="20" height="20" viewBox="0 0 24 24">
-  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-  <path d="M3 6h18"/>
-  <path d="M16 10a4 4 0 01-8 0"/>
-</svg>
-```
-
----
-
-## Summary of Required Changes
-
-| Gap | File | Priority | Change |
-|-----|------|----------|--------|
-| Newsletter Title | newsletter-section.tsx | Medium | Update title text |
-| Name Field | newsletter-section.tsx | Medium | Add name input field + state |
-| Cart Icon | header.tsx | Low | Optional - change to shopping bag |
-
----
-
-## Questions for User
-
-1. **Cart Icon:** Should I update the cart icon from vial to shopping bag to match the static reference exactly? The vial icon could be considered a deliberate improvement matching the alchemical theme.
-
-2. **Form Validation:** Should the name field be required or optional?
+- [ ] Update README.md status badge
+- [ ] Add Visual Alignment section to README.md
+- [ ] Update README.md roadmap
+- [ ] Update AGENT.md current status
+- [ ] Add Visual Alignment section to AGENT.md
+- [ ] Update AGENT.md component architecture list
+- [ ] Run build verification
+- [ ] Request user review

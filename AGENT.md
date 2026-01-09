@@ -81,7 +81,7 @@ atelier-arome/
 └── AGENT.md               # This file
 ```
 
-**Current Status:** Phase 7 Product Catalog Integrated (Grid & Filters) ✅ (January 9, 2026)
+**Current Status:** Phase 7 Complete + Visual UI/UX Alignment ✅ (January 9, 2026)
 
 ---
 
@@ -162,6 +162,86 @@ export const useCartStore = create<CartState>()(
 2. **Composition:** Orchestrators compose atomic components
 3. **Isolation:** Components can be tested in isolation
 4. **Styling:** Tailwind utilities (not inline styles or globals.css)
+
+---
+
+## Visual UI/UX Alignment
+
+### Overview
+
+The dynamic Next.js landing page was meticulously aligned with the static HTML reference mockup (`index.html`, `styles.css`, `main.js`) to ensure visual parity while maintaining React/Next.js architecture.
+
+### Static Reference Files
+
+| File | Purpose |
+|------|---------|
+| `index.html` | Structure and BEM class names |
+| `styles.css` | CSS architecture and design tokens |
+| `main.js` | Interactive behaviors |
+
+### Alignment Strategy
+
+**"Construct and Align" Approach:**
+1. Identify visual gaps between dynamic and static pages
+2. Extract exact BEM class names from static reference
+3. Create/update React components matching structure
+4. Verify CSS classes exist in `atelier.css`
+5. Run build verification (`pnpm build`)
+
+### Key Alignments Completed (January 9, 2026)
+
+| Gap | Priority | Solution |
+|-----|----------|----------|
+| Atelier Banner | Critical | Added `AtelierBanner` component before Header |
+| Header Seal SVG | Critical | Enhanced ornate paths matching static |
+| Apparatus Grid | Critical | 3-item grid with custom SVG illustrations |
+| "Ars Magna" Watermark | High | Text-based watermark in Alchemy section |
+| Roman Numerals | High | I, II, III, IV replacing Arabic 1, 2, 3, 4 |
+| Filter Icons | High | ☾ ☀ ♁ ☁ humour symbols on buttons |
+| Newsletter Title | Medium | "Receive Our Quarterly Folio" |
+| Name Field | Medium | Required field with validation |
+| Cart Icon | Low | Shopping bag matching static reference |
+
+### BEM Class Architecture
+
+The project uses **BEM (Block Element Modifier)** naming from the static reference:
+
+```css
+/* Block */
+.correspondence { }
+
+/* Element */
+.correspondence__title { }
+.correspondence__title-line { }
+.correspondence__field { }
+
+/* Modifier */
+.correspondence__title-line--emph { }
+.correspondence__field--error { }
+```
+
+### Files Modified for Visual Alignment
+
+```
+src/
+├── app/
+│   ├── page.tsx                         # +AtelierBanner component
+│   └── atelier.css                      # +New BEM classes:
+│                                        #   .alchemy__watermark-text
+│                                        #   .alchemy-step__roman
+│                                        #   .compendium__filter-text
+│                                        #   .apparatus__illustration svg
+├── components/
+│   ├── layout/
+│   │   └── header.tsx                   # Enhanced seal SVG, shopping bag cart icon
+│   └── sections/
+│       ├── alchemy-section.tsx          # "Ars Magna" watermark, Roman numerals,
+│       │                                # 3-item apparatus grid with SVG illustrations
+│       ├── compendium-section.tsx       # Filter humour icons (☾ ☀ ♁ ☁),
+│       │                                # "Continue Reading" button
+│       └── newsletter-section.tsx       # Title: "Receive Our Quarterly Folio",
+│                                        # Required name field with validation
+```
 
 ---
 
