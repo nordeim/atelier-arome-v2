@@ -1,0 +1,124 @@
+# Implementation Plan: Update README.md for Phase 7.1 Completion
+
+## Goal
+Update [README.md](file:///home/project/atelier-arome/README.md) to accurately reflect the completion of Phase 7.1 (Product Detail Page) and ensure all documentation matches the current codebase state.
+
+---
+
+## Codebase Validation Summary
+
+### ✅ Phase 7.1 Implementation Confirmed
+
+| Component | Status | Evidence |
+|-----------|--------|----------|
+| **PDP Route** | ✅ Complete | `src/app/(shop)/compendium/[slug]/page.tsx`, [loading.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/%28shop%29/compendium/%5Bslug%5D/loading.tsx), [not-found.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/%28shop%29/compendium/%5Bslug%5D/not-found.tsx) |
+| **Detail Atoms** | ✅ Complete | 4 files in `src/components/catalog/detail/` |
+| **Orchestrator** | ✅ Complete | [product-detail.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/product-detail.tsx) (177 lines) |
+| **Hooks** | ✅ Complete | 6 hooks including [use-product-detail.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-product-detail.ts) |
+| **Backend Models** | ✅ Complete | 22 models in `app/Models/` |
+| **API Controllers** | ✅ Complete | 12 controllers in `app/Http/Controllers/Api/V1/` |
+| **Migrations** | ✅ Complete | 26 migration files |
+| **Stores** | ✅ Complete | [cart-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/cart-store.ts), [toast-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/toast-store.ts) |
+
+---
+
+## Proposed Changes
+
+### [MODIFY] [README.md](file:///home/project/atelier-arome/README.md)
+
+#### 1. Status Badge Update (Line 13)
+```diff
+-[![Status](https://img.shields.io/badge/Status-Phase_7_Visual_Alignment_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
++[![Status](https://img.shields.io/badge/Status-Phase_7.1_PDP_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
+```
+
+#### 2. Update Database Schema Section (~Line 623-627)
+```diff
+-**24 Tables Total (22 business + migrations + sessions)**
++**26 Tables Total (24 business + migrations + sessions + personal_access_tokens)**
+
+-### Core Tables (24)
++### Core Tables (26)
+```
+
+#### 3. Update Phase Roadmap Table (~Lines 1178-1196)
+Replace Phase 7 / 7.1 entries with accurate current state:
+```diff
+ | 7 | Product Catalog (FE) | 7 days | ✅ Complete |
+-| 7.1 | Visual UI/UX Alignment | 1 day | ✅ Complete |
++| 7.1 | **Product Detail Page** | 2 days | ✅ Complete |
+```
+
+#### 4. Add Phase 7.1 Features to Roadmap Checklist (~Lines 1150-1175)
+Add the following items under the completed items:
+```markdown
+- [x] **Phase 7.1 - Product Detail Page** (January 10, 2026):
+  - [x] PDP Route (`/compendium/[slug]`) with server-side rendering
+  - [x] VariantSelector with gold-border active states
+  - [x] QuantityAdjuster with min/max limits
+  - [x] ImageGallery with "Gold Leaf" corner ornaments
+  - [x] AlchemicalProperties visualization (Humour, Season, Rarity)
+  - [x] Add to Vial integration with Zustand cart-store
+  - [x] Dynamic SEO metadata generation
+  - [x] Custom PDP loading skeleton
+```
+
+#### 5. Update Component Architecture Section (~Lines 274-287)
+Add PDP detail components to the tree:
+```markdown
+Atomic Components (60-120 lines)
+├── hero-frame.tsx          # Layout + gold-leaf borders
+├── alchemical-vessel.tsx   # SVG vessel + CSS animations
+├── botanical-layer.tsx     # Parallax botanical elements
++├── catalog/detail/
++│   ├── variant-selector.tsx    # Size/price selection
++│   ├── quantity-adjuster.tsx   # +/- quantity controls
++│   ├── image-gallery.tsx       # Main image + thumbnails
++│   └── alchemical-properties.tsx # Humour/Season/Rarity icons
+
+Orchestrator Components (100-150 lines)
+├── hero-section.tsx        # Composes atomic + typography + actions
+├── header.tsx              # Navigation + mobile menu + cart
++└── product-detail.tsx     # PDP: gallery + selector + actions (177 lines)
+```
+
+#### 6. Update "Current Status" Text (~Line 1150)
+```diff
+-### Current Status: Phase 7 Complete + Visual Alignment ✅
++### Current Status: Phase 7.1 Complete (Product Detail Page) ✅
+```
+
+---
+
+## Verification Plan
+
+### Manual Verification
+Since this is a documentation-only change, verification involves:
+
+1. **Content Accuracy Check**
+   - Review each updated section against the validated codebase findings
+   - Confirm component counts match actual file listings
+
+2. **Markdown Rendering**
+   - Open [README.md](file:///home/project/atelier-arome/README.md) in VS Code preview to ensure proper rendering
+   - Check that Mermaid diagrams (if affected) still render correctly
+
+3. **Link Validation**
+   - Confirm any file path references are correct
+   - Verify badge URL syntax is valid
+
+> [!NOTE]
+> No automated tests required as this is purely documentation update. No code changes to application logic.
+
+---
+
+## Summary of Changes
+
+| Section | Change Type | Description |
+|---------|-------------|-------------|
+| Status Badge | Update | "Phase_7.1_PDP_Complete" |
+| Database Schema | Update | 24 → 26 tables |
+| Roadmap Table | Update | Phase 7.1 as "Product Detail Page" |
+| Roadmap Checklist | Add | Phase 7.1 detailed features |
+| Component Architecture | Add | PDP detail atoms + orchestrator |
+| Current Status | Update | "Phase 7.1 Complete" text |

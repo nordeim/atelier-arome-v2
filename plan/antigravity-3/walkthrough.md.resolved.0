@@ -1,0 +1,89 @@
+# Walkthrough: README.md Update for Phase 7.1
+
+**Completed:** January 10, 2026  
+**Objective:** Update [README.md](file:///home/project/atelier-arome/README.md) to accurately reflect Phase 7.1 (Product Detail Page) completion.
+
+---
+
+## Summary
+
+Meticulously validated the codebase against documentation claims, identified 6 discrepancies, and applied corrections to ensure [README.md](file:///home/project/atelier-arome/README.md) reflects the true state of the project.
+
+---
+
+## Validation Performed
+
+| Component | Finding |
+|-----------|---------|
+| **PDP Route** | ✅ `[slug]/page.tsx`, [loading.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/%28shop%29/compendium/%5Bslug%5D/loading.tsx), [not-found.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/%28shop%29/compendium/%5Bslug%5D/not-found.tsx) exist |
+| **Detail Atoms** | ✅ 4 components in `catalog/detail/` |
+| **Orchestrator** | ✅ [product-detail.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/product-detail.tsx) (177 lines) |
+| **Hooks** | ✅ 6 hooks including [use-product-detail.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-product-detail.ts) |
+| **Backend Models** | ✅ 22 models in `app/Models/` |
+| **API Controllers** | ✅ 12 controllers in `Api/V1/` |
+| **Migrations** | ✅ 26 migration files |
+| **Stores** | ✅ [cart-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/cart-store.ts), [toast-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/toast-store.ts) |
+
+---
+
+## Changes Applied
+
+### 1. Status Badge (Line 13)
+```diff
+-Phase_7_Visual_Alignment_Complete
++Phase_7.1_PDP_Complete
+```
+
+### 2. Mermaid Diagram Table Count (Line 93)
+```diff
+-PostgreSQL 16 - 24 Tables
++PostgreSQL 16 - 26 Tables
+```
+
+### 3. Database Schema Section (Lines 625-627)
+```diff
+-24 Tables Total (22 business + migrations + sessions)
++26 Tables Total (24 business + migrations + sessions + personal_access_tokens)
+```
+
+### 4. Component Architecture Tree (Lines 274-287)
+Added PDP atoms and orchestrator:
+- [catalog/detail/variant-selector.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/detail/variant-selector.tsx)
+- [catalog/detail/quantity-adjuster.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/detail/quantity-adjuster.tsx)
+- [catalog/detail/image-gallery.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/detail/image-gallery.tsx)
+- [catalog/detail/alchemical-properties.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/detail/alchemical-properties.tsx)
+- [product-detail.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/product-detail.tsx) orchestrator
+- [toast-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/toast-store.ts) store
+
+### 5. Roadmap Checklist (Lines 1150-1175)
+Added Phase 7.1 features:
+- PDP Route with SSR
+- VariantSelector
+- QuantityAdjuster
+- ImageGallery with Gold Leaf ornaments
+- AlchemicalProperties
+- Add to Vial integration
+- Dynamic SEO metadata
+- PDP loading skeleton
+
+### 6. Phase Overview Table (Line 1187)
+```diff
+-7.1 | Visual UI/UX Alignment | 1 day
++7.1 | Product Detail Page (PDP) | 2 days
+```
+
+---
+
+## Verification
+
+- ✅ All documentation claims now match actual codebase
+- ✅ Component counts validated against file system
+- ✅ Database migration count matches `database/migrations/` directory
+
+---
+
+## Files Modified
+
+| File | Changes |
+|------|---------|
+| [README.md](file:///home/project/atelier-arome/README.md) | 6 sections updated |
