@@ -1,46 +1,35 @@
-# Task: Phase 8 Cart System Integration
+# Task: Documentation Updates for Phase 8 Completion
 
 ## Objective
-Connect frontend cart state to backend Cart API for full persistence.
+Update AGENT.md, CLAUDE.md, and README.md to reflect Phase 8 Cart System Integration completion.
 
 ---
 
-## Completed ✅
+## All Updates Complete ✅
 
-### Sub-Phase 8.1: Frontend Types & API Client
-- [x] Add Cart types to `types/api.ts` (Cart, CartItem, Coupon, request types)
-- [x] Add Cart API methods to `api-client.ts` with session ID management
-- [x] Create `hooks/use-cart.ts` with TanStack Query (optimistic updates)
+### README.md (5 updates)
+- [x] Status badge → `Phase_8_Cart_Complete`
+- [x] Current Status heading → Phase 8 Complete
+- [x] Phase 8 roadmap row → ✅ Complete
+- [x] Phase 8 checklist items added (8 features)
+- [x] Component Architecture → Cart section + hooks
 
-### Sub-Phase 8.2: Cart State Management Refactor
-- [x] Update `product-detail.tsx` with real API call (replaced setTimeout)
+### AGENT.md (5 updates)
+- [x] Current Status → Phase 8 Complete
+- [x] Cart components expanded (3 files)
+- [x] Hooks section → added `use-cart.ts`
+- [x] Lib section → api-client + Cart API
+- [x] Footer status → Phase 9 Ready
 
-### Sub-Phase 8.3: Vial Drawer Refinement
-- [x] Refactor `vial-drawer.tsx` with Shadcn Sheet + API hooks
-- [x] Create `cart-item.tsx` atomic component with Gold Leaf ornaments
-- [x] Create `cart-loading.tsx` skeleton
-
-### Sub-Phase 8.4: Integration
-- [x] Create `providers/providers.tsx` with QueryClientProvider
-- [x] Update `layout.tsx` to wrap app with Providers
-
-### Verification
-- [x] Build passes (`pnpm build`) ✅
-- [ ] Run backend tests (optional - backend already complete)
-- [ ] Manual E2E testing with live backend
+### CLAUDE.md (6 updates)
+- [x] Current Status → Phase 8 Complete
+- [x] Hooks count → 7 hooks
+- [x] New Phase 8 Complete section added
+- [x] Cart components expanded (3 files)
+- [x] Providers directory added
+- [x] Hooks section → added `use-cart.ts`
 
 ---
 
-## Files Created/Modified
-
-| File | Action |
-|------|--------|
-| `types/api.ts` | ✅ Modified (Cart types) |
-| `lib/api-client.ts` | ✅ Modified (Cart API methods) |
-| `hooks/use-cart.ts` | ✅ Created (TanStack Query) |
-| `components/catalog/product-detail.tsx` | ✅ Modified (API call) |
-| `components/cart/vial-drawer.tsx` | ✅ Replaced (Shadcn Sheet) |
-| `components/cart/cart-item.tsx` | ✅ Created |
-| `components/cart/cart-loading.tsx` | ✅ Created |
-| `components/providers/providers.tsx` | ✅ Created |
-| `app/layout.tsx` | ✅ Modified (Providers wrapper) |
+## Summary
+**16 total updates** completed across 3 documentation files.

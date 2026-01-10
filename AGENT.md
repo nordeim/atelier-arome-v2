@@ -81,7 +81,7 @@ atelier-arome/
 └── AGENT.md               # This file
 ```
 
-**Current Status:** Phase 7.1 Complete (Product Detail Page) ✅ (January 10, 2026)
+**Current Status:** Phase 8 Complete (Cart System Integration) ✅ (January 10, 2026)
 
 ---
 
@@ -110,8 +110,10 @@ src/components/
 ├── layout/                    # Orchestrator components
 │   ├── header.tsx             # Navigation + scroll effects
 │   └── footer.tsx             # Colophon footer
-├── cart/                      # Cart components (Phase 8)
-│   └── vial-drawer.tsx        # Cart drawer with checkout
+├── cart/                      # Cart components (Phase 8) ✅
+│   ├── vial-drawer.tsx        # Shadcn Sheet + TanStack Query hooks
+│   ├── cart-item.tsx          # Atomic cart item with Gold Leaf ornaments
+│   └── cart-loading.tsx       # Skeleton loading state
 ├── sections/                  # Page sections
 │   ├── compendium-section.tsx # Product grid
 │   ├── alchemy-section.tsx    # Process steps
@@ -130,7 +132,8 @@ src/hooks/                     # Custom React hooks
 ├── use-intersection.ts        # IntersectionObserver wrapper
 ├── use-reduced-motion.ts      # Reduced motion detection
 ├── use-products.ts            # TanStack Query hook for products
-└── use-product-detail.ts      # Hook for fetching single product
+├── use-product-detail.ts      # Hook for fetching single product
+└── use-cart.ts                # Cart operations with optimistic updates (Phase 8)
 
 src/stores/                    # Zustand stores
 ├── cart-store.ts              # Cart state with localStorage
@@ -139,7 +142,7 @@ src/stores/                    # Zustand stores
 src/lib/                       # Utilities
 ├── utils.ts                   # cn() class merger
 ├── a11y.ts                    # Accessibility helpers
-└── api-client.ts              # Fetch API client
+└── api-client.ts              # Fetch API client + Cart API methods (Phase 8)
 ```
 
 **Atomic Components (Single Responsibility):**
@@ -259,7 +262,7 @@ Zustand (client UI) + TanStack Query (server data).
 ---
 
 **Last Updated:** January 10, 2026
-**Project Status:** Phase 7.1 Complete ✅ → Phase 8 Ready ⏳
+**Project Status:** Phase 8 Complete ✅ → Phase 9 Ready ⏳
 **Architecture Type:** Headless Commerce (Laravel 12 API + Next.js 15)
 **Backend Server:** http://localhost:8000 ✅
 **Frontend Server:** http://localhost:3000 ✅

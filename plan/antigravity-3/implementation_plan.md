@@ -1,490 +1,222 @@
-# Phase 8 Implementation Plan: Cart System Integration
+# Documentation Update Plan: Phase 8 Completion
 
-**Phase Duration:** 5 days (estimated)  
-**Prerequisites:** Phase 7.1 (Product Detail Page) ✅ Complete  
-**Objective:** Connect frontend cart state (Zustand) to backend Cart API for full persistence, refine the Vial Drawer UI, and implement guest-to-user cart merge flow.
-
----
-
-## Executive Summary
-
-Phase 8 bridges the gap between:
-- **Frontend:** Client-side Zustand `cart-store.ts` (localStorage only)
-- **Backend:** Fully implemented `CartController.php` with PostgreSQL persistence
-
-**Current State Assessment:**
-
-| Component | Status | Gap |
-|-----------|--------|-----|
-| `CartController.php` | ✅ Complete (269 lines) | None |
-| `CartResource.php` | ✅ Complete | None |
-| `Cart.php` model | ✅ Complete | None |
-| `cart-store.ts` | ⚠️ Partial | No API sync |
-| `vial-drawer.tsx` | ⚠️ Partial | Uses localStorage, no API |
-| `product-detail.tsx` | ⚠️ Uses setTimeout | Replace with API call |
-| Cart API types | ❌ Missing | Need frontend types |
+**Files to Update:** AGENT.md, CLAUDE.md, README.md  
+**Purpose:** Align documentation with Phase 8 Cart System Integration completion.
 
 ---
 
-## Incorporating Phase 7.1 Observations
+## Gap Analysis
 
-From the Phase 7.1 code review:
+### Current State in Documentation
 
-> ⚠️ **Observation 1:** Cart add uses `setTimeout` simulation — ready to replace with actual API in Phase 8.
-
-> ⚠️ **Observation 2:** Consider product-specific error boundary for resilience.
-
-These will be addressed in Sub-Phase 8.2 and 8.3.
-
----
-
-## Sub-Phase 8.1: Frontend Types & API Client
-
-**Duration:** 0.5 day  
-**Objective:** Create TypeScript types matching backend CartResource and extend API client.
+| Item | Current Value | Should Be |
+|------|---------------|-----------|
+| Status Badge (README) | `Phase_7.1_PDP_Complete` | `Phase_8_Cart_Complete` |
+| Project Status (AGENT) | `Phase 7.1 Complete ✅ → Phase 8 Ready ⏳` | `Phase 8 Complete ✅` |
+| Phase 8 Roadmap | `⏳ Upcoming` | `✅ Complete` |
+| Hooks Count | 6 hooks | 7 hooks (added `use-cart.ts`) |
+| Cart Components | `vial-drawer.tsx` only | 3 files: `vial-drawer`, `cart-item`, `cart-loading` |
+| Providers | Not mentioned | `providers.tsx` added |
 
 ---
 
-### [MODIFY] [api.ts](file:///home/project/atelier-arome/atelier-arome-web/src/types/api.ts)
+## Proposed Changes
 
-**Purpose:** Add Cart-related types for API integration.
+### [MODIFY] README.md
 
-**Features:**
-- `Cart` interface matching `CartResource.php` response
-- `CartItem` interface matching `CartItemResource.php`
-- `AddToCartRequest`, `UpdateCartItemRequest` types
-
-**Checklist:**
-- [ ] Add `Cart` interface (id, items, subtotal, discount_amount, gst_amount, total, coupon, expires_at)
-- [ ] Add `CartApiItem` interface (id, variant, quantity, unit_price, line_total)
-- [ ] Add `AddToCartRequest` type { variant_id: string, quantity: number }
-- [ ] Add `UpdateCartItemRequest` type { quantity: number }
-- [ ] Add `ApplyCouponRequest` type { code: string }
-
-**Type Definitions:**
-```typescript
-export interface CartApiItem {
-  id: string;
-  variant: ProductVariant;
-  quantity: number;
-  unit_price: number;
-  unit_price_formatted: string;
-  line_total: number;
-  line_total_formatted: string;
-}
-
-export interface Cart {
-  id: string;
-  items: CartApiItem[];
-  items_count: number;
-  subtotal: number;
-  subtotal_formatted: string;
-  discount_amount: number;
-  discount_amount_formatted: string;
-  gst_amount: number;
-  gst_amount_formatted: string;
-  total: number;
-  total_formatted: string;
-  coupon: Coupon | null;
-  expires_at: string | null;
-}
-
-export interface AddToCartRequest {
-  variant_id: string;
-  quantity: number;
-}
-
-export interface UpdateCartItemRequest {
-  quantity: number;
-}
-
-export interface ApplyCouponRequest {
-  code: string;
-}
+**1. Status Badge (Line 13)**
+```diff
+-[![Status](https://img.shields.io/badge/Status-Phase_7.1_PDP_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
++[![Status](https://img.shields.io/badge/Status-Phase_8_Cart_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
 ```
 
----
-
-### [MODIFY] [api-client.ts](file:///home/project/atelier-arome/atelier-arome-web/src/lib/api-client.ts)
-
-**Purpose:** Add Cart API methods.
-
-**Features:**
-- `getCart()` — GET /cart
-- `addToCart(request)` — POST /cart/items
-- `updateCartItem(id, request)` — PUT /cart/items/{id}
-- `removeCartItem(id)` — DELETE /cart/items/{id}
-- `applyCoupon(code)` — POST /cart/coupon
-- `removeCoupon()` — DELETE /cart/coupon
-- Session ID header for guest carts
-
-**Checklist:**
-- [ ] Implement `getCart(): Promise<Cart>`
-- [ ] Implement `addToCart(request: AddToCartRequest): Promise<Cart>`
-- [ ] Implement `updateCartItem(id: string, request: UpdateCartItemRequest): Promise<Cart>`
-- [ ] Implement `removeCartItem(id: string): Promise<Cart>`
-- [ ] Implement `applyCoupon(code: string): Promise<Cart>`
-- [ ] Implement `removeCoupon(): Promise<Cart>`
-- [ ] Add `X-Session-Id` header for guest cart identification
-- [ ] Generate and persist session ID in localStorage if not authenticated
-
----
-
-### [NEW] [use-cart.ts](file:///home/project/atelier-arome/atelier-arome-web/src/hooks/use-cart.ts)
-
-**Purpose:** TanStack Query hook for cart operations with optimistic updates.
-
-**Features:**
-- `useCart()` — Fetch cart state
-- `useAddToCart()` — Mutation for adding items
-- `useUpdateCartItem()` — Mutation for quantity updates
-- `useRemoveCartItem()` — Mutation for removal
-- Optimistic updates for instant UI feedback
-- Cache invalidation on mutations
-
-**Checklist:**
-- [ ] Create `useCart()` query hook with staleTime of 30 seconds
-- [ ] Create `useAddToCart()` mutation with optimistic update
-- [ ] Create `useUpdateCartItem()` mutation
-- [ ] Create `useRemoveCartItem()` mutation
-- [ ] Create `useApplyCoupon()` mutation
-- [ ] Invalidate `['cart']` query key on all mutations
-- [ ] Handle error states with toast notifications
-
----
-
-## Sub-Phase 8.2: Cart State Management Refactor
-
-**Duration:** 1.5 days  
-**Objective:** Refactor Zustand cart-store to act as UI layer over API state.
-
----
-
-### [MODIFY] [cart-store.ts](file:///home/project/atelier-arome/atelier-arome-web/src/stores/cart-store.ts)
-
-**Purpose:** Refactor to sync with backend API while maintaining UI responsiveness.
-
-**Current Issues:**
-- Uses only `localStorage` persistence
-- No backend sync
-- `addToCart` called with client-generated IDs
-
-**New Architecture:**
-```
-User Action → Zustand (optimistic) → API Call → TanStack Cache → Zustand Sync
+**2. Roadmap Current Status (Line ~1157)**
+```diff
+-### Current Status: Phase 7.1 Complete (Product Detail Page) ✅
++### Current Status: Phase 8 Complete (Cart System Integration) ✅
 ```
 
-**Features:**
-- `syncCartFromServer(cart: Cart)` — Hydrate store from API response
-- `addToCartOptimistic(item)` — Optimistic local update
-- `commitAddToCart(serverItem)` — Replace optimistic with server response
-- `rollbackAddToCart(tempId)` — Rollback on error
-- Keep localStorage for offline/guest persistence
-- `cartSynced: boolean` flag for loading state
-
-**Checklist:**
-- [ ] Add `cartSynced: boolean` state
-- [ ] Add `serverCartId: string | null` state
-- [ ] Add `syncCartFromServer(cart: Cart)` action
-- [ ] Modify `addToCart` to generate temporary client IDs
-- [ ] Add `commitAddToCart(tempId, serverItem)` to replace temp items
-- [ ] Add `rollbackAddToCart(tempId)` for error handling
-- [ ] Preserve localStorage persistence for offline support
-- [ ] Add `setCartSynced(synced: boolean)` action
-
----
-
-### [MODIFY] [product-detail.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/catalog/product-detail.tsx)
-
-**Purpose:** Replace `setTimeout` simulation with actual API call (Phase 7.1 observation).
-
-**Current Code (Line 34-54):**
-```typescript
-const handleAddToCart = () => {
-  // ...
-  setTimeout(() => {
-    addToCart({ /* ... */ });
-    // ...
-  }, 600);
-};
+**3. Roadmap Checklist (Add after Line ~1191)**
+```markdown
+- [x] **Phase 8 - Cart System Integration** (January 10, 2026):
+  - [x] Cart API types in `types/api.ts`
+  - [x] Cart API client methods with session ID
+  - [x] TanStack Query hooks with optimistic updates
+  - [x] VialDrawer refactored with Shadcn Sheet
+  - [x] GST (9%) breakdown in cart footer
+  - [x] CartItem atomic component with Gold Leaf ornaments
+  - [x] CartLoading skeleton component
+  - [x] QueryClientProvider integration
 ```
 
-**New Implementation:**
-```typescript
-const addToCartMutation = useAddToCart();
+**4. Phase Table (Line ~1204)**
+```diff
+-| 8 | Cart System | 5 days | ⏳ Upcoming |
++| 8 | Cart System Integration | 5 days | ✅ Complete |
+```
 
-const handleAddToCart = async () => {
-  if (!selectedVariant) return;
-  setIsAdding(true);
-  
-  try {
-    await addToCartMutation.mutateAsync({
-      variant_id: selectedVariant.id,
-      quantity: quantity,
-    });
-    
-    showToast(`Added ${quantity}x ${product.name}...`, 'success');
-    toggleCartDrawer();
-  } catch (error) {
-    showToast('Failed to add to cart. Please try again.', 'error');
-  } finally {
-    setIsAdding(false);
-  }
-};
+**5. Component Architecture (Line ~280-294) - Add cart components**
+```diff
+ └── catalog/detail/         # PDP Atoms (Phase 7.1)
+     ├── variant-selector.tsx
+     ├── quantity-adjuster.tsx
+     ├── image-gallery.tsx
+     └── alchemical-properties.tsx
+
++Cart Components (Phase 8)
++├── vial-drawer.tsx          # Refactored: Shadcn Sheet + TanStack Query
++├── cart-item.tsx            # Atomic: item with quantity controls
++└── cart-loading.tsx         # Skeleton loading state
 ```
 
 **Checklist:**
-- [ ] Import `useAddToCart` hook
-- [ ] Remove `setTimeout` simulation
-- [ ] Use `mutateAsync` for async/await pattern
-- [ ] Add try/catch error handling
-- [ ] Show error toast on failure
-- [ ] Keep loading spinner during API call
+- [ ] Update status badge to Phase 8
+- [ ] Update Current Status heading
+- [ ] Add Phase 8 checklist items
+- [ ] Update Phase 8 row in table from ⏳ to ✅
+- [ ] Add Cart components to Component Architecture
 
 ---
 
-## Sub-Phase 8.3: Vial Drawer Refinement
+### [MODIFY] AGENT.md
 
-**Duration:** 2 days  
-**Objective:** Polish the Vial Drawer UI to match PDP quality and connect to API.
-
----
-
-### [MODIFY] [vial-drawer.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/cart/vial-drawer.tsx)
-
-**Purpose:** Upgrade to "Illuminated Manuscript" aesthetic, connect to API.
-
-**Current Issues:**
-- Uses raw BEM classes from static mockup
-- `formatCurrency` uses USD instead of SGD
-- `handleCheckout` simulates API call
-- No loading states for item operations
-
-**New Features:**
-- Use Shadcn Sheet component (library discipline)
-- Apply design system tokens (Gold/Ink/Parchment)
-- Show GST breakdown in footer
-- Loading states for quantity changes
-- Animate item removal
-- Use `useCart()` hook for server state
-
-**Checklist:**
-- [ ] Replace raw `<aside>` with Shadcn `<Sheet>` component
-- [ ] Apply `bg-parchment`, `border-gold`, `font-display` tokens
-- [ ] Change currency format to SGD (`$` prefix, not `SGD `)
-- [ ] Add GST breakdown row in footer (matching backend `gst_amount`)
-- [ ] Connect to `useCart()` for items
-- [ ] Use `useRemoveCartItem` mutation for removal
-- [ ] Use `useUpdateCartItem` mutation for quantity changes
-- [ ] Add skeleton loading state during initial fetch
-- [ ] Animate item removal with Framer Motion `<AnimatePresence>`
-- [ ] Add "Gold Leaf" corner ornaments to drawer (matching PDP)
-
-**Design Updates:**
-```tsx
-// Header with gold border
-<SheetHeader className="border-b border-gold/20 pb-4">
-  <SheetTitle className="font-display text-2xl text-ink">
-    Collection Vial
-  </SheetTitle>
-</SheetHeader>
-
-// Footer with GST breakdown
-<div className="border-t border-gold/20 pt-4 space-y-2">
-  <div className="flex justify-between text-sm text-ink-light">
-    <span>Subtotal</span>
-    <span>{cart.subtotal_formatted}</span>
-  </div>
-  <div className="flex justify-between text-sm text-ink-light">
-    <span>GST (9%)</span>
-    <span>{cart.gst_amount_formatted}</span>
-  </div>
-  <div className="flex justify-between font-display text-xl text-ink">
-    <span>Total</span>
-    <span className="text-gold-dark">{cart.total_formatted}</span>
-  </div>
-</div>
+**1. Current Status (Line 84)**
+```diff
+-**Current Status:** Phase 7.1 Complete (Product Detail Page) ✅ (January 10, 2026)
++**Current Status:** Phase 8 Complete (Cart System Integration) ✅ (January 10, 2026)
 ```
 
----
-
-### [NEW] [cart-item.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/cart/cart-item.tsx)
-
-**Purpose:** Extract cart item card as atomic component.
-
-**Features:**
-- Image thumbnail (from variant product)
-- Product name and variant name
-- Quantity controls (reuse `QuantityAdjuster` pattern)
-- Remove button with confirmation
-- Line total display
-- Loading state during mutations
-
-**Checklist:**
-- [ ] Create atomic component with single responsibility
-- [ ] Props: `item: CartApiItem`, `onQuantityChange`, `onRemove`
-- [ ] Display product image thumbnail
-- [ ] Show variant name (e.g., "15ml")
-- [ ] Integrate quantity +/- buttons with loading state
-- [ ] Add remove button with gold hover
-- [ ] Show `line_total_formatted`
-- [ ] Add Framer Motion exit animation
-
----
-
-### [NEW] [cart-loading.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/cart/cart-loading.tsx)
-
-**Purpose:** Skeleton loading state for cart drawer.
-
-**Features:**
-- Match cart item layout with skeletons
-- Use design system shimmer effect
-
-**Checklist:**
-- [ ] Create skeleton matching cart item structure
-- [ ] 3 skeleton items by default
-- [ ] Use `bg-gold/10` shimmer effect
-
----
-
-## Sub-Phase 8.4: Guest/Auth Cart Merge & Error Handling
-
-**Duration:** 1 day  
-**Objective:** Handle edge cases and polish the integration.
-
----
-
-### [NEW] [cart-provider.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/providers/cart-provider.tsx)
-
-**Purpose:** Context provider for cart initialization and guest/auth merge.
-
-**Features:**
-- Initialize cart on app mount
-- Generate session ID for guests
-- Merge guest cart to user cart on login
-- Sync Zustand from server on initial load
-
-**Checklist:**
-- [ ] Create `CartProvider` component
-- [ ] Generate/retrieve session ID from localStorage
-- [ ] Fetch cart on mount with `useCart()`
-- [ ] Call `syncCartFromServer(cart)` on initial load
-- [ ] Listen to auth state changes (NextAuth)
-- [ ] Call cart merge API on login (POST /cart/merge — if implemented)
-- [ ] Add to root layout.tsx
-
----
-
-### [NEW] [cart-error-boundary.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/components/cart/cart-error-boundary.tsx)
-
-**Purpose:** Error boundary for cart operations (Phase 7.1 observation).
-
-**Features:**
-- Catch cart-related errors
-- Display friendly error message
-- Retry button
-
-**Checklist:**
-- [ ] Create React error boundary component
-- [ ] Display "Something went wrong with your cart"
-- [ ] Add "Retry" button that reloads cart
-- [ ] Log error for debugging
-
----
-
-### [MODIFY] [layout.tsx](file:///home/project/atelier-arome/atelier-arome-web/src/app/layout.tsx)
-
-**Purpose:** Add CartProvider to initialize cart on app load.
-
-**Checklist:**
-- [ ] Import `CartProvider`
-- [ ] Wrap children with `<CartProvider>`
-- [ ] Ensure VialDrawer is inside CartProvider
-
----
-
-## Verification Plan
-
-### Automated Tests
-
-**Backend (Existing):**
-```bash
-cd atelier-arome-api
-php artisan test --filter=CartController
+**2. Component Architecture - Cart Section (Line ~113-114)**
+```diff
+-├── cart/                      # Cart components (Phase 8)
+-│   └── vial-drawer.tsx        # Cart drawer with checkout
++├── cart/                      # Cart components (Phase 8) ✅
++│   ├── vial-drawer.tsx        # Refactored: Shadcn Sheet + TanStack Query
++│   ├── cart-item.tsx          # Atomic cart item with Gold Leaf ornaments
++│   └── cart-loading.tsx       # Skeleton loading state
 ```
 
-**Frontend (New):**
-```bash
-cd atelier-arome-web
-pnpm test src/__tests__/hooks/use-cart.test.ts
-pnpm test src/__tests__/components/vial-drawer.test.tsx
+**3. Hooks Section (Line ~127-133) - Add use-cart**
+```diff
+ src/hooks/                     # Custom React hooks
+ ├── index.ts                   # Barrel export
+ ├── use-scroll.ts              # useSyncExternalStore for scroll
+ ├── use-intersection.ts        # IntersectionObserver wrapper
+ ├── use-reduced-motion.ts      # Reduced motion detection
+ ├── use-products.ts            # TanStack Query hook for products
+-└── use-product-detail.ts      # Hook for fetching single product
++├── use-product-detail.ts      # Hook for fetching single product
++└── use-cart.ts                # Cart operations with optimistic updates (Phase 8)
 ```
 
-### Manual E2E Verification
-
-| Step | Action | Expected Result |
-|------|--------|-----------------|
-| 1 | Navigate to PDP `/compendium/provence-lavender` | Page loads with product |
-| 2 | Select variant "15ml", quantity 2 | UI updates, price shown |
-| 3 | Click "Add to Vial" | Spinner shows, cart drawer opens |
-| 4 | Verify cart drawer shows item | Item with correct qty/price visible |
-| 5 | Click + to increase quantity | API call, drawer updates |
-| 6 | Click — to decrease quantity | API call, drawer updates |
-| 7 | Click X to remove item | Item animates out, drawer updates |
-| 8 | Refresh page | Cart persists from backend |
-| 9 | Check GST breakdown | 9% GST calculated correctly |
-
-### Build Verification
-
-```bash
-cd atelier-arome-web
-pnpm type-check   # TypeScript validation
-pnpm lint         # ESLint
-pnpm build        # Production build
+**4. Lib Section (Line ~139-142) - Update api-client**
+```diff
+ src/lib/                       # Utilities
+ ├── utils.ts                   # cn() class merger
+ ├── a11y.ts                    # Accessibility helpers
+-└── api-client.ts              # Fetch API client
++└── api-client.ts              # Fetch API client + Cart API methods (Phase 8)
 ```
+
+**5. Project Status Footer (Line ~262)**
+```diff
+-**Project Status:** Phase 7.1 Complete ✅ → Phase 8 Ready ⏳
++**Project Status:** Phase 8 Complete ✅ → Phase 9 Ready ⏳
+```
+
+**Checklist:**
+- [ ] Update Current Status line
+- [ ] Expand cart/ component listing
+- [ ] Add use-cart.ts to hooks
+- [ ] Update api-client.ts description
+- [ ] Update footer project status
 
 ---
 
-## File Summary
+### [MODIFY] CLAUDE.md
 
-| Sub-Phase | File | Action | Priority |
-|-----------|------|--------|----------|
-| 8.1 | `types/api.ts` | MODIFY | High |
-| 8.1 | `lib/api-client.ts` | MODIFY | High |
-| 8.1 | `hooks/use-cart.ts` | NEW | High |
-| 8.2 | `stores/cart-store.ts` | MODIFY | High |
-| 8.2 | `components/catalog/product-detail.tsx` | MODIFY | High |
-| 8.3 | `components/cart/vial-drawer.tsx` | MODIFY | High |
-| 8.3 | `components/cart/cart-item.tsx` | NEW | Medium |
-| 8.3 | `components/cart/cart-loading.tsx` | NEW | Low |
-| 8.4 | `components/providers/cart-provider.tsx` | NEW | Medium |
-| 8.4 | `components/cart/cart-error-boundary.tsx` | NEW | Low |
-| 8.4 | `app/layout.tsx` | MODIFY | Medium |
-
-**Total Files:** 11 (6 modify, 5 new)
-
----
-
-## Dependencies
-
-```mermaid
-graph LR
-    A[8.1 Types & API] --> B[8.2 Cart Store]
-    A --> C[8.3 Vial Drawer]
-    B --> C
-    B --> D[8.4 Cart Provider]
-    C --> D
+**1. Current Status (Line 84)**
+```diff
+-**Current Status:** Phase 7.1 Complete (Product Detail Page) ✅ → Phase 8 (Cart System Integration)
++**Current Status:** Phase 8 Complete (Cart System Integration) ✅ → Phase 9 (Checkout Flow)
 ```
 
+**2. Frontend Table - Update hooks count (Line 108)**
+```diff
+-| **Custom Hooks** | ✅ **6 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products, use-product-detail |
++| **Custom Hooks** | ✅ **7 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products, use-product-detail, use-cart |
+```
+
+**3. Phase 7.1 Section → Add Phase 8 Section (After Line 127)**
+```markdown
+### Phase 8 Complete ✅
+
+**Phase 8 Features Completed:**
+- ✅ **Cart API Integration** — TanStack Query hooks with optimistic updates
+- ✅ **VialDrawer Refactor** — Shadcn Sheet with API sync
+- ✅ **GST Display** — 9% breakdown in cart footer
+- ✅ **Session ID** — Guest cart tracking via localStorage
+- ✅ **CartItem Atomic** — Item card with quantity controls
+- ✅ **CartLoading Skeleton** — Shimmer loading state
+- ✅ **Providers Wrapper** — QueryClientProvider in layout
+
+**Immediate Next Steps (Phase 9):**
+1. **Multi-step Checkout** — Address, shipping, payment flow
+2. **Form Validation** — React Hook Form + Zod
+3. **Payment Integration** — Stripe + PayNow
+```
+
+**4. Component Architecture - Cart Section (Line ~155-156)**
+```diff
+-├── cart/                      # Cart components (Phase 8)
+-│   └── vial-drawer.tsx        # Cart drawer with checkout
++├── cart/                      # Cart components (Phase 8) ✅
++│   ├── vial-drawer.tsx        # Shadcn Sheet + TanStack Query hooks
++│   ├── cart-item.tsx          # Atomic item with Gold Leaf ornaments
++│   └── cart-loading.tsx       # Skeleton loading state
++├── providers/                 # React context providers
++│   └── providers.tsx          # QueryClientProvider wrapper
+```
+
+**5. Hooks Section (Line ~169-175)**
+```diff
+ src/hooks/                     # Custom React hooks
+ ├── index.ts                   # Barrel export
+ ├── use-scroll.ts              # useSyncExternalStore for scroll
+ ├── use-intersection.ts        # IntersectionObserver wrapper
+ ├── use-reduced-motion.ts      # Reduced motion detection
+ ├── use-products.ts            # TanStack Query hook for products
+-└── use-product-detail.ts      # Hook for fetching single product
++├── use-product-detail.ts      # Hook for fetching single product
++└── use-cart.ts                # Cart mutations with optimistic updates
+```
+
+**Checklist:**
+- [ ] Update Current Status line
+- [ ] Update hooks count to 7
+- [ ] Add Phase 8 Complete section
+- [ ] Expand cart/ component listing
+- [ ] Add providers/ directory
+- [ ] Add use-cart.ts to hooks
+
 ---
 
-## Success Criteria
+## Summary
 
-- [ ] Add to cart from PDP persists to backend
-- [ ] Cart state survives page refresh
-- [ ] Quantity updates sync in real-time
-- [ ] GST (9%) displayed in cart drawer
-- [ ] Guest carts work with session ID
-- [ ] Zero console errors
-- [ ] Build passes (`pnpm build`)
-- [ ] Vial Drawer matches "Illuminated Manuscript" aesthetic
+| File | Changes |
+|------|---------|
+| README.md | 5 changes |
+| AGENT.md | 5 changes |
+| CLAUDE.md | 6 changes |
+| **Total** | **16 changes** |
+
+---
+
+## Verification
+
+After updates:
+- [ ] All status badges show Phase 8 Complete
+- [ ] Hook counts are accurate (7 hooks)
+- [ ] Cart components fully listed (3 files)
+- [ ] Phase table shows Phase 8 ✅ Complete
+- [ ] Next steps reference Phase 9 (Checkout Flow)

@@ -81,7 +81,7 @@ atelier-arome/
 └── CLAUDE.md              # This file
 ```
 
-**Current Status:** Phase 7.1 Complete (Product Detail Page) ✅ → Phase 8 (Cart System Integration)
+**Current Status:** Phase 8 Complete (Cart System Integration) ✅ → Phase 9 (Checkout Flow)
 
 ---
 
@@ -105,7 +105,7 @@ atelier-arome/
 |-----------|--------|---------||
 | **App Router** | ✅ **COMPLETE** | All route groups configured |
 | **Components** | ✅ **25+ components** | hero, layout, cart, sections, ui, catalog, detail |
-| **Custom Hooks** | ✅ **6 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products, use-product-detail |
+| **Custom Hooks** | ✅ **7 hooks** | use-scroll, use-intersection, use-reduced-motion, use-products, use-product-detail, use-cart |
 | **Stores** | ✅ **2 stores** | cart-store, toast-store |
 | **Tailwind Config** | ✅ **COMPLETE** | Custom Illuminated Manuscript theme |
 
@@ -120,10 +120,21 @@ atelier-arome/
 - ✅ **SEO Optimization** — Dynamic metadata generation per product
 - ✅ **Loading States** — Custom shimmering skeleton for PDP layout
 
-**Immediate Next Steps (Phase 8):**
-1. **Cart Integration:** Full end-to-end verification of cart persistence
-2. **Vial Drawer:** Refine the drawer UI with item removal and quantity updates
-3. **Cart API:** Implement guest cart syncing to backend if required
+**Immediate Next Steps (Phase 9):**
+1. **Multi-step Checkout** — Address, shipping, payment flow
+2. **Form Validation** — React Hook Form + Zod
+3. **Payment Integration** — Stripe + PayNow
+
+### Phase 8 Complete ✅
+
+**Phase 8 Features Completed:**
+- ✅ **Cart API Integration** — TanStack Query hooks with optimistic updates (`use-cart.ts`)
+- ✅ **VialDrawer Refactor** — Shadcn Sheet with API sync
+- ✅ **GST Display** — 9% breakdown in cart footer
+- ✅ **Session ID** — Guest cart tracking via localStorage
+- ✅ **CartItem Atomic** — Item card with Gold Leaf ornaments and quantity controls
+- ✅ **CartLoading Skeleton** — Shimmer loading state
+- ✅ **Providers Wrapper** — QueryClientProvider in layout
 
 ---
 
@@ -152,8 +163,12 @@ src/components/
 ├── layout/                    # Orchestrator components
 │   ├── header.tsx             # Navigation + scroll effects
 │   └── footer.tsx             # Colophon footer
-├── cart/                      # Cart components (Phase 8)
-│   └── vial-drawer.tsx        # Cart drawer with checkout
+├── cart/                      # Cart components (Phase 8) ✅
+│   ├── vial-drawer.tsx        # Shadcn Sheet + TanStack Query hooks
+│   ├── cart-item.tsx          # Atomic item with Gold Leaf ornaments
+│   └── cart-loading.tsx       # Skeleton loading state
+├── providers/                 # React context providers
+│   └── providers.tsx          # QueryClientProvider wrapper
 ├── sections/                  # Page sections
 │   ├── compendium-section.tsx # Product grid
 │   ├── alchemy-section.tsx    # Process steps
@@ -172,7 +187,8 @@ src/hooks/                     # Custom React hooks
 ├── use-intersection.ts        # IntersectionObserver wrapper
 ├── use-reduced-motion.ts      # Reduced motion detection
 ├── use-products.ts            # TanStack Query hook for products
-└── use-product-detail.ts      # Hook for fetching single product
+├── use-product-detail.ts      # Hook for fetching single product
+└── use-cart.ts                # Cart mutations with optimistic updates (Phase 8)
 
 src/stores/                    # Zustand stores
 ├── cart-store.ts              # Cart state with localStorage

@@ -10,7 +10,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-Proprietary-E50914?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Phase_7.1_PDP_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
+[![Status](https://img.shields.io/badge/Status-Phase_8_Cart_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
 
 </div>
 
@@ -283,14 +283,20 @@ Atomic Components (60-120 lines)
     ├── image-gallery.tsx       # Main image + thumbnails + Gold Leaf ornaments
     └── alchemical-properties.tsx # Humour/Season/Rarity icon visualization
 
+Cart Components (Phase 8) ✅
+├── vial-drawer.tsx          # Shadcn Sheet + TanStack Query hooks
+├── cart-item.tsx            # Atomic item with Gold Leaf ornaments
+└── cart-loading.tsx         # Skeleton loading state
+
 Orchestrator Components (100-180 lines)
 ├── hero-section.tsx         # Composes atomic + typography + actions
 ├── header.tsx               # Navigation + mobile menu + cart
 └── product-detail.tsx       # PDP: gallery + selector + cart (177 lines)
 
-State Management (Zustand)
-├── cart-store.ts            # Cart state + localStorage persistence
-└── toast-store.ts           # Toast notification queue
+State Management (Zustand + TanStack Query)
+├── cart-store.ts            # Cart UI state + localStorage persistence
+├── toast-store.ts           # Toast notification queue
+└── use-cart.ts              # TanStack Query hooks with optimistic updates
 ```
 
 ### Root Directory
@@ -1154,7 +1160,7 @@ UPSTASH_REDIS_REST_URL=...
 
 ## 🗺️ Roadmap
 
-### Current Status: Phase 7.1 Complete (Product Detail Page) ✅
+### Current Status: Phase 8 Complete (Cart System Integration) ✅
 
 - [x] Project structure created
 - [x] Database schema designed (26 tables)
@@ -1188,6 +1194,16 @@ UPSTASH_REDIS_REST_URL=...
   - [x] Add to Vial integration with Zustand cart-store
   - [x] Dynamic SEO metadata generation per product
   - [x] Custom PDP loading skeleton
+- [x] **Phase 8 - Cart System Integration** (January 10, 2026):
+  - [x] Cart API types in `types/api.ts` (Cart, CartItem, Coupon)
+  - [x] Cart API client methods with session ID for guests
+  - [x] TanStack Query hooks (`use-cart.ts`) with optimistic updates
+  - [x] VialDrawer refactored with Shadcn Sheet + API sync
+  - [x] GST (9%) breakdown displayed in cart footer
+  - [x] CartItem atomic component with Gold Leaf ornaments
+  - [x] CartLoading skeleton component
+  - [x] QueryClientProvider integration in layout
+
 
 ### Phase Overview
 
@@ -1201,7 +1217,7 @@ UPSTASH_REDIS_REST_URL=...
 | 6 | Product Management (BE) | 5 days | ✅ Complete |
 | 7 | Product Catalog (FE) | 7 days | ✅ Complete |
 | 7.1 | Product Detail Page (PDP) | 2 days | ✅ Complete |
-| 8 | Cart System | 5 days | ⏳ Upcoming |
+| 8 | Cart System Integration | 5 days | ✅ Complete |
 | 9 | Checkout Flow | 7 days | ⏳ Upcoming |
 | 10 | Payment Integration | 5 days | ⏳ Upcoming |
 | 11 | Order Management | 5 days | ⏳ Upcoming |
