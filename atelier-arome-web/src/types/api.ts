@@ -105,3 +105,85 @@ export interface ProductFilters {
   page?: number;
   per_page?: number;
 }
+
+// ============================================================================
+// Cart Types (Phase 8)
+// ============================================================================
+
+/**
+ * Coupon applied to cart
+ * Matches backend CouponResource.php
+ */
+export interface Coupon {
+  id: string;
+  code: string;
+  type: 'percentage' | 'fixed_amount';
+  value: number;
+  minimum_amount: number | null;
+  maximum_amount: number | null;
+  description: string | null;
+  starts_at: string;
+  expires_at: string;
+}
+
+/**
+ * Individual cart item with variant and product details
+ * Matches backend CartItemResource.php
+ */
+export interface CartItem {
+  id: string;
+  variant: ProductVariant & {
+    product: {
+      id: string;
+      name: string;
+      slug: string;
+      latin_name: string | null;
+      primary_image: ProductImage | null;
+    };
+  };
+  quantity: number;
+  unit_price: number;
+  unit_price_formatted: string;
+  line_total: number;
+  line_total_formatted: string;
+}
+
+/**
+ * Full cart state from API
+ * Matches backend CartResource.php
+ */
+export interface Cart {
+  id: string;
+  items: CartItem[];
+  items_count: number;
+  subtotal: number;
+  subtotal_formatted: string;
+  discount_amount: number;
+  discount_amount_formatted: string;
+  gst_amount: number;
+  gst_amount_formatted: string;
+  total: number;
+  total_formatted: string;
+  coupon: Coupon | null;
+  expires_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// ============================================================================
+// Cart API Request Types
+// ============================================================================
+
+export interface AddToCartRequest {
+  variant_id: string;
+  quantity: number;
+}
+
+export interface UpdateCartItemRequest {
+  quantity: number;
+}
+
+export interface ApplyCouponRequest {
+  code: string;
+}
+

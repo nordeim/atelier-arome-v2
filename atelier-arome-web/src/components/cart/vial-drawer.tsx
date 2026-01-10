@@ -1,233 +1,226 @@
-"use client";
+'use client';
 
-import { useEffect, useCallback } from 'react';
-import { useCartStore, type CartItem } from '@/stores/cart-store';
-import { showToast } from '@/stores/toast-store';
+import { useState } from 'react';
+import Link from 'next/link';
+import { AnimatePresence } from 'framer-motion';
+import { ShoppingBag, Sparkles } from 'lucide-react';
+
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { CartItem } from './cart-item';
+import { CartLoading } from './cart-loading';
+
+import { useCart, useUpdateCartItem, useRemoveCartItem } from '@/hooks/use-cart';
+import { useCartStore } from '@/stores/cart-store';
 
 /**
- * Vial Drawer Component - Cart slide-out panel
- * Matches main.js lines 739-978: Cart & Vial Drawer System
- * Uses BEM classes from styles.css lines 3313-3971
+ * Vial Drawer - Cart Slide-out Panel
+ * 
+ * "Illuminated Manuscript" styled cart drawer using Shadcn Sheet.
+ * Connects to backend Cart API via TanStack Query hooks.
  */
 export function VialDrawer() {
-    const {
-        items,
-        cartDrawerOpen,
-        toggleCartDrawer,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        getCartTotal
-    } = useCartStore();
+    const { cartDrawerOpen, toggleCartDrawer } = useCartStore();
+    const { data: cart, isLoading, isError } = useCart();
+    const updateMutation = useUpdateCartItem();
+    const removeMutation = useRemoveCartItem();
 
-    // Format currency matching main.js Utils.formatCurrency
-    const formatCurrency = (amount: number): string => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-        }).format(amount);
-    };
+    // Track which items are being mutated for loading states
+    const [updatingItemId, setUpdatingItemId] = useState<string | null>(null);
+    const [removingItemId, setRemovingItemId] = useState<string | null>(null);
 
-    // Handle Escape key to close drawer
-    const handleKeyDown = useCallback((e: KeyboardEvent) => {
-        if (e.key === 'Escape' && cartDrawerOpen) {
-            toggleCartDrawer();
-        }
-    }, [cartDrawerOpen, toggleCartDrawer]);
+    const handleQuantityChange = async (itemId: string, quantity: number) => {
+        if (quantity < 1) return;
 
-    // Handle click outside to close
-    const handleClickOutside = useCallback((e: MouseEvent) => {
-        const drawer = document.querySelector('.vial-drawer');
-        const cartButton = document.querySelector('[data-tooltip="Vial Collection"]');
-
-        if (
-            cartDrawerOpen &&
-            drawer &&
-            !drawer.contains(e.target as Node) &&
-            cartButton &&
-            !cartButton.contains(e.target as Node)
-        ) {
-            toggleCartDrawer();
-        }
-    }, [cartDrawerOpen, toggleCartDrawer]);
-
-    // Add event listeners
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('click', handleClickOutside);
-
-        // Lock body scroll when drawer is open
-        if (cartDrawerOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('click', handleClickOutside);
-            document.body.style.overflow = '';
-        };
-    }, [handleKeyDown, handleClickOutside, cartDrawerOpen]);
-
-    // Handle quantity change
-    const handleQuantityChange = (id: string, delta: number) => {
-        const item = items.find(i => i.id === id);
-        if (item) {
-            updateQuantity(id, item.quantity + delta);
+        setUpdatingItemId(itemId);
+        try {
+            await updateMutation.mutateAsync({ itemId, quantity });
+        } finally {
+            setUpdatingItemId(null);
         }
     };
 
-    // Handle checkout
-    const handleCheckout = () => {
-        if (items.length === 0) {
-            showToast('Your collection vial is empty', 'warning');
-            return;
+    const handleRemove = async (itemId: string) => {
+        setRemovingItemId(itemId);
+        try {
+            await removeMutation.mutateAsync(itemId);
+        } finally {
+            setRemovingItemId(null);
         }
-
-        showToast('Dispatching your essence collection to the atelier...', 'info');
-
-        // Simulate API call
-        setTimeout(() => {
-            showToast('Your collection has been dispatched. The atelier will contact you shortly.', 'success');
-            clearCart();
-            toggleCartDrawer();
-        }, 1000);
     };
+
+    const isEmpty = !cart?.items || cart.items.length === 0;
 
     return (
-        <aside
-            className={`vial-drawer ${cartDrawerOpen ? 'active' : ''}`}
-            id="vialDrawer"
-            aria-hidden={!cartDrawerOpen}
-            aria-modal={cartDrawerOpen}
-            role="dialog"
-            aria-label="Collection vial"
-        >
-            <div className="vial-drawer__container">
+        <Sheet open={cartDrawerOpen} onOpenChange={toggleCartDrawer}>
+            {/* Cart Button Trigger (for header integration) */}
+            <SheetTrigger asChild>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative h-10 w-10 text-ink hover:text-gold-dark hover:bg-gold/10"
+                    aria-label="Open cart"
+                >
+                    <ShoppingBag className="h-5 w-5" />
+                    {cart?.items_count && cart.items_count > 0 && (
+                        <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gold text-ink text-xs font-display flex items-center justify-center">
+                            {cart.items_count > 9 ? '9+' : cart.items_count}
+                        </span>
+                    )}
+                </Button>
+            </SheetTrigger>
+
+            {/* Drawer Content */}
+            <SheetContent
+                side="right"
+                className="w-full sm:max-w-md flex flex-col bg-parchment border-l-2 border-gold p-0"
+            >
                 {/* Header */}
-                <div className="vial-drawer__header">
-                    <h2 className="vial-drawer__title">Collection Vial</h2>
-                    <button
-                        className="vial-drawer__close"
-                        id="vialClose"
-                        onClick={() => toggleCartDrawer()}
-                        aria-label="Close collection vial"
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
+                <div className="flex items-center justify-between p-6 border-b border-gold/20">
+                    <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full border border-gold/30 flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-gold" />
+                        </div>
+                        <div>
+                            <h2 className="font-display text-2xl text-ink">Collection Vial</h2>
+                            {cart?.items_count !== undefined && (
+                                <p className="text-sm text-ink-muted">
+                                    {cart.items_count} {cart.items_count === 1 ? 'essence' : 'essences'}
+                                </p>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 {/* Content */}
-                <div className="vial-drawer__content" id="vialContent">
-                    {items.length === 0 ? (
-                        // Empty state
-                        <div className="vial-drawer__empty">
-                            <div className="vial-drawer__empty-icon" aria-hidden="true">⚱</div>
-                            <p className="vial-drawer__empty-text">Your collection vial awaits</p>
+                <div className="flex-1 overflow-y-auto p-6">
+                    {isLoading ? (
+                        <CartLoading count={2} />
+                    ) : isError ? (
+                        <div className="text-center py-12">
+                            <p className="text-ink-muted font-body">
+                                Unable to load your collection.
+                            </p>
+                            <Button
+                                variant="ghost"
+                                onClick={() => window.location.reload()}
+                                className="mt-4 text-gold-dark"
+                            >
+                                Try Again
+                            </Button>
                         </div>
+                    ) : isEmpty ? (
+                        <EmptyCart />
                     ) : (
-                        // Cart items
-                        <div className="vial-drawer__items">
-                            {items.map((item) => (
-                                <CartItemCard
-                                    key={item.id}
-                                    item={item}
-                                    onQuantityChange={handleQuantityChange}
-                                    onRemove={removeFromCart}
-                                    formatCurrency={formatCurrency}
-                                />
-                            ))}
+                        <div className="space-y-4">
+                            <AnimatePresence mode="popLayout">
+                                {cart.items.map((item) => (
+                                    <CartItem
+                                        key={item.id}
+                                        item={item}
+                                        onQuantityChange={handleQuantityChange}
+                                        onRemove={handleRemove}
+                                        isUpdating={updatingItemId === item.id}
+                                        isRemoving={removingItemId === item.id}
+                                    />
+                                ))}
+                            </AnimatePresence>
                         </div>
                     )}
                 </div>
 
-                {/* Footer */}
-                <div className="vial-drawer__footer">
-                    <div className="vial-drawer__total">
-                        <span className="vial-drawer__total-label">Total</span>
-                        <span className="vial-drawer__total-value">{formatCurrency(getCartTotal())}</span>
+                {/* Footer - Only show when cart has items */}
+                {!isLoading && !isEmpty && cart && (
+                    <div className="p-6 border-t border-gold/20 bg-parchment-dark/20 space-y-4">
+                        {/* Price Breakdown */}
+                        <div className="space-y-2">
+                            <div className="flex justify-between text-sm text-ink-light">
+                                <span>Subtotal</span>
+                                <span>${cart.subtotal.toFixed(2)}</span>
+                            </div>
+
+                            {cart.discount_amount > 0 && (
+                                <div className="flex justify-between text-sm text-eucalyptus">
+                                    <span>Discount</span>
+                                    <span>-${cart.discount_amount.toFixed(2)}</span>
+                                </div>
+                            )}
+
+                            <div className="flex justify-between text-sm text-ink-light">
+                                <span>GST (9%)</span>
+                                <span>${cart.gst_amount.toFixed(2)}</span>
+                            </div>
+
+                            <div className="flex justify-between items-baseline pt-2 border-t border-gold/10">
+                                <span className="font-display text-xl text-ink">Total</span>
+                                <span className="font-display text-2xl text-gold-dark">
+                                    ${cart.total.toFixed(2)}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Coupon Input (placeholder for future) */}
+                        {/* <CouponInput /> */}
+
+                        {/* Checkout Button */}
+                        <Link href="/checkout" className="block">
+                            <Button
+                                variant="gold"
+                                size="lg"
+                                className="w-full text-lg h-14 relative overflow-hidden group"
+                                onClick={() => toggleCartDrawer()}
+                            >
+                                <span className="relative z-10 flex items-center justify-center gap-2">
+                                    <span>Proceed to Checkout</span>
+                                    <span className="text-xs uppercase tracking-widest opacity-60">
+                                        — ${cart.total.toFixed(2)}
+                                    </span>
+                                </span>
+                            </Button>
+                        </Link>
+
+                        {/* Shipping Note */}
+                        <p className="text-center text-xs text-ink-muted italic">
+                            * Complimentary delivery within Singapore for orders above $100
+                        </p>
                     </div>
-                    <button
-                        className="vial-drawer__dispatch btn btn--primary"
-                        onClick={handleCheckout}
-                        disabled={items.length === 0}
-                    >
-                        Dispatch to Atelier
-                    </button>
-                </div>
-            </div>
-        </aside>
+                )}
+            </SheetContent>
+        </Sheet>
     );
 }
 
 /**
- * Individual Cart Item Card
- * Matches main.js lines 864-914: createCartItemElement
+ * Empty Cart State
  */
-interface CartItemCardProps {
-    item: CartItem;
-    onQuantityChange: (id: string, delta: number) => void;
-    onRemove: (id: string) => void;
-    formatCurrency: (amount: number) => string;
-}
-
-function CartItemCard({ item, onQuantityChange, onRemove, formatCurrency }: CartItemCardProps) {
+function EmptyCart() {
     return (
-        <div className="cart-item" data-id={item.id}>
-            <div className="cart-item__header">
-                <div className="cart-item__info">
-                    <h4 className="cart-item__name">{item.name}</h4>
-                    <div className="cart-item__meta">
-                        <span className="cart-item__latin">{item.latinName}</span>
-                    </div>
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+            {/* Decorative Vial Icon */}
+            <div className="relative mb-6">
+                <div className="w-20 h-20 rounded-full border-2 border-gold/30 flex items-center justify-center bg-parchment-dark/20">
+                    <span className="font-display text-4xl text-gold/50" aria-hidden="true">
+                        ⚱
+                    </span>
                 </div>
-                <button
-                    className="cart-item__remove"
-                    onClick={() => onRemove(item.id)}
-                    aria-label={`Remove ${item.name} from collection`}
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
+                {/* Decorative corners */}
+                <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l border-gold opacity-40" />
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b border-r border-gold opacity-40" />
             </div>
 
-            <div className="cart-item__details">
-                <div className="cart-item__quantity">
-                    <button
-                        className="cart-item__quantity-btn"
-                        onClick={() => onQuantityChange(item.id, -1)}
-                        aria-label="Decrease quantity"
-                    >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                    </button>
-                    <span className="cart-item__quantity-value">{item.quantity}</span>
-                    <button
-                        className="cart-item__quantity-btn"
-                        onClick={() => onQuantityChange(item.id, 1)}
-                        aria-label="Increase quantity"
-                    >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                    </button>
-                    <span className="cart-item__quantity-label">phial{item.quantity !== 1 ? 's' : ''}</span>
-                </div>
+            <h3 className="font-display text-xl text-ink mb-2">
+                Your Collection Vial Awaits
+            </h3>
 
-                <div className="cart-item__price">
-                    <span className="cart-item__price-value">{formatCurrency(item.price * item.quantity)}</span>
-                    <span className="cart-item__price-unit">{item.quantity} × {formatCurrency(item.price)}</span>
-                </div>
-            </div>
+            <p className="font-body text-ink-light max-w-[200px] mb-6">
+                Begin your aromatic journey by adding essences to your collection.
+            </p>
+
+            <Link href="/compendium">
+                <Button variant="outline" className="border-gold text-gold-dark hover:bg-gold/10">
+                    Browse Compendium
+                </Button>
+            </Link>
         </div>
     );
 }
