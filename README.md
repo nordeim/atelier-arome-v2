@@ -10,7 +10,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-Proprietary-E50914?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Phase_7_Visual_Alignment_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
+[![Status](https://img.shields.io/badge/Status-Phase_7.1_PDP_Complete-brightgreen?style=for-the-badge)](MASTER_EXECUTION_PLAN.md)
 
 </div>
 
@@ -90,7 +90,7 @@ graph TB
     end
     
     subgraph "Data Layer"
-        PG[(PostgreSQL 16<br/>- 24 Tables<br/>- UUID PKs)]
+        PG[(PostgreSQL 16<br/>- 26 Tables<br/>- UUID PKs)]
         REDIS[(Redis 7.x<br/>- Cache/Session/Queue)]
         MEILI[(Meilisearch<br/>- Full-text Search)]
     end
@@ -275,15 +275,22 @@ atelier-arome-web/
 ```
 Atomic Components (60-120 lines)
 ├── hero-frame.tsx          # Layout + gold-leaf borders
-├── alchemical-vessel.tsx    # SVG vessel + CSS animations
-└── botanical-layer.tsx      # Parallax botanical elements
+├── alchemical-vessel.tsx   # SVG vessel + CSS animations
+├── botanical-layer.tsx     # Parallax botanical elements
+└── catalog/detail/         # PDP Atoms (Phase 7.1)
+    ├── variant-selector.tsx    # Size/price selection with gold borders
+    ├── quantity-adjuster.tsx   # +/- quantity with min/max limits
+    ├── image-gallery.tsx       # Main image + thumbnails + Gold Leaf ornaments
+    └── alchemical-properties.tsx # Humour/Season/Rarity icon visualization
 
-Orchestrator Components (100-150 lines)
+Orchestrator Components (100-180 lines)
 ├── hero-section.tsx         # Composes atomic + typography + actions
-└── header.tsx             # Navigation + mobile menu + cart
+├── header.tsx               # Navigation + mobile menu + cart
+└── product-detail.tsx       # PDP: gallery + selector + cart (177 lines)
 
 State Management (Zustand)
-└── cart-store.ts           # Cart state + localStorage persistence
+├── cart-store.ts            # Cart state + localStorage persistence
+└── toast-store.ts           # Toast notification queue
 ```
 
 ### Root Directory
@@ -622,9 +629,9 @@ npm install -g pnpm
 
 ## 🗄️ Database Schema
 
-**24 Tables Total (22 business + migrations + sessions)**
+**26 Tables Total (24 business + migrations + sessions + personal_access_tokens)**
 
-### Core Tables (24)
+### Core Tables (26)
 
 | Category | Tables | Key Features |
 |----------|--------|-------------|
@@ -1147,10 +1154,10 @@ UPSTASH_REDIS_REST_URL=...
 
 ## 🗺️ Roadmap
 
-### Current Status: Phase 7 Complete + Visual Alignment ✅
+### Current Status: Phase 7.1 Complete (Product Detail Page) ✅
 
 - [x] Project structure created
-- [x] Database schema designed (24 tables)
+- [x] Database schema designed (26 tables)
 - [x] Migrations and seeders implemented
 - [x] Laravel 12 API scaffolded
 - [x] Next.js 15 frontend initialized
@@ -1172,6 +1179,15 @@ UPSTASH_REDIS_REST_URL=...
   - [x] Filter Humour Icons (☾ ☀ ♁ ☁)
   - [x] Shopping Bag Cart Icon
   - [x] Newsletter Title + Name Field
+- [x] **Phase 7.1 - Product Detail Page** (January 10, 2026):
+  - [x] PDP Route (`/compendium/[slug]`) with server-side rendering
+  - [x] VariantSelector with gold-border active states
+  - [x] QuantityAdjuster with min/max inventory limits
+  - [x] ImageGallery with "Gold Leaf" corner ornaments
+  - [x] AlchemicalProperties visualization (Humour, Season, Rarity)
+  - [x] Add to Vial integration with Zustand cart-store
+  - [x] Dynamic SEO metadata generation per product
+  - [x] Custom PDP loading skeleton
 
 ### Phase Overview
 
@@ -1184,7 +1200,7 @@ UPSTASH_REDIS_REST_URL=...
 | 5 | Authentication | 5 days | ✅ Complete |
 | 6 | Product Management (BE) | 5 days | ✅ Complete |
 | 7 | Product Catalog (FE) | 7 days | ✅ Complete |
-| 7.1 | Visual UI/UX Alignment | 1 day | ✅ Complete |
+| 7.1 | Product Detail Page (PDP) | 2 days | ✅ Complete |
 | 8 | Cart System | 5 days | ⏳ Upcoming |
 | 9 | Checkout Flow | 7 days | ⏳ Upcoming |
 | 10 | Payment Integration | 5 days | ⏳ Upcoming |
