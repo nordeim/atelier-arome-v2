@@ -1,64 +1,46 @@
-# Task: Phase 8 Cart System Integration Planning
+# Task: Phase 8 Cart System Integration
 
 ## Objective
-Create comprehensive implementation plan for Phase 8 (Cart System Integration) and prepare for execution.
+Connect frontend cart state to backend Cart API for full persistence.
 
 ---
 
-## Previous Tasks Completed ✅
+## Completed ✅
 
-### README.md Update for Phase 7.1
-- [x] Validated Phase 7.1 implementation (PDP route, atoms, hooks)
-- [x] Created and executed README update plan
-- [x] Phase 7.1 code review completed (95% score)
+### Sub-Phase 8.1: Frontend Types & API Client
+- [x] Add Cart types to `types/api.ts` (Cart, CartItem, Coupon, request types)
+- [x] Add Cart API methods to `api-client.ts` with session ID management
+- [x] Create `hooks/use-cart.ts` with TanStack Query (optimistic updates)
 
----
+### Sub-Phase 8.2: Cart State Management Refactor
+- [x] Update `product-detail.tsx` with real API call (replaced setTimeout)
 
-## Current: Phase 8 Planning
+### Sub-Phase 8.3: Vial Drawer Refinement
+- [x] Refactor `vial-drawer.tsx` with Shadcn Sheet + API hooks
+- [x] Create `cart-item.tsx` atomic component with Gold Leaf ornaments
+- [x] Create `cart-loading.tsx` skeleton
 
-### 1. Codebase Validation
-- [x] Review existing `CartController.php` (269 lines) — COMPLETE
-- [x] Review existing `CartResource.php` — COMPLETE
-- [x] Review existing `Cart.php` model — COMPLETE
-- [x] Review existing `vial-drawer.tsx` (234 lines) — Uses localStorage only
-- [x] Identify gap: Frontend not connected to backend API
-
-### 2. Implementation Plan Creation
-- [x] Define Sub-Phase 8.1: Frontend Types & API Client
-- [x] Define Sub-Phase 8.2: Cart State Management Refactor
-- [x] Define Sub-Phase 8.3: Vial Drawer Refinement
-- [x] Define Sub-Phase 8.4: Guest/Auth Cart Merge
-- [x] Incorporate Phase 7.1 observations (setTimeout removal, error boundary)
-- [x] Create detailed file checklists for 11 files
-- [x] Save implementation plan to project directory
-
-### 3. User Review
-- [ ] Submit plan for user approval
-
----
-
-## Phase 8 Execution (Pending Approval)
-
-### Sub-Phase 8.1: Types & API Client (0.5 day)
-- [ ] Add Cart types to `types/api.ts`
-- [ ] Add Cart API methods to `api-client.ts`
-- [ ] Create `hooks/use-cart.ts`
-
-### Sub-Phase 8.2: Cart Store Refactor (1.5 days)
-- [ ] Refactor `cart-store.ts` for API sync
-- [ ] Update `product-detail.tsx` with real API call
-
-### Sub-Phase 8.3: Vial Drawer Refinement (2 days)
-- [ ] Refactor `vial-drawer.tsx` with Shadcn Sheet
-- [ ] Create `cart-item.tsx` atomic component
-- [ ] Create `cart-loading.tsx` skeleton
-
-### Sub-Phase 8.4: Integration (1 day)
-- [ ] Create `cart-provider.tsx`
-- [ ] Create `cart-error-boundary.tsx`
-- [ ] Update `layout.tsx`
+### Sub-Phase 8.4: Integration
+- [x] Create `providers/providers.tsx` with QueryClientProvider
+- [x] Update `layout.tsx` to wrap app with Providers
 
 ### Verification
-- [ ] Run backend tests
-- [ ] Run frontend type-check and build
-- [ ] Manual E2E testing
+- [x] Build passes (`pnpm build`) ✅
+- [ ] Run backend tests (optional - backend already complete)
+- [ ] Manual E2E testing with live backend
+
+---
+
+## Files Created/Modified
+
+| File | Action |
+|------|--------|
+| `types/api.ts` | ✅ Modified (Cart types) |
+| `lib/api-client.ts` | ✅ Modified (Cart API methods) |
+| `hooks/use-cart.ts` | ✅ Created (TanStack Query) |
+| `components/catalog/product-detail.tsx` | ✅ Modified (API call) |
+| `components/cart/vial-drawer.tsx` | ✅ Replaced (Shadcn Sheet) |
+| `components/cart/cart-item.tsx` | ✅ Created |
+| `components/cart/cart-loading.tsx` | ✅ Created |
+| `components/providers/providers.tsx` | ✅ Created |
+| `app/layout.tsx` | ✅ Modified (Providers wrapper) |
